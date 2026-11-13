@@ -1,4 +1,4 @@
-const CACHE_NAME = 'albosla-v1';
+const CACHE_NAME = 'albosla-v2';
 const ASSETS = [
   './',
   './index.html',
