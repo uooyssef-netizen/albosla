@@ -3,1007 +3,1034 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#315bd6">
-<title>يومي | التقويم والمهام</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#2455D6">
+<title>البوصلة | يومي</title>
 
 <style>
-:root {
-  --bg: #f4f6fa;
-  --card: #ffffff;
-  --text: #20283a;
-  --muted: #8790a2;
-  --line: #e8ebf1;
-  --primary: #315bd6;
-  --primary-soft: #edf1ff;
-  --green: #159568;
-  --red: #d64b58;
+:root{
+  --bg:#F4F6FA;--card:#fff;--text:#202B3C;--muted:#8290A5;
+  --primary:#2455D6;--primary-light:#EAF0FF;--border:#E8ECF3;
+  --green:#15966A;--red:#D94B55;--orange:#D58A28;
+  --shadow:0 5px 20px rgba(30,50,90,.045);
 }
-
-* {
-  box-sizing: border-box;
+*{box-sizing:border-box}
+body{
+  margin:0;background:var(--bg);color:var(--text);
+  font-family:Arial,Tahoma,sans-serif;font-size:14px;
+  padding-bottom:90px
 }
-
-body {
-  margin: 0;
-  font-family: Arial, Tahoma, sans-serif;
-  background: var(--bg);
-  color: var(--text);
-  font-size: 13px;
-  padding-bottom: 80px;
+button,input,textarea,select{font:inherit}
+button{cursor:pointer}
+.app{max-width:760px;margin:auto;padding:16px}
+header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
+.brand{display:flex;align-items:center;gap:10px}
+.logo{
+  width:42px;height:42px;border-radius:14px;background:var(--primary);
+  color:white;display:grid;place-items:center;font-size:21px;font-weight:bold
 }
-
-button, input {
-  font: inherit;
+.brand h1{font-size:19px;margin:0 0 4px}
+.brand small{color:var(--muted)}
+.header-date{color:var(--muted);font-size:12px}
+.page{display:none}
+.page.active{display:block}
+.page-title{font-size:21px;margin:8px 0 5px}
+.page-subtitle{color:var(--muted);margin:0 0 18px;font-size:13px}
+.card{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:17px;padding:16px;margin-bottom:13px;box-shadow:var(--shadow)
 }
-
-button {
-  cursor: pointer;
+.card-title{font-size:15px;font-weight:bold;margin-bottom:13px}
+.row{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.stat{padding:15px;border-radius:15px;background:white;border:1px solid var(--border)}
+.stat strong{font-size:23px;display:block;margin-bottom:5px}
+.stat span{font-size:12px;color:var(--muted)}
+.progress{height:8px;background:#EDF0F5;border-radius:20px;overflow:hidden;margin:10px 0}
+.progress div{height:100%;background:var(--primary);border-radius:20px;width:0;transition:.2s}
+.btn{
+  border:0;border-radius:11px;padding:10px 14px;
+  background:var(--primary);color:white;font-weight:bold
 }
-
-.app {
-  max-width: 650px;
-  margin: auto;
-  padding: 14px;
+.btn.light{background:var(--primary-light);color:var(--primary)}
+.btn.gray{background:#F0F2F6;color:#536174}
+.btn.danger{background:#FCEBEC;color:var(--red)}
+.btn.small{padding:7px 10px;font-size:12px}
+.btn:disabled{opacity:.5}
+.input,textarea,select{
+  width:100%;border:1px solid var(--border);background:#FAFBFD;
+  border-radius:11px;padding:12px;color:var(--text);outline:none
 }
-
-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 17px;
+.input:focus,textarea:focus,select:focus{border-color:var(--primary)}
+textarea{resize:vertical;min-height:85px}
+.form-row{display:flex;gap:8px;margin:10px 0}
+.form-row>*{min-width:0}
+.form-row .input{flex:1}
+.muted{color:var(--muted);font-size:12px}
+.empty{text-align:center;color:var(--muted);padding:20px 8px;font-size:13px}
+.item{
+  display:flex;align-items:center;gap:10px;padding:12px 0;
+  border-bottom:1px solid var(--border)
 }
-
-.brand {
-  display: flex;
-  align-items: center;
-  gap: 9px;
+.item:last-child{border-bottom:0}
+.item-main{flex:1;min-width:0}
+.item-main strong{display:block;font-size:13px;overflow-wrap:anywhere}
+.item-main small{display:block;color:var(--muted);margin-top:5px;font-size:11px}
+.item.done strong{text-decoration:line-through;color:var(--muted)}
+.check{width:19px;height:19px;accent-color:var(--primary);flex-shrink:0}
+.actions{display:flex;gap:5px;align-items:center}
+.icon-btn{border:0;background:#F3F5F9;color:#64738A;border-radius:8px;padding:7px}
+.badge{
+  display:inline-block;padding:4px 8px;border-radius:20px;
+  font-size:10px;background:#F0F2F6;color:#66748A
 }
-
-.logo {
-  width: 37px;
-  height: 37px;
-  border-radius: 11px;
-  background: var(--primary);
-  color: white;
-  display: grid;
-  place-items: center;
-  font-size: 19px;
-  font-weight: bold;
+.badge.blue{background:#EAF0FF;color:var(--primary)}
+.badge.green{background:#E6F7F0;color:var(--green)}
+.badge.red{background:#FCEBEC;color:var(--red)}
+.tabs{
+  position:fixed;bottom:0;left:0;right:0;background:#fff;
+  border-top:1px solid var(--border);display:flex;justify-content:center;
+  padding:8px 4px calc(8px + env(safe-area-inset-bottom));z-index:10
 }
-
-h1 {
-  font-size: 17px;
-  margin: 0;
+.tabs-inner{width:100%;max-width:760px;display:grid;grid-template-columns:repeat(6,1fr)}
+.tab{
+  border:0;background:transparent;color:#8490A2;
+  font-size:10px;padding:6px 1px;display:flex;flex-direction:column;
+  align-items:center;gap:5px
 }
-
-h2 {
-  font-size: 15px;
-  margin: 0;
+.tab span:first-child{font-size:19px}
+.tab.active{color:var(--primary);font-weight:bold}
+.calendar-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+.calendar-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;text-align:center}
+.calendar-grid .weekday{font-size:11px;color:var(--muted);padding:8px 0}
+.day-cell{
+  min-height:44px;border:1px solid transparent;border-radius:10px;
+  background:#FAFBFD;position:relative;padding:8px 2px;font-size:12px
 }
-
-h3 {
-  font-size: 13px;
-  margin: 0;
+.day-cell.selected{border-color:var(--primary);background:var(--primary-light);color:var(--primary);font-weight:bold}
+.day-cell.today{box-shadow:inset 0 0 0 1px var(--primary)}
+.day-cell.has-task:after{
+  content:"";position:absolute;bottom:4px;left:50%;transform:translateX(-50%);
+  width:5px;height:5px;background:var(--green);border-radius:50%
 }
-
-.small {
-  color: var(--muted);
-  font-size: 11px;
+.day-cell.other{opacity:.35}
+.section-label{font-size:12px;color:var(--muted);margin:17px 0 7px}
+.separator{height:1px;background:var(--border);margin:13px 0}
+.note-card{border:1px solid var(--border);border-radius:13px;padding:13px;margin-bottom:9px;background:#fff}
+.note-card p{white-space:pre-wrap;line-height:1.7;margin:9px 0}
+.amount{font-weight:bold;direction:ltr;display:inline-block}
+.warning{padding:12px;border-radius:12px;background:#FFF5E6;color:#9C6419;font-size:12px;margin-top:10px}
+.danger-text{color:var(--red)}
+.success-text{color:var(--green)}
+.hidden{display:none!important}
+.modal-backdrop{
+  position:fixed;inset:0;background:#17203388;z-index:30;
+  display:none;align-items:center;justify-content:center;padding:18px
 }
-
-.card {
-  background: var(--card);
-  border: 1px solid var(--line);
-  border-radius: 13px;
-  padding: 13px;
-  margin-bottom: 11px;
-}
-
-.row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 8px;
-}
-
-.btn {
-  border: 1px solid var(--line);
-  background: white;
-  color: var(--text);
-  border-radius: 9px;
-  padding: 8px 11px;
-  font-size: 12px;
-}
-
-.btn.primary {
-  background: var(--primary);
-  border-color: var(--primary);
-  color: white;
-}
-
-.btn.soft {
-  background: var(--primary-soft);
-  color: var(--primary);
-  border: none;
-}
-
-.btn.danger {
-  color: var(--red);
-}
-
-.view {
-  display: none;
-}
-
-.view.active {
-  display: block;
-}
-
-.section-title {
-  margin-bottom: 12px;
-}
-
-input[type="text"] {
-  width: 100%;
-  padding: 11px;
-  border: 1px solid var(--line);
-  border-radius: 9px;
-  background: #fafbfc;
-  outline: none;
-}
-
-input:focus {
-  border-color: var(--primary);
-}
-
-/* التقويم */
-
-.calendar-card {
-  padding: 13px 10px;
-}
-
-.calendar-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 15px;
-}
-
-.month-title {
-  font-size: 15px;
-  font-weight: bold;
-}
-
-.calendar-grid {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  gap: 5px;
-  text-align: center;
-}
-
-.weekday {
-  color: var(--muted);
-  font-size: 11px;
-  padding: 7px 0;
-}
-
-.day {
-  min-height: 43px;
-  border-radius: 9px;
-  border: 1px solid transparent;
-  background: #f8f9fc;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 3px;
-  position: relative;
-}
-
-.day.empty {
-  background: transparent;
-}
-
-.day.selected {
-  background: var(--primary-soft);
-  border-color: var(--primary);
-  color: var(--primary);
-  font-weight: bold;
-}
-
-.day.today {
-  border-color: var(--green);
-}
-
-.day .dot {
-  width: 5px;
-  height: 5px;
-  border-radius: 50%;
-  background: var(--primary);
-}
-
-.day-number {
-  font-size: 12px;
-}
-
-.calendar-legend {
-  margin-top: 11px;
-  display: flex;
-  gap: 12px;
-  font-size: 10px;
-  color: var(--muted);
-}
-
-.legend-item {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-}
-
-.legend-dot {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-}
-
-/* المهام */
-
-.selected-date {
-  color: var(--primary);
-  font-weight: bold;
-}
-
-.task-list {
-  margin-top: 10px;
-}
-
-.task-item {
-  display: flex;
-  align-items: center;
-  gap: 9px;
-  padding: 11px 0;
-  border-bottom: 1px solid var(--line);
-}
-
-.task-item:last-child {
-  border-bottom: none;
-}
-
-.task-item input[type="checkbox"] {
-  width: 17px;
-  height: 17px;
-  accent-color: var(--primary);
-  flex-shrink: 0;
-}
-
-.task-text {
-  flex: 1;
-  overflow-wrap: anywhere;
-}
-
-.task-item.done .task-text {
-  text-decoration: line-through;
-  color: var(--muted);
-}
-
-.task-actions {
-  display: flex;
-  gap: 5px;
-}
-
-.icon-btn {
-  border: none;
-  background: transparent;
-  color: var(--muted);
-  padding: 4px;
-  font-size: 11px;
-}
-
-.icon-btn.delete {
-  color: var(--red);
-}
-
-.add-task {
-  display: flex;
-  gap: 7px;
-  margin-top: 12px;
-}
-
-.add-task input {
-  flex: 1;
-  min-width: 0;
-}
-
-.empty {
-  text-align: center;
-  color: var(--muted);
-  padding: 18px 5px;
-  font-size: 12px;
-}
-
-.summary {
-  display: flex;
-  gap: 8px;
-  margin-bottom: 11px;
-}
-
-.summary-box {
-  flex: 1;
-  background: #f8f9fc;
-  padding: 10px;
-  border-radius: 9px;
-}
-
-.summary-box strong {
-  display: block;
-  font-size: 18px;
-  margin-top: 4px;
-}
-
-/* التنقل السفلي */
-
-nav {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background: white;
-  border-top: 1px solid var(--line);
-  display: flex;
-  justify-content: space-around;
-  padding: 8px 2px;
-  z-index: 10;
-}
-
-nav button {
-  border: 0;
-  background: none;
-  color: var(--muted);
-  font-size: 10px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 3px;
-}
-
-nav button b {
-  font-size: 18px;
-}
-
-nav button.active {
-  color: var(--primary);
-}
-
-@media (max-width: 360px) {
-  .day {
-    min-height: 37px;
-  }
-
-  .calendar-grid {
-    gap: 3px;
-  }
+.modal-backdrop.show{display:flex}
+.modal{background:white;border-radius:18px;padding:18px;width:100%;max-width:420px;max-height:85vh;overflow:auto}
+.modal h3{margin:0 0 14px}
+.modal-actions{display:flex;gap:8px;margin-top:14px}
+.modal-actions>*{flex:1}
+@media(max-width:390px){
+  .app{padding:12px}.card{padding:13px}.tab{font-size:9px}
+  .day-cell{min-height:39px}
 }
 </style>
 </head>
 
 <body>
-
 <div class="app">
-
 <header>
   <div class="brand">
-    <div class="logo">ي</div>
-    <div>
-      <h1>يومي</h1>
-      <div class="small">نظّم يومك وحقق أهدافك</div>
-    </div>
+    <div class="logo">ب</div>
+    <div><h1>البوصلة</h1><small>خطوة صغيرة كل يوم</small></div>
   </div>
-  <div class="small" id="headerDate"></div>
+  <div class="header-date" id="headerDate"></div>
 </header>
 
-<!-- تبويب اليوم -->
+<!-- الرئيسية -->
+<section class="page active" id="home">
+  <h2 class="page-title">الرئيسية</h2>
+  <p class="page-subtitle">تابع يومك واعرف أنت واقف فين.</p>
 
-<section id="todayView" class="view active">
-
-  <div class="section-title">
-    <h2>اليوم</h2>
-    <div class="small" id="todayDate"></div>
+  <div class="grid">
+    <div class="stat"><strong id="homeProgress">0%</strong><span>إنجاز اليوم</span></div>
+    <div class="stat"><strong id="homeTasks">0</strong><span>مهام اليوم</span></div>
+    <div class="stat"><strong id="homeHabits">0</strong><span>عادات مكتملة</span></div>
+    <div class="stat"><strong id="homeGoals">0</strong><span>أهداف نشطة</span></div>
   </div>
 
-  <div class="summary">
-    <div class="summary-box">
-      <div class="small">إجمالي المهام</div>
-      <strong id="totalToday">0</strong>
-    </div>
-
-    <div class="summary-box">
-      <div class="small">مكتملة</div>
-      <strong id="completedToday">0</strong>
-    </div>
-
-    <div class="summary-box">
-      <div class="small">متبقية</div>
-      <strong id="remainingToday">0</strong>
-    </div>
+  <div class="card" style="margin-top:13px">
+    <div class="row"><div class="card-title">تقدم اليوم</div><span class="badge blue" id="homePercent">0%</span></div>
+    <div class="progress"><div id="homeBar"></div></div>
+    <button class="btn light" onclick="showPage('day')">افتح يومي</button>
   </div>
 
   <div class="card">
-    <div class="row">
-      <h2>مهام اليوم المخططة</h2>
-      <span class="small" id="todayTaskCount">0 مهام</span>
-    </div>
-
-    <div id="todayTasks" class="task-list"></div>
+    <div class="card-title">مهام اليوم</div>
+    <div id="homeTaskList"></div>
   </div>
 
   <div class="card">
-    <div class="row">
-      <h2>الذهاب إلى التقويم</h2>
-      <button class="btn soft" onclick="showView('calendarView')">
-        فتح التقويم
-      </button>
-    </div>
-    <div class="small" style="margin-top:7px">
-      أضف مهامك من التقويم وستظهر هنا تلقائيًا في تاريخها.
-    </div>
+    <div class="card-title">العادات اليومية</div>
+    <div id="homeHabitList"></div>
   </div>
 
+  <div class="card">
+    <div class="card-title">ملخص الميزانية الأسبوعية</div>
+    <div class="row"><span class="muted">المصروف</span><strong id="homeSpent">0 ج.م</strong></div>
+    <div class="progress"><div id="homeBudgetBar"></div></div>
+    <div class="row"><span class="muted">المتبقي</span><strong id="homeRemaining">لم تحدد ميزانية</strong></div>
+  </div>
 </section>
 
-<!-- تبويب التقويم -->
+<!-- يومي -->
+<section class="page" id="day">
+  <h2 class="page-title">يومي</h2>
+  <p class="page-subtitle" id="dayDateLabel"></p>
 
-<section id="calendarView" class="view">
-
-  <div class="section-title">
-    <h2>التقويم والمهام</h2>
-    <div class="small">اختر يومًا لتنظيم مهامك</div>
-  </div>
-
-  <div class="card calendar-card">
-
-    <div class="calendar-header">
-      <button class="btn" onclick="changeMonth(-1)">‹</button>
-
-      <div class="month-title" id="monthTitle"></div>
-
-      <button class="btn" onclick="changeMonth(1)">›</button>
-    </div>
-
-    <div class="calendar-grid" id="calendarGrid"></div>
-
-    <div class="calendar-legend">
-      <div class="legend-item">
-        <span class="legend-dot" style="background:var(--green)"></span>
-        اليوم الحالي
-      </div>
-
-      <div class="legend-item">
-        <span class="legend-dot" style="background:var(--primary)"></span>
-        يوم به مهام
-      </div>
-    </div>
-
+  <div class="card">
+    <div class="row"><div class="card-title">إنجاز اليوم</div><strong id="dayPercent">0%</strong></div>
+    <div class="progress"><div id="dayBar"></div></div>
+    <div class="muted" id="dayStatus">مسودة اليوم</div>
   </div>
 
   <div class="card">
-
-    <div class="row">
-      <div>
-        <h2>مهام اليوم المحدد</h2>
-        <div class="small selected-date" id="selectedDateLabel"></div>
-      </div>
-
-      <span class="small" id="selectedCount">0 مهام</span>
-    </div>
-
-    <div class="add-task">
-      <input
-        type="text"
-        id="newTaskInput"
-        placeholder="اكتب المهمة هنا..."
-        maxlength="200"
-        onkeydown="if(event.key==='Enter') addTask()"
-      >
-
-      <button class="btn primary" onclick="addTask()">
-        إضافة +
-      </button>
-    </div>
-
-    <div class="task-list" id="calendarTasks"></div>
-
+    <div class="card-title">مهام اليوم المخططة</div>
+    <div id="todayPlanned"></div>
   </div>
 
+  <div class="card">
+    <div class="card-title">المهام المتأخرة</div>
+    <div id="overdueTasks"></div>
+  </div>
+
+  <div class="card">
+    <div class="row"><div class="card-title">مهامي الشخصية</div></div>
+    <div class="form-row">
+      <input class="input" id="personalInput" placeholder="اكتب مهمة جديدة">
+      <button class="btn" onclick="addPersonalTask()">إضافة</button>
+    </div>
+    <div id="personalList"></div>
+  </div>
+
+  <div class="card">
+    <div class="row"><div class="card-title">عاداتي</div><button class="btn light small" onclick="openHabitManager()">إدارة العادات</button></div>
+    <div id="dayHabits"></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">ملاحظات اليوم</div>
+    <textarea id="dayNote" placeholder="اكتب ملاحظاتك أو ما تريد تذكره..."></textarea>
+    <div class="row" style="margin-top:10px">
+      <span class="muted">تُحفظ تلقائيًا</span>
+      <button class="btn small" onclick="saveDay()">حفظ اليوم</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">الأيام السابقة والمسودات</div>
+    <div id="draftList"></div>
+  </div>
 </section>
 
+<!-- التقويم والأهداف -->
+<section class="page" id="goals">
+  <h2 class="page-title">التقويم والأهداف</h2>
+  <p class="page-subtitle">خطط لمهامك من التقويم، وستظهر تلقائيًا في يومها.</p>
+
+  <div class="card">
+    <div class="calendar-head">
+      <button class="btn gray small" onclick="changeMonth(-1)">السابق</button>
+      <strong id="monthTitle"></strong>
+      <button class="btn gray small" onclick="changeMonth(1)">التالي</button>
+    </div>
+    <div class="calendar-grid" id="calendar"></div>
+  </div>
+
+  <div class="card">
+    <div class="row">
+      <div class="card-title" id="selectedDateTitle">مهام اليوم المحدد</div>
+      <span class="badge blue">التقويم</span>
+    </div>
+    <div class="form-row">
+      <input class="input" id="plannedInput" placeholder="اكتب المهمة المطلوبة">
+      <button class="btn" onclick="addPlannedTask()">إضافة</button>
+    </div>
+    <div id="plannedList"></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">أهدافك الكبرى</div>
+    <div class="form-row"><input class="input" id="goalName" placeholder="اسم الهدف"></div>
+    <div class="form-row">
+      <input class="input" type="date" id="goalStart">
+      <input class="input" type="date" id="goalEnd">
+    </div>
+    <button class="btn" onclick="addGoal()">إضافة هدف</button>
+    <div class="separator"></div>
+    <div id="goalList"></div>
+  </div>
+</section>
+
+<!-- الملاحظات -->
+<section class="page" id="notes">
+  <h2 class="page-title">الملاحظات</h2>
+  <p class="page-subtitle">اجمع أفكارك وملاحظاتك في مكان واحد.</p>
+
+  <div class="card">
+    <div class="card-title">إضافة ملاحظة</div>
+    <input class="input" id="noteTitle" placeholder="عنوان الملاحظة">
+    <textarea id="noteBody" placeholder="اكتب محتوى الملاحظة..." style="margin-top:9px"></textarea>
+    <div class="form-row">
+      <select id="noteCategory"></select>
+      <button class="btn" onclick="addNote()">حفظ</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <input class="input" id="noteSearch" placeholder="ابحث في ملاحظاتك..." oninput="renderNotes()">
+    <div class="form-row">
+      <select id="noteFilter" onchange="renderNotes()"><option value="all">كل التصنيفات</option></select>
+      <button class="btn light small" onclick="manageCategories()">التصنيفات</button>
+    </div>
+    <div id="notesList"></div>
+  </div>
+</section>
+
+<!-- الميزانية -->
+<section class="page" id="budget">
+  <h2 class="page-title">الميزانية</h2>
+  <p class="page-subtitle">تابع مصروفاتك أسبوعًا بأسبوع.</p>
+
+  <div class="card">
+    <div class="card-title">ميزانية الأسبوع الحالي</div>
+    <div class="muted" id="budgetWeek"></div>
+    <div class="form-row">
+      <input class="input" type="number" id="budgetInput" min="0" placeholder="الميزانية بالجنيه">
+      <button class="btn" onclick="saveBudget()">حفظ</button>
+    </div>
+    <div class="grid">
+      <div class="stat"><strong id="budgetTotal">0</strong><span>الميزانية</span></div>
+      <div class="stat"><strong id="budgetSpent">0</strong><span>المصروف</span></div>
+      <div class="stat"><strong id="budgetLeft">0</strong><span>المتبقي</span></div>
+      <div class="stat"><strong id="budgetPercent">0%</strong><span>نسبة الاستهلاك</span></div>
+    </div>
+    <div class="progress"><div id="budgetBar"></div></div>
+    <div id="budgetWarning"></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">إضافة مصروف</div>
+    <input class="input" id="expenseName" placeholder="اسم المصروف">
+    <div class="form-row">
+      <input class="input" type="number" id="expenseAmount" min="0" placeholder="المبلغ">
+      <input class="input" type="date" id="expenseDate">
+    </div>
+    <button class="btn" onclick="addExpense()">إضافة المصروف</button>
+  </div>
+
+  <div class="card">
+    <div class="card-title">مصروفات الأسبوع الحالي</div>
+    <div id="expenseList"></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">الأسابيع السابقة</div>
+    <div id="oldBudgets"></div>
+  </div>
+</section>
+
+<!-- الإعدادات -->
+<section class="page" id="settings">
+  <h2 class="page-title">الإعدادات</h2>
+  <p class="page-subtitle">إدارة بيانات تطبيق البوصلة.</p>
+
+  <div class="card">
+    <div class="card-title">النسخ الاحتياطي</div>
+    <p class="muted">احفظ نسخة من جميع بياناتك في ملف JSON، ويمكنك استعادتها لاحقًا.</p>
+    <button class="btn" onclick="exportData()">تصدير نسخة احتياطية</button>
+    <div class="separator"></div>
+    <input type="file" id="restoreFile" accept=".json,application/json">
+    <button class="btn light" style="margin-top:10px" onclick="restoreData()">استعادة نسخة احتياطية</button>
+  </div>
+
+  <div class="card">
+    <div class="card-title">إدارة البيانات</div>
+    <p class="muted">مسح البيانات يحذف المعلومات المحفوظة على هذا الجهاز نهائيًا.</p>
+    <button class="btn danger" onclick="clearData()">مسح جميع البيانات</button>
+  </div>
+
+  <div class="card">
+    <div class="card-title">عن التطبيق</div>
+    <p class="muted">البوصلة - نظام شخصي لتنظيم اليوم والأهداف والعادات والميزانية.</p>
+    <span class="badge blue">الإصدار 1.0</span>
+    <span class="badge green">يعمل دون إنترنت</span>
+  </div>
+</section>
 </div>
 
-<nav>
-  <button class="active" data-view="todayView" onclick="showView('todayView')">
-    <b>✓</b>
-    اليوم
-  </button>
-
-  <button data-view="calendarView" onclick="showView('calendarView')">
-    <b>▦</b>
-    التقويم
-  </button>
+<nav class="tabs">
+ <div class="tabs-inner">
+  <button class="tab active" data-page="home" onclick="showPage('home')"><span>⌂</span><span>الرئيسية</span></button>
+  <button class="tab" data-page="day" onclick="showPage('day')"><span>☑</span><span>يومي</span></button>
+  <button class="tab" data-page="goals" onclick="showPage('goals')"><span>▦</span><span>التقويم</span></button>
+  <button class="tab" data-page="notes" onclick="showPage('notes')"><span>▤</span><span>الملاحظات</span></button>
+  <button class="tab" data-page="budget" onclick="showPage('budget')"><span>◉</span><span>الميزانية</span></button>
+  <button class="tab" data-page="settings" onclick="showPage('settings')"><span>⚙</span><span>الإعدادات</span></button>
+ </div>
 </nav>
 
+<div class="modal-backdrop" id="modalBackdrop">
+ <div class="modal">
+  <div id="modalContent"></div>
+  <div class="modal-actions">
+   <button class="btn gray" onclick="closeModal()">إغلاق</button>
+  </div>
+ </div>
+</div>
+
 <script>
-
-/* =================================
-   1. البيانات والتخزين
-================================= */
-
-const STORAGE_KEY = "yomi_planned_tasks_v1";
-
-let plannedTasks = [];
-
-try {
-  const saved = localStorage.getItem(STORAGE_KEY);
-  const parsed = saved ? JSON.parse(saved) : [];
-
-  if (Array.isArray(parsed)) {
-    plannedTasks = parsed.filter(task =>
-      task &&
-      typeof task.id === "string" &&
-      typeof task.date === "string" &&
-      typeof task.text === "string" &&
-      typeof task.done === "boolean"
-    );
-  }
-} catch (error) {
-  console.error("تعذر تحميل المهام:", error);
-}
-
-function saveTasks() {
-  localStorage.setItem(
-    STORAGE_KEY,
-    JSON.stringify(plannedTasks)
-  );
-}
-
-/* =================================
-   2. التاريخ
-================================= */
-
-function localDate(date = new Date()) {
-  const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, "0");
-  const day = String(date.getDate()).padStart(2, "0");
-
-  return `${year}-${month}-${day}`;
-}
-
-function formatDate(dateString) {
-  const date = new Date(dateString + "T12:00:00");
-
-  return date.toLocaleDateString("ar-EG", {
-    weekday: "long",
-    day: "numeric",
-    month: "long",
-    year: "numeric"
-  });
-}
-
-function escapeHTML(text) {
-  return String(text).replace(/[&<>"']/g, char => ({
-    "&": "&amp;",
-    "<": "&lt;",
-    ">": "&gt;",
-    '"': "&quot;",
-    "'": "&#039;"
-  })[char]);
-}
-
-/* =================================
-   3. حالة التقويم
-================================= */
-
-const now = new Date();
-
-let calendarYear = now.getFullYear();
-let calendarMonth = now.getMonth();
-
-let selectedDate = localDate();
-
-const weekdays = [
-  "الأحد",
-  "الإثنين",
-  "الثلاثاء",
-  "الأربعاء",
-  "الخميس",
-  "الجمعة",
-  "السبت"
-];
-
-/* =================================
-   4. عرض التقويم
-================================= */
-
-function renderCalendar() {
-
-  const firstDay = new Date(
-    calendarYear,
-    calendarMonth,
-    1
-  ).getDay();
-
-  const daysInMonth = new Date(
-    calendarYear,
-    calendarMonth + 1,
-    0
-  ).getDate();
-
-  const monthName = new Date(
-    calendarYear,
-    calendarMonth,
-    1
-  ).toLocaleDateString("ar-EG", {
-    month: "long",
-    year: "numeric"
-  });
-
-  document.getElementById("monthTitle").textContent = monthName;
-
-  let html = "";
-
-  weekdays.forEach(day => {
-    html += `<div class="weekday">${day.slice(0,2)}</div>`;
-  });
-
-  for (let i = 0; i < firstDay; i++) {
-    html += `<div class="day empty"></div>`;
-  }
-
-  for (let day = 1; day <= daysInMonth; day++) {
-
-    const date =
-      `${calendarYear}-` +
-      `${String(calendarMonth + 1).padStart(2,"0")}-` +
-      `${String(day).padStart(2,"0")}`;
-
-    const isToday = date === localDate();
-    const isSelected = date === selectedDate;
-
-    const hasTasks = plannedTasks.some(task =>
-      task.date === date
-    );
-
-    const classes = [
-      "day",
-      isToday ? "today" : "",
-      isSelected ? "selected" : ""
-    ].filter(Boolean).join(" ");
-
-    html += `
-      <button
-        class="${classes}"
-        onclick="selectDate('${date}')"
-        aria-label="${date}"
-      >
-        <span class="day-number">${day}</span>
-        ${hasTasks ? '<span class="dot"></span>' : ''}
-      </button>
-    `;
-  }
-
-  document.getElementById("calendarGrid").innerHTML = html;
-}
-
-/* =================================
-   5. التنقل بين الشهور
-================================= */
-
-function changeMonth(direction) {
-
-  calendarMonth += direction;
-
-  if (calendarMonth > 11) {
-    calendarMonth = 0;
-    calendarYear++;
-  }
-
-  if (calendarMonth < 0) {
-    calendarMonth = 11;
-    calendarYear--;
-  }
-
-  renderCalendar();
-}
-
-/* =================================
-   6. اختيار يوم
-================================= */
-
-function selectDate(date) {
-
-  selectedDate = date;
-
-  renderCalendar();
-  renderCalendarTasks();
-}
-
-/* =================================
-   7. إضافة مهمة
-================================= */
-
-function addTask() {
-
-  const input = document.getElementById("newTaskInput");
-
-  const text = input.value.trim();
-
-  if (!text) {
-    input.focus();
-    return;
-  }
-
-  const task = {
-    id: crypto.randomUUID
-      ? crypto.randomUUID()
-      : Date.now().toString(36) + Math.random().toString(36).slice(2),
-
-    date: selectedDate,
-
-    text: text,
-
-    done: false
-  };
-
-  plannedTasks.push(task);
-
-  saveTasks();
-
-  input.value = "";
-
-  renderAll();
-
-  input.focus();
-}
-
-/* =================================
-   8. تعديل مهمة
-================================= */
-
-function editTask(id) {
-
-  const task = plannedTasks.find(item =>
-    item.id === id
-  );
-
-  if (!task) return;
-
-  const newText = prompt(
-    "تعديل المهمة:",
-    task.text
-  );
-
-  if (newText === null) return;
-
-  const text = newText.trim();
-
-  if (!text) {
-    alert("لا يمكن ترك اسم المهمة فارغًا.");
-    return;
-  }
-
-  task.text = text;
-
-  saveTasks();
-
-  renderAll();
-}
-
-/* =================================
-   9. حذف مهمة
-================================= */
-
-function deleteTask(id) {
-
-  const confirmed = confirm(
-    "هل تريد حذف هذه المهمة نهائيًا؟"
-  );
-
-  if (!confirmed) return;
-
-  plannedTasks = plannedTasks.filter(task =>
-    task.id !== id
-  );
-
-  saveTasks();
-
-  renderAll();
-}
-
-/* =================================
-   10. تغيير حالة المهمة
-================================= */
-
-function toggleTask(id, checked) {
-
-  const task = plannedTasks.find(item =>
-    item.id === id
-  );
-
-  if (!task) return;
-
-  task.done = checked;
-
-  saveTasks();
-
-  renderAll();
-}
-
-/* =================================
-   11. قالب المهمة
-================================= */
-
-function taskHTML(task) {
-
-  return `
-    <div class="task-item ${task.done ? "done" : ""}">
-
-      <input
-        type="checkbox"
-        ${task.done ? "checked" : ""}
-        onchange="toggleTask('${task.id}', this.checked)"
-        aria-label="إنجاز المهمة"
-      >
-
-      <div class="task-text">
-        ${escapeHTML(task.text)}
-      </div>
-
-      <div class="task-actions">
-
-        <button
-          class="icon-btn"
-          onclick="editTask('${task.id}')"
-          title="تعديل"
-        >
-          تعديل
-        </button>
-
-        <button
-          class="icon-btn delete"
-          onclick="deleteTask('${task.id}')"
-          title="حذف"
-        >
-          حذف
-        </button>
-
-      </div>
-
-    </div>
-  `;
-}
-
-/* =================================
-   12. مهام اليوم في التقويم
-================================= */
-
-function renderCalendarTasks() {
-
-  const tasks = plannedTasks.filter(task =>
-    task.date === selectedDate
-  );
-
-  document.getElementById("selectedDateLabel").textContent =
-    formatDate(selectedDate);
-
-  document.getElementById("selectedCount").textContent =
-    `${tasks.length} مهام`;
-
-  document.getElementById("calendarTasks").innerHTML =
-    tasks.length
-      ? tasks.map(taskHTML).join("")
-      : `<div class="empty">لا توجد مهام لهذا اليوم. أضف أول مهمة.</div>`;
-}
-
-/* =================================
-   13. مهام اليوم الحالي
-================================= */
-
-function renderTodayTasks() {
-
-  const today = localDate();
-
-  const tasks = plannedTasks.filter(task =>
-    task.date === today
-  );
-
-  const completed = tasks.filter(task =>
-    task.done
-  ).length;
-
-  const remaining = tasks.length - completed;
-
-  document.getElementById("todayDate").textContent =
-    formatDate(today);
-
-  document.getElementById("totalToday").textContent =
-    tasks.length;
-
-  document.getElementById("completedToday").textContent =
-    completed;
-
-  document.getElementById("remainingToday").textContent =
-    remaining;
-
-  document.getElementById("todayTaskCount").textContent =
-    `${tasks.length} مهام`;
-
-  document.getElementById("todayTasks").innerHTML =
-    tasks.length
-      ? tasks.map(taskHTML).join("")
-      : `
-        <div class="empty">
-          لا توجد مهام مخططة لهذا اليوم.
-          <br><br>
-          اذهب إلى التقويم وأضف مهامك.
-        </div>
-      `;
-}
-
-/* =================================
-   14. التنقل بين التبويبات
-================================= */
-
-function showView(viewId) {
-
-  document.querySelectorAll(".view").forEach(view => {
-    view.classList.toggle(
-      "active",
-      view.id === viewId
-    );
-  });
-
-  document.querySelectorAll("nav button").forEach(button => {
-    button.classList.toggle(
-      "active",
-      button.dataset.view === viewId
-    );
-  });
-
-  renderAll();
-}
-
-/* =================================
-   15. تحديث الواجهة
-================================= */
-
-function renderAll() {
-
-  renderCalendar();
-
-  renderCalendarTasks();
-
-  renderTodayTasks();
-}
-
-/* =================================
-   16. بدء التطبيق
-================================= */
-
-document.getElementById("headerDate").textContent =
-  new Date().toLocaleDateString("ar-EG", {
-    day: "numeric",
-    month: "short"
-  });
-
-renderAll();
-
-/* تحديث التاريخ تلقائيًا عند بقاء التطبيق مفتوحًا */
-document.addEventListener("visibilitychange", () => {
-  if (!document.hidden) {
-    renderAll();
-  }
+"use strict";
+
+/* =========================
+   البيانات والتخزين
+========================= */
+const STORAGE_KEY = "albosla_v4";
+
+const defaults = () => ({
+  plannedTasks:[],
+  personalTasks:[],
+  goals:[],
+  habits:[],
+  days:{},
+  notes:[],
+  categories:["شغل","حياتي","أفكار"],
+  expenses:[],
+  budgets:{},
+  currentBudget:0
 });
 
-</script>
+let data = loadData();
+let selectedDate = today();
+let calendarDate = new Date();
+let currentPage = "home";
 
+function loadData(){
+  try{
+    const saved = localStorage.getItem(STORAGE_KEY);
+    return saved ? {...defaults(),...JSON.parse(saved)} : defaults();
+  }catch(e){
+    return defaults();
+  }
+}
+function save(){
+  localStorage.setItem(STORAGE_KEY,JSON.stringify(data));
+}
+function uid(){
+  return Date.now().toString(36)+Math.random().toString(36).slice(2,8);
+}
+function today(){
+  const d=new Date();
+  return dateString(d);
+}
+function dateString(d){
+  return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
+}
+function parseDate(s){
+  const [y,m,d]=s.split("-").map(Number);
+  return new Date(y,m-1,d);
+}
+function formatDate(s){
+  if(!s)return "";
+  return parseDate(s).toLocaleDateString("ar-EG",{weekday:"long",year:"numeric",month:"long",day:"numeric"});
+}
+function money(n){
+  return Number(n||0).toLocaleString("en-US")+" ج.م";
+}
+function escapeHTML(s){
+  return String(s??"").replace(/[&<>"']/g,c=>({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+  }[c]));
+}
+function showPage(page){
+  currentPage=page;
+  document.querySelectorAll(".page").forEach(p=>p.classList.toggle("active",p.id===page));
+  document.querySelectorAll(".tab").forEach(t=>t.classList.toggle("active",t.dataset.page===page));
+  renderAll();
+}
+function openModal(html){
+  document.getElementById("modalContent").innerHTML=html;
+  document.getElementById("modalBackdrop").classList.add("show");
+}
+function closeModal(){
+  document.getElementById("modalBackdrop").classList.remove("show");
+}
+
+/* =========================
+   إدارة سجل اليوم والمسودات
+========================= */
+function ensureDay(date){
+  if(!data.days[date]){
+    data.days[date]={
+      date,
+      status:"draft",
+      habitsSnapshot:data.habits.map(h=>({id:h.id,name:h.name,done:false})),
+      note:"",
+      savedAt:null
+    };
+    save();
+  }
+  return data.days[date];
+}
+function dayTasks(date){
+  return data.plannedTasks.filter(t=>t.date===date);
+}
+function dayPersonal(date){
+  return data.personalTasks.filter(t=>t.date===date);
+}
+function dayHabits(date){
+  return ensureDay(date).habitsSnapshot;
+}
+function dayStats(date){
+  const tasks=dayTasks(date).length+dayPersonal(date).length;
+  const taskDone=dayTasks(date).filter(t=>t.done).length+
+                 dayPersonal(date).filter(t=>t.done).length;
+  const habits=dayHabits(date);
+  const total=tasks+habits.length;
+  const done=taskDone+habits.filter(h=>h.done).length;
+  return {total,done,percent:total?Math.round(done/total*100):0};
+}
+function saveDay(){
+  const d=ensureDay(today());
+  d.note=document.getElementById("dayNote").value;
+  d.status="saved";
+  d.savedAt=new Date().toISOString();
+  save();
+  renderAll();
+  alert("تم حفظ اليوم بنجاح.");
+}
+function saveDayNote(){
+  const d=ensureDay(today());
+  const field=document.getElementById("dayNote");
+  if(field)d.note=field.value;
+  save();
+}
+function toggleHabit(date,id){
+  const h=dayHabits(date).find(x=>x.id===id);
+  if(!h)return;
+  h.done=!h.done;
+  save();renderAll();
+}
+function openHabitManager(){
+  let html='<h3>إدارة العادات اليومية</h3>';
+  html+='<div class="form-row"><input class="input" id="newHabitName" placeholder="اسم العادة"><button class="btn" onclick="addHabit()">إضافة</button></div>';
+  html+='<div id="habitManagerList">';
+  data.habits.forEach(h=>{
+    html+=`<div class="item"><div class="item-main"><strong>${escapeHTML(h.name)}</strong></div><button class="icon-btn" onclick="deleteHabit('${h.id}')">حذف</button></div>`;
+  });
+  html+='</div>';
+  openModal(html);
+}
+function addHabit(){
+  const input=document.getElementById("newHabitName");
+  const name=input.value.trim();
+  if(!name)return alert("اكتب اسم العادة.");
+  const h={id:uid(),name};
+  data.habits.push(h);
+  // العادة الجديدة تدخل في سجل اليوم الحالي فقط، ولا تغير الأيام القديمة.
+  ensureDay(today()).habitsSnapshot.push({id:h.id,name:h.name,done:false});
+  save();openHabitManager();renderAll();
+}
+function deleteHabit(id){
+  if(!confirm("حذف العادة من قائمة العادات الحالية؟ ستظل سجلات الأيام السابقة محفوظة."))return;
+  data.habits=data.habits.filter(h=>h.id!==id);
+  save();openHabitManager();renderAll();
+}
+
+/* =========================
+   المهام الشخصية والمخططة
+========================= */
+function addPlannedTask(){
+  const input=document.getElementById("plannedInput");
+  const text=input.value.trim();
+  if(!text)return alert("اكتب المهمة أولًا.");
+  data.plannedTasks.push({id:uid(),date:selectedDate,text,done:false,createdAt:new Date().toISOString()});
+  input.value="";
+  save();renderAll();
+}
+function addPersonalTask(){
+  const input=document.getElementById("personalInput");
+  const text=input.value.trim();
+  if(!text)return alert("اكتب المهمة.");
+  data.personalTasks.push({id:uid(),date:today(),text,done:false});
+  input.value="";
+  save();renderAll();
+}
+function toggleTask(type,id){
+  const list=type==="planned"?data.plannedTasks:data.personalTasks;
+  const task=list.find(t=>t.id===id);
+  if(!task)return;
+  task.done=!task.done;
+  task.completedAt=task.done?new Date().toISOString():null;
+  save();renderAll();
+}
+function editTask(type,id){
+  const list=type==="planned"?data.plannedTasks:data.personalTasks;
+  const task=list.find(t=>t.id===id);
+  if(!task)return;
+  openModal(`<h3>تعديل المهمة</h3>
+  <input class="input" id="editTaskText" value="${escapeHTML(task.text)}">
+  <div class="modal-actions"><button class="btn" onclick="saveTaskEdit('${type}','${id}')">حفظ التعديل</button></div>`);
+}
+function saveTaskEdit(type,id){
+  const list=type==="planned"?data.plannedTasks:data.personalTasks;
+  const task=list.find(t=>t.id===id);
+  const value=document.getElementById("editTaskText").value.trim();
+  if(!value)return alert("اكتب نص المهمة.");
+  task.text=value;save();closeModal();renderAll();
+}
+function deleteTask(type,id){
+  if(!confirm("هل تريد حذف هذه المهمة؟"))return;
+  if(type==="planned")data.plannedTasks=data.plannedTasks.filter(t=>t.id!==id);
+  else data.personalTasks=data.personalTasks.filter(t=>t.id!==id);
+  save();renderAll();
+}
+function taskHTML(task,type,showDate=false){
+  const date=showDate?`<small>${formatDate(task.date)}</small>`:"";
+  return `<div class="item ${task.done?"done":""}">
+    <input class="check" type="checkbox" ${task.done?"checked":""} onchange="toggleTask('${type}','${task.id}')">
+    <div class="item-main"><strong>${escapeHTML(task.text)}</strong>${date}</div>
+    <div class="actions">
+      <button class="icon-btn" onclick="editTask('${type}','${task.id}')">✎</button>
+      <button class="icon-btn" onclick="deleteTask('${type}','${task.id}')">×</button>
+    </div>
+  </div>`;
+}
+
+/* =========================
+   التقويم الشهري
+========================= */
+function changeMonth(n){
+  calendarDate.setMonth(calendarDate.getMonth()+n);
+  renderCalendar();
+}
+function selectCalendarDate(date){
+  selectedDate=date;
+  renderCalendar();
+  renderPlannedList();
+}
+function renderCalendar(){
+  const y=calendarDate.getFullYear(),m=calendarDate.getMonth();
+  document.getElementById("monthTitle").textContent=
+    calendarDate.toLocaleDateString("ar-EG",{month:"long",year:"numeric"});
+  const first=new Date(y,m,1);
+  const start=(first.getDay()+6)%7; // يبدأ الأسبوع من الاثنين
+  const count=new Date(y,m+1,0).getDate();
+  const prevCount=new Date(y,m,0).getDate();
+  const names=["الإثنين","الثلاثاء","الأربعاء","الخميس","الجمعة","السبت","الأحد"];
+  let html=names.map(n=>`<div class="weekday">${n.slice(0,2)}</div>`).join("");
+  for(let i=0;i<42;i++){
+    let date,other=false;
+    if(i<start){date=new Date(y,m-1,prevCount-start+i+1);other=true;}
+    else if(i>=start+count){date=new Date(y,m+1,i-start-count+1);other=true;}
+    else date=new Date(y,m,i-start+1);
+    const key=dateString(date);
+    const has=data.plannedTasks.some(t=>t.date===key);
+    html+=`<button class="day-cell ${other?"other":""} ${key===selectedDate?"selected":""} ${key===today()?"today":""} ${has?"has-task":""}" onclick="selectCalendarDate('${key}')">${date.getDate()}</button>`;
+  }
+  document.getElementById("calendar").innerHTML=html;
+  document.getElementById("selectedDateTitle").textContent="مهام "+formatDate(selectedDate);
+}
+function renderPlannedList(){
+  const tasks=dayTasks(selectedDate);
+  document.getElementById("plannedList").innerHTML=tasks.length?
+    tasks.map(t=>taskHTML(t,"planned")).join(""):'<div class="empty">لا توجد مهام في هذا اليوم.</div>';
+}
+
+/* =========================
+   الأهداف الكبرى
+========================= */
+function addGoal(){
+  const name=document.getElementById("goalName").value.trim();
+  const start=document.getElementById("goalStart").value;
+  const end=document.getElementById("goalEnd").value;
+  if(!name||!start||!end)return alert("أدخل اسم الهدف وتاريخ البداية والنهاية.");
+  if(end<start)return alert("تاريخ النهاية يجب أن يكون بعد البداية.");
+  data.goals.push({id:uid(),name,start,end,createdAt:new Date().toISOString()});
+  document.getElementById("goalName").value="";
+  save();renderAll();
+}
+function deleteGoal(id){
+  if(!confirm("حذف الهدف؟ المهام المرتبطة به لن تُحذف."))return;
+  data.goals=data.goals.filter(g=>g.id!==id);
+  save();renderAll();
+}
+function renderGoals(){
+  const el=document.getElementById("goalList");
+  if(!data.goals.length){el.innerHTML='<div class="empty">لم تضف أهدافًا بعد.</div>';return;}
+  el.innerHTML=data.goals.map(g=>{
+    const related=data.plannedTasks.filter(t=>t.goalId===g.id);
+    const done=related.filter(t=>t.done).length;
+    const pct=related.length?Math.round(done/related.length*100):0;
+    return `<div class="item">
+      <div class="item-main">
+        <strong>${escapeHTML(g.name)}</strong>
+        <small>${formatDate(g.start)} — ${formatDate(g.end)}</small>
+        <div class="progress"><div style="width:${pct}%"></div></div>
+        <small>${done} من ${related.length} مهمة مرتبطة · ${pct}%</small>
+      </div>
+      <button class="icon-btn" onclick="deleteGoal('${g.id}')">×</button>
+    </div>`;
+  }).join("");
+}
+function linkTaskToGoal(id){
+  const task=data.plannedTasks.find(t=>t.id===id);
+  if(!task)return;
+  let options='<option value="">بدون هدف</option>';
+  data.goals.forEach(g=>options+=`<option value="${g.id}" ${task.goalId===g.id?"selected":""}>${escapeHTML(g.name)}</option>`);
+  openModal(`<h3>ربط المهمة بهدف</h3><select id="goalSelect">${options}</select>
+  <div class="modal-actions"><button class="btn" onclick="saveTaskGoal('${id}')">حفظ</button></div>`);
+}
+function saveTaskGoal(id){
+  const task=data.plannedTasks.find(t=>t.id===id);
+  if(task){
+    task.goalId=document.getElementById("goalSelect").value||null;
+    save();closeModal();renderAll();
+  }
+}
+
+/* =========================
+   الملاحظات والتصنيفات
+========================= */
+function addNote(){
+  const title=document.getElementById("noteTitle").value.trim();
+  const body=document.getElementById("noteBody").value.trim();
+  const category=document.getElementById("noteCategory").value||"غير مصنف";
+  if(!title&&!body)return alert("اكتب عنوانًا أو محتوى للملاحظة.");
+  data.notes.unshift({id:uid(),title,body,category,pinned:false,createdAt:new Date().toISOString()});
+  document.getElementById("noteTitle").value="";
+  document.getElementById("noteBody").value="";
+  save();renderAll();
+}
+function editNote(id){
+  const n=data.notes.find(x=>x.id===id);
+  if(!n)return;
+  openModal(`<h3>تعديل الملاحظة</h3>
+    <input class="input" id="editNoteTitle" value="${escapeHTML(n.title)}">
+    <textarea id="editNoteBody" style="margin-top:9px">${escapeHTML(n.body)}</textarea>
+    <div class="modal-actions"><button class="btn" onclick="saveNoteEdit('${id}')">حفظ</button></div>`);
+}
+function saveNoteEdit(id){
+  const n=data.notes.find(x=>x.id===id);
+  if(!n)return;
+  n.title=document.getElementById("editNoteTitle").value.trim();
+  n.body=document.getElementById("editNoteBody").value.trim();
+  save();closeModal();renderNotes();
+}
+function deleteNote(id){
+  if(!confirm("حذف الملاحظة؟"))return;
+  data.notes=data.notes.filter(n=>n.id!==id);
+  save();renderNotes();
+}
+function togglePin(id){
+  const n=data.notes.find(x=>x.id===id);
+  if(n)n.pinned=!n.pinned;
+  save();renderNotes();
+}
+function manageCategories(){
+  let html='<h3>إدارة التصنيفات</h3>';
+  html+='<div class="form-row"><input class="input" id="newCategory" placeholder="اسم التصنيف"><button class="btn" onclick="addCategory()">إضافة</button></div>';
+  data.categories.forEach(c=>{
+    html+=`<div class="item"><div class="item-main"><strong>${escapeHTML(c)}</strong></div><button class="icon-btn" onclick="deleteCategory('${escapeHTML(c)}')">حذف</button></div>`;
+  });
+  openModal(html);
+}
+function addCategory(){
+  const name=document.getElementById("newCategory").value.trim();
+  if(!name)return;
+  if(data.categories.includes(name))return alert("التصنيف موجود بالفعل.");
+  data.categories.push(name);save();manageCategories();renderNotes();
+}
+function deleteCategory(name){
+  if(!confirm("حذف التصنيف؟ ستُنقل ملاحظاته إلى غير مصنف."))return;
+  data.categories=data.categories.filter(c=>c!==name);
+  data.notes.forEach(n=>{if(n.category===name)n.category="غير مصنف";});
+  save();manageCategories();renderNotes();
+}
+function renderNotes(){
+  const category=document.getElementById("noteFilter").value;
+  const q=document.getElementById("noteSearch").value.toLowerCase().trim();
+  const list=data.notes.filter(n=>
+    (category==="all"||n.category===category)&&
+    ((n.title||"").toLowerCase().includes(q)||(n.body||"").toLowerCase().includes(q))
+  ).sort((a,b)=>Number(b.pinned)-Number(a.pinned));
+  document.getElementById("notesList").innerHTML=list.length?list.map(n=>`
+    <div class="note-card">
+      <div class="row">
+        <strong>${escapeHTML(n.title||"بدون عنوان")}</strong>
+        <span class="badge">${escapeHTML(n.category||"غير مصنف")}</span>
+      </div>
+      <p>${escapeHTML(n.body)}</p>
+      <div class="row">
+        <div class="actions">
+          <button class="icon-btn" onclick="togglePin('${n.id}')">${n.pinned?"★":"☆"}</button>
+          <button class="icon-btn" onclick="editNote('${n.id}')">✎</button>
+          <button class="icon-btn" onclick="deleteNote('${n.id}')">×</button>
+        </div>
+        <span class="muted">${new Date(n.createdAt).toLocaleDateString("ar-EG")}</span>
+      </div>
+    </div>`).join(""):'<div class="empty">لا توجد ملاحظات مطابقة.</div>';
+}
+
+/* =========================
+   الميزانية الأسبوعية
+   الأسبوع من السبت إلى الجمعة
+========================= */
+function weekStart(dateStringValue=today()){
+  const d=parseDate(dateStringValue);
+  const day=d.getDay(); // الأحد 0، السبت 6
+  d.setDate(d.getDate()-(day===6?0:day+1));
+  return dateString(d);
+}
+function weekEnd(start){
+  const d=parseDate(start);
+  d.setDate(d.getDate()+6);
+  return dateString(d);
+}
+function currentWeek(){
+  return weekStart(today());
+}
+function weekExpenses(start){
+  const end=weekEnd(start);
+  return data.expenses.filter(e=>e.date>=start&&e.date<=end);
+}
+function weekBudget(start){
+  if(data.budgets[start]!==undefined)return Number(data.budgets[start]);
+  return start===currentWeek()?Number(data.currentBudget||0):0;
+}
+function saveBudget(){
+  const value=Number(document.getElementById("budgetInput").value);
+  if(!Number.isFinite(value)||value<0)return alert("أدخل مبلغًا صحيحًا.");
+  data.currentBudget=value;
+  data.budgets[currentWeek()]=value;
+  save();renderBudget();renderHome();
+}
+function addExpense(){
+  const name=document.getElementById("expenseName").value.trim();
+  const amount=Number(document.getElementById("expenseAmount").value);
+  const date=document.getElementById("expenseDate").value||today();
+  if(!name||!Number.isFinite(amount)||amount<=0)return alert("أدخل اسم المصروف ومبلغًا صحيحًا.");
+  data.expenses.push({id:uid(),name,amount,date,createdAt:new Date().toISOString()});
+  document.getElementById("expenseName").value="";
+  document.getElementById("expenseAmount").value="";
+  save();renderAll();
+}
+function deleteExpense(id){
+  if(!confirm("حذف المصروف؟"))return;
+  data.expenses=data.expenses.filter(e=>e.id!==id);
+  save();renderAll();
+}
+function editExpense(id){
+  const e=data.expenses.find(x=>x.id===id);
+  if(!e)return;
+  openModal(`<h3>تعديل المصروف</h3>
+  <input class="input" id="editExpenseName" value="${escapeHTML(e.name)}">
+  <input class="input" id="editExpenseAmount" type="number" value="${e.amount}" style="margin-top:9px">
+  <input class="input" id="editExpenseDate" type="date" value="${e.date}" style="margin-top:9px">
+  <div class="modal-actions"><button class="btn" onclick="saveExpenseEdit('${id}')">حفظ</button></div>`);
+}
+function saveExpenseEdit(id){
+  const e=data.expenses.find(x=>x.id===id);
+  if(!e)return;
+  const name=document.getElementById("editExpenseName").value.trim();
+  const amount=Number(document.getElementById("editExpenseAmount").value);
+  const date=document.getElementById("editExpenseDate").value;
+  if(!name||amount<=0||!date)return alert("راجع البيانات.");
+  Object.assign(e,{name,amount,date});
+  save();closeModal();renderAll();
+}
+function renderBudget(){
+  const start=currentWeek(),end=weekEnd(start);
+  const expenses=weekExpenses(start);
+  const spent=expenses.reduce((s,e)=>s+Number(e.amount),0);
+  const total=weekBudget(start);
+  const remaining=total-spent;
+  const pct=total?Math.round(spent/total*100):0;
+  document.getElementById("budgetWeek").textContent=formatDate(start)+" — "+formatDate(end);
+  document.getElementById("budgetInput").value=total||"";
+  document.getElementById("budgetTotal").textContent=money(total);
+  document.getElementById("budgetSpent").textContent=money(spent);
+  document.getElementById("budgetLeft").textContent=money(remaining);
+  document.getElementById("budgetPercent").textContent=pct+"%";
+  document.getElementById("budgetBar").style.width=Math.min(pct,100)+"%";
+  let warning="";
+  if(total>0&&pct>=100)warning='<div class="warning danger-text">تجاوزت الميزانية الأسبوعية. راجع مصروفاتك.</div>';
+  else if(total>0&&pct>=80)warning='<div class="warning">استهلكت 80% أو أكثر من ميزانيتك الأسبوعية.</div>';
+  else if(!total)warning='<div class="muted">حدد ميزانيتك الأسبوعية أولًا.</div>';
+  document.getElementById("budgetWarning").innerHTML=warning;
+  document.getElementById("expenseList").innerHTML=expenses.length?expenses.map(e=>`
+    <div class="item">
+      <div class="item-main"><strong>${escapeHTML(e.name)}</strong><small>${formatDate(e.date)}</small></div>
+      <strong class="amount">${money(e.amount)}</strong>
+      <div class="actions">
+        <button class="icon-btn" onclick="editExpense('${e.id}')">✎</button>
+        <button class="icon-btn" onclick="deleteExpense('${e.id}')">×</button>
+      </div>
+    </div>`).join(""):'<div class="empty">لا توجد مصروفات هذا الأسبوع.</div>';
+  const weeks=[...new Set([
+    ...Object.keys(data.budgets),
+    ...data.expenses.map(e=>weekStart(e.date))
+  ])].filter(w=>w!==start).sort().reverse();
+  document.getElementById("oldBudgets").innerHTML=weeks.length?weeks.map(w=>{
+    const ex=weekExpenses(w);
+    const sum=ex.reduce((s,e)=>s+Number(e.amount),0);
+    return `<div class="item"><div class="item-main"><strong>${formatDate(w)} — ${formatDate(weekEnd(w))}</strong><small>المصروف: ${money(sum)}</small></div><strong>${money(weekBudget(w))}</strong></div>`;
+  }).join(""):'<div class="empty">لا توجد أسابيع سابقة مسجلة.</div>';
+}
+
+/* =========================
+   عرض تبويب اليوم
+========================= */
+function renderDay(){
+  const date=today();
+  const record=ensureDay(date);
+  document.getElementById("dayDateLabel").textContent=formatDate(date);
+  document.getElementById("dayNote").value=record.note||"";
+  document.getElementById("dayPercent").textContent=dayStats(date).percent+"%";
+  document.getElementById("dayBar").style.width=dayStats(date).percent+"%";
+  document.getElementById("dayStatus").textContent=record.status==="saved"?"تم حفظ اليوم":"اليوم ما زال مسودة";
+  const planned=dayTasks(date);
+  document.getElementById("todayPlanned").innerHTML=planned.length?
+    planned.map(t=>taskHTML(t,"planned")).join(""):'<div class="empty">لا توجد مهام مخططة لهذا اليوم من التقويم.</div>';
+  const overdue=[
+    ...data.plannedTasks.filter(t=>t.date<date&&!t.done).map(t=>({...t,type:"planned"})),
+    ...data.personalTasks.filter(t=>t.date<date&&!t.done).map(t=>({...t,type:"personal"}))
+  ];
+  document.getElementById("overdueTasks").innerHTML=overdue.length?overdue.map(t=>
+    taskHTML(t,t.type,true)).join(""):'<div class="empty">لا توجد مهام متأخرة.</div>';
+  const personal=dayPersonal(date);
+  document.getElementById("personalList").innerHTML=personal.length?
+    personal.map(t=>taskHTML(t,"personal")).join(""):'<div class="empty">لا توجد مهام شخصية.</div>';
+  const habits=dayHabits(date);
+  document.getElementById("dayHabits").innerHTML=habits.length?habits.map(h=>`
+    <div class="item ${h.done?"done":""}">
+      <input class="check" type="checkbox" ${h.done?"checked":""} onchange="toggleHabit('${date}','${h.id}')">
+      <div class="item-main"><strong>${escapeHTML(h.name)}</strong></div>
+      <span class="badge ${h.done?"green":""}">${h.done?"تم":"لم تتم"}</span>
+    </div>`).join(""):'<div class="empty">أضف عاداتك من زر إدارة العادات.</div>';
+  const drafts=Object.values(data.days).filter(d=>d.status!=="saved"&&d.date<date).sort((a,b)=>b.date.localeCompare(a.date));
+  document.getElementById("draftList").innerHTML=drafts.length?drafts.map(d=>`
+    <div class="item"><div class="item-main"><strong>${formatDate(d.date)}</strong><small>مسودة غير محفوظة</small></div><button class="btn light small" onclick="reviewDraft('${d.date}')">مراجعة</button></div>
+  `).join(""):'<div class="empty">لا توجد مسودات سابقة.</div>';
+}
+function reviewDraft(date){
+  const d=data.days[date];
+  if(!d)return;
+  openModal(`<h3>مراجعة يوم ${formatDate(date)}</h3>
+    <p class="muted">العادات والمهام في هذا اليوم محفوظة في سجله التاريخي.</p>
+    <p>${escapeHTML(d.note||"لا توجد ملاحظات لهذا اليوم.")}</p>
+    <div class="modal-actions"><button class="btn" onclick="markDraftSaved('${date}')">اعتماد وحفظ اليوم</button></div>`);
+}
+function markDraftSaved(date){
+  data.days[date].status="saved";
+  data.days[date].savedAt=new Date().toISOString();
+  save();closeModal();renderDay();
+}
+
+/* =========================
+   الرئيسية
+========================= */
+function renderHome(){
+  const date=today();
+  const stats=dayStats(date);
+  const tasks=[...dayTasks(date),...dayPersonal(date)];
+  const habits=dayHabits(date);
+  document.getElementById("homeProgress").textContent=stats.percent+"%";
+  document.getElementById("homePercent").textContent=stats.percent+"%";
+  document.getElementById("homeBar").style.width=stats.percent+"%";
+  document.getElementById("homeTasks").textContent=tasks.length;
+  document.getElementById("homeHabits").textContent=habits.filter(h=>h.done).length+"/"+habits.length;
+  document.getElementById("homeGoals").textContent=data.goals.length;
+  document.getElementById("homeTaskList").innerHTML=tasks.length?tasks.slice(0,5).map(t=>`
+    <div class="item ${t.done?"done":""}">
+      <span class="badge ${t.done?"green":"blue"}">${t.done?"تم":"مطلوب"}</span>
+      <div class="item-main"><strong>${escapeHTML(t.text)}</strong></div>
+    </div>`).join(""):'<div class="empty">لا توجد مهام لليوم.</div>';
+  document.getElementById("homeHabitList").innerHTML=habits.length?habits.slice(0,5).map(h=>`
+    <div class="item"><span class="badge ${h.done?"green":"blue"}">${h.done?"تم":"قيد التنفيذ"}</span><div class="item-main"><strong>${escapeHTML(h.name)}</strong></div></div>
+  `).join(""):'<div class="empty">لم تضف عادات بعد.</div>';
+  const start=currentWeek();
+  const spent=weekExpenses(start).reduce((s,e)=>s+Number(e.amount),0);
+  const total=weekBudget(start);
+  document.getElementById("homeSpent").textContent=money(spent);
+  document.getElementById("homeRemaining").textContent=total?money(total-spent):"لم تحدد ميزانية";
+  document.getElementById("homeBudgetBar").style.width=(total?Math.min(spent/total*100,100):0)+"%";
+}
+
+/* =========================
+   الإعدادات والنسخ الاحتياطي
+========================= */
+function exportData(){
+  const blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement("a");
+  a.href=url;a.download="albosla-backup-"+today()+".json";
+  a.click();URL.revokeObjectURL(url);
+}
+function restoreData(){
+  const file=document.getElementById("restoreFile").files[0];
+  if(!file)return alert("اختر ملف النسخة الاحتياطية.");
+  const reader=new FileReader();
+  reader.onload=()=>{
+    try{
+      const restored=JSON.parse(reader.result);
+      if(!restored||typeof restored!=="object"||!Array.isArray(restored.plannedTasks)||!Array.isArray(restored.habits))
+        throw new Error("ملف غير صالح");
+      if(!confirm("سيتم استبدال البيانات الحالية بالنسخة المختارة. هل تريد المتابعة؟"))return;
+      data={...defaults(),...restored};
+      save();renderAll();alert("تمت استعادة النسخة الاحتياطية.");
+    }catch(e){alert("تعذر استعادة الملف. تأكد أنه نسخة احتياطية صحيحة من البوصلة.");}
+  };
+  reader.readAsText(file);
+}
+function clearData(){
+  if(!confirm("هل أنت متأكد من حذف جميع بيانات التطبيق؟"))return;
+  if(!confirm("تأكيد أخير: لا يمكن التراجع عن الحذف. هل تريد الاستمرار؟"))return;
+  data=defaults();
+  save();renderAll();alert("تم مسح البيانات.");
+}
+
+/* =========================
+   تحديث الواجهة
+========================= */
+function renderCategories(){
+  const options=data.categories.map(c=>`<option value="${escapeHTML(c)}">${escapeHTML(c)}</option>`).join("");
+  document.getElementById("noteCategory").innerHTML=options||'<option value="غير مصنف">غير مصنف</option>';
+  document.getElementById("noteFilter").innerHTML='<option value="all">كل التصنيفات</option>'+options;
+}
+function renderAll(){
+  document.getElementById("headerDate").textContent=new Date().toLocaleDateString("ar-EG",{day:"numeric",month:"short"});
+  ensureDay(today());
+  renderCategories();
+  renderHome();
+  renderDay();
+  renderCalendar();
+  renderPlannedList();
+  renderGoals();
+  renderNotes();
+  renderBudget();
+}
+document.getElementById("dayNote").addEventListener("input",saveDayNote);
+document.getElementById("expenseDate").value=today();
+renderAll();
+
+/* حفظ آمن عند مغادرة الصفحة */
+window.addEventListener("beforeunload",()=>{
+  saveDayNote();
+  save();
+});
+</script>
 </body>
 </html>
