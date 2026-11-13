@@ -3,788 +3,1007 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#2455d6">
-<title>البوصلة</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#315bd6">
+<title>يومي | التقويم والمهام</title>
 
 <style>
-:root{
---bg:#f4f6fa;
---card:#fff;
---text:#20283a;
---muted:#7b8497;
---line:#e7eaf0;
---primary:#315bd6;
---soft:#edf1ff;
---green:#16865a;
---red:#d64b58;
+:root {
+  --bg: #f4f6fa;
+  --card: #ffffff;
+  --text: #20283a;
+  --muted: #8790a2;
+  --line: #e8ebf1;
+  --primary: #315bd6;
+  --primary-soft: #edf1ff;
+  --green: #159568;
+  --red: #d64b58;
 }
-*{box-sizing:border-box}
-body{
-margin:0;
-background:var(--bg);
-color:var(--text);
-font-family:Arial,Tahoma,sans-serif;
-font-size:13px;
-line-height:1.6;
-padding-bottom:75px;
+
+* {
+  box-sizing: border-box;
 }
-button,input,textarea,select{font:inherit}
-button{cursor:pointer}
-.app{max-width:650px;margin:auto;padding:13px}
-header{
-display:flex;justify-content:space-between;
-align-items:center;margin-bottom:15px
+
+body {
+  margin: 0;
+  font-family: Arial, Tahoma, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 13px;
+  padding-bottom: 80px;
 }
-.brand{display:flex;align-items:center;gap:9px}
-.logo{
-width:36px;height:36px;border-radius:11px;
-background:var(--primary);color:white;
-display:grid;place-items:center;font-size:19px;
-font-weight:bold
+
+button, input {
+  font: inherit;
 }
-h1{font-size:17px;margin:0}
-h2{font-size:15px;margin:0}
-h3{font-size:13px;margin:0}
-.small{font-size:11px;color:var(--muted)}
-.card{
-background:var(--card);
-border:1px solid var(--line);
-border-radius:13px;padding:12px;
-margin-bottom:10px
+
+button {
+  cursor: pointer;
 }
-.row{
-display:flex;align-items:center;
-justify-content:space-between;gap:8px
+
+.app {
+  max-width: 650px;
+  margin: auto;
+  padding: 14px;
 }
-.btn{
-border:1px solid var(--line);
-background:white;color:var(--text);
-border-radius:9px;padding:7px 10px;
-font-size:12px
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 17px;
 }
-.btn.primary{
-background:var(--primary);
-color:white;border-color:var(--primary)
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 9px;
 }
-.btn.soft{
-background:var(--soft);
-color:var(--primary);border:0
+
+.logo {
+  width: 37px;
+  height: 37px;
+  border-radius: 11px;
+  background: var(--primary);
+  color: white;
+  display: grid;
+  place-items: center;
+  font-size: 19px;
+  font-weight: bold;
 }
-.btn.danger{color:var(--red)}
-input,textarea,select{
-width:100%;padding:9px;
-border:1px solid var(--line);
-background:#fafbfc;border-radius:8px;
-margin:4px 0 9px;color:var(--text)
+
+h1 {
+  font-size: 17px;
+  margin: 0;
 }
-label{font-size:11px;color:var(--muted)}
-.formgrid{
-display:grid;grid-template-columns:1fr 1fr;gap:8px
+
+h2 {
+  font-size: 15px;
+  margin: 0;
 }
-.progress{
-height:6px;background:var(--line);
-border-radius:20px;overflow:hidden
+
+h3 {
+  font-size: 13px;
+  margin: 0;
 }
-.progress div{
-height:100%;background:var(--primary);
-border-radius:20px
+
+.small {
+  color: var(--muted);
+  font-size: 11px;
 }
-.pill{
-font-size:10px;background:var(--soft);
-color:var(--primary);padding:3px 7px;
-border-radius:20px
+
+.card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 13px;
+  padding: 13px;
+  margin-bottom: 11px;
 }
-.view{display:none}
-.view.active{display:block}
-.sectionhead{
-display:flex;justify-content:space-between;
-align-items:center;margin-bottom:10px
+
+.row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
 }
-.goal-title{font-size:14px;font-weight:bold}
-.dayblock{
-background:#fafbfe;
-border:1px solid var(--line);
-border-radius:10px;padding:10px;
-margin-top:9px
+
+.btn {
+  border: 1px solid var(--line);
+  background: white;
+  color: var(--text);
+  border-radius: 9px;
+  padding: 8px 11px;
+  font-size: 12px;
 }
-.dayhead{
-display:flex;align-items:center;
-justify-content:space-between;
-margin-bottom:7px
+
+.btn.primary {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: white;
 }
-.task{
-display:flex;align-items:center;
-gap:8px;padding:8px 0;
-border-bottom:1px solid var(--line)
+
+.btn.soft {
+  background: var(--primary-soft);
+  color: var(--primary);
+  border: none;
 }
-.task:last-child{border-bottom:0}
-.task input{width:17px;height:17px;margin:0}
-.task-name{flex:1;overflow-wrap:anywhere}
-.done .task-name{
-text-decoration:line-through;color:var(--muted)
+
+.btn.danger {
+  color: var(--red);
 }
-.empty{
-text-align:center;color:var(--muted);
-padding:18px;font-size:12px
+
+.view {
+  display: none;
 }
-nav{
-position:fixed;bottom:0;left:0;right:0;
-background:white;border-top:1px solid var(--line);
-display:flex;justify-content:space-around;
-padding:7px 2px;z-index:10
+
+.view.active {
+  display: block;
 }
-nav button{
-border:0;background:none;color:var(--muted);
-font-size:10px;display:flex;flex-direction:column;
-align-items:center;gap:2px
+
+.section-title {
+  margin-bottom: 12px;
 }
-nav button b{font-size:17px}
-nav button.active{color:var(--primary)}
-.modal{
-display:none;position:fixed;inset:0;
-background:#0008;z-index:20;
-align-items:flex-end;justify-content:center;
-padding:10px
+
+input[type="text"] {
+  width: 100%;
+  padding: 11px;
+  border: 1px solid var(--line);
+  border-radius: 9px;
+  background: #fafbfc;
+  outline: none;
 }
-.modal.show{display:flex}
-.sheet{
-background:white;color:var(--text);
-width:100%;max-width:600px;
-max-height:90vh;overflow:auto;
-border-radius:16px;padding:15px
+
+input:focus {
+  border-color: var(--primary);
 }
-.sheethead{
-display:flex;justify-content:space-between;
-align-items:center;margin-bottom:12px
+
+/* التقويم */
+
+.calendar-card {
+  padding: 13px 10px;
 }
-.item{
-padding:9px 0;border-bottom:1px solid var(--line)
+
+.calendar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 15px;
 }
-.actions{display:flex;gap:5px;flex-wrap:wrap}
-@media(min-width:600px){
-.modal{align-items:center}
+
+.month-title {
+  font-size: 15px;
+  font-weight: bold;
+}
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 5px;
+  text-align: center;
+}
+
+.weekday {
+  color: var(--muted);
+  font-size: 11px;
+  padding: 7px 0;
+}
+
+.day {
+  min-height: 43px;
+  border-radius: 9px;
+  border: 1px solid transparent;
+  background: #f8f9fc;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  position: relative;
+}
+
+.day.empty {
+  background: transparent;
+}
+
+.day.selected {
+  background: var(--primary-soft);
+  border-color: var(--primary);
+  color: var(--primary);
+  font-weight: bold;
+}
+
+.day.today {
+  border-color: var(--green);
+}
+
+.day .dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--primary);
+}
+
+.day-number {
+  font-size: 12px;
+}
+
+.calendar-legend {
+  margin-top: 11px;
+  display: flex;
+  gap: 12px;
+  font-size: 10px;
+  color: var(--muted);
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.legend-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+}
+
+/* المهام */
+
+.selected-date {
+  color: var(--primary);
+  font-weight: bold;
+}
+
+.task-list {
+  margin-top: 10px;
+}
+
+.task-item {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 11px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.task-item:last-child {
+  border-bottom: none;
+}
+
+.task-item input[type="checkbox"] {
+  width: 17px;
+  height: 17px;
+  accent-color: var(--primary);
+  flex-shrink: 0;
+}
+
+.task-text {
+  flex: 1;
+  overflow-wrap: anywhere;
+}
+
+.task-item.done .task-text {
+  text-decoration: line-through;
+  color: var(--muted);
+}
+
+.task-actions {
+  display: flex;
+  gap: 5px;
+}
+
+.icon-btn {
+  border: none;
+  background: transparent;
+  color: var(--muted);
+  padding: 4px;
+  font-size: 11px;
+}
+
+.icon-btn.delete {
+  color: var(--red);
+}
+
+.add-task {
+  display: flex;
+  gap: 7px;
+  margin-top: 12px;
+}
+
+.add-task input {
+  flex: 1;
+  min-width: 0;
+}
+
+.empty {
+  text-align: center;
+  color: var(--muted);
+  padding: 18px 5px;
+  font-size: 12px;
+}
+
+.summary {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 11px;
+}
+
+.summary-box {
+  flex: 1;
+  background: #f8f9fc;
+  padding: 10px;
+  border-radius: 9px;
+}
+
+.summary-box strong {
+  display: block;
+  font-size: 18px;
+  margin-top: 4px;
+}
+
+/* التنقل السفلي */
+
+nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: white;
+  border-top: 1px solid var(--line);
+  display: flex;
+  justify-content: space-around;
+  padding: 8px 2px;
+  z-index: 10;
+}
+
+nav button {
+  border: 0;
+  background: none;
+  color: var(--muted);
+  font-size: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+}
+
+nav button b {
+  font-size: 18px;
+}
+
+nav button.active {
+  color: var(--primary);
+}
+
+@media (max-width: 360px) {
+  .day {
+    min-height: 37px;
+  }
+
+  .calendar-grid {
+    gap: 3px;
+  }
 }
 </style>
 </head>
 
 <body>
+
 <div class="app">
 
 <header>
-<div class="brand">
-<div class="logo">ب</div>
-<div>
-<h1>البوصلة</h1>
-<div class="small" id="dateLabel"></div>
-</div>
-</div>
-<button class="btn" onclick="go('settings')">الإعدادات</button>
+  <div class="brand">
+    <div class="logo">ي</div>
+    <div>
+      <h1>يومي</h1>
+      <div class="small">نظّم يومك وحقق أهدافك</div>
+    </div>
+  </div>
+  <div class="small" id="headerDate"></div>
 </header>
 
-<!-- الرئيسية -->
-<section id="home" class="view active">
+<!-- تبويب اليوم -->
 
-<div class="card" style="background:#315bd6;color:white">
-<div class="small" style="color:#dce5ff">الهدف الرئيسي</div>
-<h2 id="mainGoal" style="margin:5px 0">لا يوجد هدف</h2>
-<div class="row">
-<div>
-<strong id="mainPercent" style="font-size:23px">0%</strong>
-<div class="small" style="color:#dce5ff">نسبة الإنجاز</div>
-</div>
-<div>
-<strong id="remaining" style="font-size:23px">—</strong>
-<div class="small" style="color:#dce5ff">أيام متبقية</div>
-</div>
-</div>
-<div class="progress" style="margin:9px 0;background:#ffffff55">
-<div id="mainBar" style="background:white;width:0%"></div>
-</div>
-<div class="small" id="mainDates" style="color:#dce5ff"></div>
-</div>
+<section id="todayView" class="view active">
 
-<div class="card">
-<div class="sectionhead">
-<h2>مهام اليوم</h2>
-<button class="btn soft" onclick="go('today')">عرض الكل</button>
-</div>
-<div id="homeTasks"></div>
-</div>
+  <div class="section-title">
+    <h2>اليوم</h2>
+    <div class="small" id="todayDate"></div>
+  </div>
 
-<div class="card">
-<div class="sectionhead">
-<h2>ملخص الميزانية</h2>
-<button class="btn soft" onclick="go('budget')">التفاصيل</button>
-</div>
-<div id="homeBudget" class="small"></div>
-</div>
+  <div class="summary">
+    <div class="summary-box">
+      <div class="small">إجمالي المهام</div>
+      <strong id="totalToday">0</strong>
+    </div>
 
-</section>
+    <div class="summary-box">
+      <div class="small">مكتملة</div>
+      <strong id="completedToday">0</strong>
+    </div>
 
-<!-- يومي -->
-<section id="today" class="view">
+    <div class="summary-box">
+      <div class="small">متبقية</div>
+      <strong id="remainingToday">0</strong>
+    </div>
+  </div>
 
-<div class="sectionhead">
-<h2>يومي</h2>
-<button class="btn" onclick="manageHabits()">إدارة العادات</button>
-</div>
+  <div class="card">
+    <div class="row">
+      <h2>مهام اليوم المخططة</h2>
+      <span class="small" id="todayTaskCount">0 مهام</span>
+    </div>
 
-<div class="card">
-<h2>عادات اليوم</h2>
-<div id="habitList"></div>
-</div>
+    <div id="todayTasks" class="task-list"></div>
+  </div>
 
-<div class="card">
-<div class="sectionhead">
-<h2>المهام اليومية</h2>
-<button class="btn primary" onclick="addTask()">＋ مهمة</button>
-</div>
-<div id="todayTasks"></div>
-</div>
-
-<div class="card">
-<h2>ملاحظات اليوم</h2>
-<textarea id="todayNote" placeholder="اكتب ملاحظاتك..." oninput="saveTodayNote()"></textarea>
-</div>
+  <div class="card">
+    <div class="row">
+      <h2>الذهاب إلى التقويم</h2>
+      <button class="btn soft" onclick="showView('calendarView')">
+        فتح التقويم
+      </button>
+    </div>
+    <div class="small" style="margin-top:7px">
+      أضف مهامك من التقويم وستظهر هنا تلقائيًا في تاريخها.
+    </div>
+  </div>
 
 </section>
 
-<!-- الأهداف -->
-<section id="goals" class="view">
+<!-- تبويب التقويم -->
 
-<div class="sectionhead">
-<div>
-<h2>الأهداف</h2>
-<div class="small">أهدافك ومهامك اليومية</div>
-</div>
-<button class="btn primary" onclick="openGoal()">＋ هدف جديد</button>
-</div>
+<section id="calendarView" class="view">
 
-<div id="goalList"></div>
+  <div class="section-title">
+    <h2>التقويم والمهام</h2>
+    <div class="small">اختر يومًا لتنظيم مهامك</div>
+  </div>
 
-</section>
+  <div class="card calendar-card">
 
-<!-- الملاحظات -->
-<section id="notes" class="view">
+    <div class="calendar-header">
+      <button class="btn" onclick="changeMonth(-1)">‹</button>
 
-<div class="sectionhead">
-<h2>الملاحظات</h2>
-<button class="btn primary" onclick="openNote()">＋ ملاحظة</button>
-</div>
+      <div class="month-title" id="monthTitle"></div>
 
-<div id="notesList"></div>
+      <button class="btn" onclick="changeMonth(1)">›</button>
+    </div>
 
-</section>
+    <div class="calendar-grid" id="calendarGrid"></div>
 
-<!-- الميزانية -->
-<section id="budget" class="view">
+    <div class="calendar-legend">
+      <div class="legend-item">
+        <span class="legend-dot" style="background:var(--green)"></span>
+        اليوم الحالي
+      </div>
 
-<div class="sectionhead">
-<h2>الميزانية</h2>
-<button class="btn primary" onclick="addExpense()">＋ مصروف</button>
-</div>
+      <div class="legend-item">
+        <span class="legend-dot" style="background:var(--primary)"></span>
+        يوم به مهام
+      </div>
+    </div>
 
-<div class="card">
-<div class="row">
-<div>
-<div class="small">ميزانية الأسبوع</div>
-<strong id="budgetLimit">غير محددة</strong>
-</div>
-<button class="btn" onclick="setBudget()">تعديل</button>
-</div>
-<hr>
-<div class="row">
-<span class="small">المصروف</span>
-<strong id="spent">0 ج.م</strong>
-</div>
-<div class="progress" style="margin:8px 0">
-<div id="budgetBar"></div>
-</div>
-<div class="small" id="budgetInfo"></div>
-</div>
+  </div>
 
-<div class="card">
-<h2>المصروفات</h2>
-<div id="expenseList"></div>
-</div>
+  <div class="card">
 
-</section>
+    <div class="row">
+      <div>
+        <h2>مهام اليوم المحدد</h2>
+        <div class="small selected-date" id="selectedDateLabel"></div>
+      </div>
 
-<!-- الإعدادات -->
-<section id="settings" class="view">
+      <span class="small" id="selectedCount">0 مهام</span>
+    </div>
 
-<h2 style="margin-bottom:10px">الإعدادات</h2>
+    <div class="add-task">
+      <input
+        type="text"
+        id="newTaskInput"
+        placeholder="اكتب المهمة هنا..."
+        maxlength="200"
+        onkeydown="if(event.key==='Enter') addTask()"
+      >
 
-<div class="card">
-<h3>النسخ الاحتياطي</h3>
-<div class="actions" style="margin-top:10px">
-<button class="btn" onclick="backup()">تصدير نسخة</button>
-<button class="btn" onclick="$('restoreFile').click()">استعادة نسخة</button>
-<input id="restoreFile" type="file" accept=".json" hidden onchange="restore(event)">
-</div>
-</div>
+      <button class="btn primary" onclick="addTask()">
+        إضافة +
+      </button>
+    </div>
 
-<div class="card">
-<h3>حول التطبيق</h3>
-<p class="small">البوصلة - نظام إدارة الأهداف والمهام الشخصية.</p>
-<p class="small">يتم تخزين بيانات هذا الإصدار محليًا على الجهاز.</p>
-</div>
+    <div class="task-list" id="calendarTasks"></div>
+
+  </div>
 
 </section>
 
 </div>
 
 <nav>
-<button class="active" data-view="home" onclick="go('home')"><b>⌂</b>الرئيسية</button>
-<button data-view="today" onclick="go('today')"><b>✓</b>يومي</button>
-<button data-view="goals" onclick="go('goals')"><b>◎</b>الأهداف</button>
-<button data-view="notes" onclick="go('notes')"><b>▤</b>ملاحظات</button>
-<button data-view="budget" onclick="go('budget')"><b>ج</b>الميزانية</button>
+  <button class="active" data-view="todayView" onclick="showView('todayView')">
+    <b>✓</b>
+    اليوم
+  </button>
+
+  <button data-view="calendarView" onclick="showView('calendarView')">
+    <b>▦</b>
+    التقويم
+  </button>
 </nav>
 
-<div class="modal" id="modal" onclick="if(event.target===this)closeModal()">
-<div class="sheet">
-<div class="sheethead">
-<h2 id="modalTitle">إضافة</h2>
-<button class="btn" onclick="closeModal()">إغلاق</button>
-</div>
-<div id="modalBody"></div>
-</div>
-</div>
-
 <script>
-const KEY='albosla_v2';
-const $=id=>document.getElementById(id);
-const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,7);
 
-const today=()=>{
-const d=new Date();
-return d.getFullYear()+'-'+
-String(d.getMonth()+1).padStart(2,'0')+'-'+
-String(d.getDate()).padStart(2,'0');
-};
+/* =================================
+   1. البيانات والتخزين
+================================= */
 
-const dateObj=s=>new Date(s+'T12:00:00');
-const addDays=(s,n)=>{
-let d=dateObj(s);
-d.setDate(d.getDate()+n);
-return d.getFullYear()+'-'+
-String(d.getMonth()+1).padStart(2,'0')+'-'+
-String(d.getDate()).padStart(2,'0');
-};
-const diff=(a,b)=>Math.round((dateObj(b)-dateObj(a))/86400000);
-const fmt=s=>s?dateObj(s).toLocaleDateString('ar-EG',{day:'numeric',month:'short',year:'numeric'}):'—';
-const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const STORAGE_KEY = "yomi_planned_tasks_v1";
 
-function emptyState(){
-return {
-goals:[],tasks:[],habits:[],
-days:{},notes:[],expenses:[],
-budget:0
-};
+let plannedTasks = [];
+
+try {
+  const saved = localStorage.getItem(STORAGE_KEY);
+  const parsed = saved ? JSON.parse(saved) : [];
+
+  if (Array.isArray(parsed)) {
+    plannedTasks = parsed.filter(task =>
+      task &&
+      typeof task.id === "string" &&
+      typeof task.date === "string" &&
+      typeof task.text === "string" &&
+      typeof task.done === "boolean"
+    );
+  }
+} catch (error) {
+  console.error("تعذر تحميل المهام:", error);
 }
 
-let state;
-try{
-state=JSON.parse(localStorage.getItem(KEY)||'null');
-}catch(e){state=null}
-if(!state||typeof state!=='object')state=emptyState();
-for(const [k,v] of Object.entries(emptyState())){
-if(state[k]===undefined)state[k]=v;
+function saveTasks() {
+  localStorage.setItem(
+    STORAGE_KEY,
+    JSON.stringify(plannedTasks)
+  );
 }
-function save(){
-localStorage.setItem(KEY,JSON.stringify(state));
+
+/* =================================
+   2. التاريخ
+================================= */
+
+function localDate(date = new Date()) {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+
+  return `${year}-${month}-${day}`;
 }
-function openModal(title,html){
-$('modalTitle').textContent=title;
-$('modalBody').innerHTML=html;
-$('modal').classList.add('show');
+
+function formatDate(dateString) {
+  const date = new Date(dateString + "T12:00:00");
+
+  return date.toLocaleDateString("ar-EG", {
+    weekday: "long",
+    day: "numeric",
+    month: "long",
+    year: "numeric"
+  });
 }
-function closeModal(){
-$('modal').classList.remove('show');
+
+function escapeHTML(text) {
+  return String(text).replace(/[&<>"']/g, char => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#039;"
+  })[char]);
 }
-function go(id){
-document.querySelectorAll('.view').forEach(v=>v.classList.toggle('active',v.id===id));
-document.querySelectorAll('nav button').forEach(b=>b.classList.toggle('active',b.dataset.view===id));
+
+/* =================================
+   3. حالة التقويم
+================================= */
+
+const now = new Date();
+
+let calendarYear = now.getFullYear();
+let calendarMonth = now.getMonth();
+
+let selectedDate = localDate();
+
+const weekdays = [
+  "الأحد",
+  "الإثنين",
+  "الثلاثاء",
+  "الأربعاء",
+  "الخميس",
+  "الجمعة",
+  "السبت"
+];
+
+/* =================================
+   4. عرض التقويم
+================================= */
+
+function renderCalendar() {
+
+  const firstDay = new Date(
+    calendarYear,
+    calendarMonth,
+    1
+  ).getDay();
+
+  const daysInMonth = new Date(
+    calendarYear,
+    calendarMonth + 1,
+    0
+  ).getDate();
+
+  const monthName = new Date(
+    calendarYear,
+    calendarMonth,
+    1
+  ).toLocaleDateString("ar-EG", {
+    month: "long",
+    year: "numeric"
+  });
+
+  document.getElementById("monthTitle").textContent = monthName;
+
+  let html = "";
+
+  weekdays.forEach(day => {
+    html += `<div class="weekday">${day.slice(0,2)}</div>`;
+  });
+
+  for (let i = 0; i < firstDay; i++) {
+    html += `<div class="day empty"></div>`;
+  }
+
+  for (let day = 1; day <= daysInMonth; day++) {
+
+    const date =
+      `${calendarYear}-` +
+      `${String(calendarMonth + 1).padStart(2,"0")}-` +
+      `${String(day).padStart(2,"0")}`;
+
+    const isToday = date === localDate();
+    const isSelected = date === selectedDate;
+
+    const hasTasks = plannedTasks.some(task =>
+      task.date === date
+    );
+
+    const classes = [
+      "day",
+      isToday ? "today" : "",
+      isSelected ? "selected" : ""
+    ].filter(Boolean).join(" ");
+
+    html += `
+      <button
+        class="${classes}"
+        onclick="selectDate('${date}')"
+        aria-label="${date}"
+      >
+        <span class="day-number">${day}</span>
+        ${hasTasks ? '<span class="dot"></span>' : ''}
+      </button>
+    `;
+  }
+
+  document.getElementById("calendarGrid").innerHTML = html;
+}
+
+/* =================================
+   5. التنقل بين الشهور
+================================= */
+
+function changeMonth(direction) {
+
+  calendarMonth += direction;
+
+  if (calendarMonth > 11) {
+    calendarMonth = 0;
+    calendarYear++;
+  }
+
+  if (calendarMonth < 0) {
+    calendarMonth = 11;
+    calendarYear--;
+  }
+
+  renderCalendar();
+}
+
+/* =================================
+   6. اختيار يوم
+================================= */
+
+function selectDate(date) {
+
+  selectedDate = date;
+
+  renderCalendar();
+  renderCalendarTasks();
+}
+
+/* =================================
+   7. إضافة مهمة
+================================= */
+
+function addTask() {
+
+  const input = document.getElementById("newTaskInput");
+
+  const text = input.value.trim();
+
+  if (!text) {
+    input.focus();
+    return;
+  }
+
+  const task = {
+    id: crypto.randomUUID
+      ? crypto.randomUUID()
+      : Date.now().toString(36) + Math.random().toString(36).slice(2),
+
+    date: selectedDate,
+
+    text: text,
+
+    done: false
+  };
+
+  plannedTasks.push(task);
+
+  saveTasks();
+
+  input.value = "";
+
+  renderAll();
+
+  input.focus();
+}
+
+/* =================================
+   8. تعديل مهمة
+================================= */
+
+function editTask(id) {
+
+  const task = plannedTasks.find(item =>
+    item.id === id
+  );
+
+  if (!task) return;
+
+  const newText = prompt(
+    "تعديل المهمة:",
+    task.text
+  );
+
+  if (newText === null) return;
+
+  const text = newText.trim();
+
+  if (!text) {
+    alert("لا يمكن ترك اسم المهمة فارغًا.");
+    return;
+  }
+
+  task.text = text;
+
+  saveTasks();
+
+  renderAll();
+}
+
+/* =================================
+   9. حذف مهمة
+================================= */
+
+function deleteTask(id) {
+
+  const confirmed = confirm(
+    "هل تريد حذف هذه المهمة نهائيًا؟"
+  );
+
+  if (!confirmed) return;
+
+  plannedTasks = plannedTasks.filter(task =>
+    task.id !== id
+  );
+
+  saveTasks();
+
+  renderAll();
+}
+
+/* =================================
+   10. تغيير حالة المهمة
+================================= */
+
+function toggleTask(id, checked) {
+
+  const task = plannedTasks.find(item =>
+    item.id === id
+  );
+
+  if (!task) return;
+
+  task.done = checked;
+
+  saveTasks();
+
+  renderAll();
+}
+
+/* =================================
+   11. قالب المهمة
+================================= */
+
+function taskHTML(task) {
+
+  return `
+    <div class="task-item ${task.done ? "done" : ""}">
+
+      <input
+        type="checkbox"
+        ${task.done ? "checked" : ""}
+        onchange="toggleTask('${task.id}', this.checked)"
+        aria-label="إنجاز المهمة"
+      >
+
+      <div class="task-text">
+        ${escapeHTML(task.text)}
+      </div>
+
+      <div class="task-actions">
+
+        <button
+          class="icon-btn"
+          onclick="editTask('${task.id}')"
+          title="تعديل"
+        >
+          تعديل
+        </button>
+
+        <button
+          class="icon-btn delete"
+          onclick="deleteTask('${task.id}')"
+          title="حذف"
+        >
+          حذف
+        </button>
+
+      </div>
+
+    </div>
+  `;
+}
+
+/* =================================
+   12. مهام اليوم في التقويم
+================================= */
+
+function renderCalendarTasks() {
+
+  const tasks = plannedTasks.filter(task =>
+    task.date === selectedDate
+  );
+
+  document.getElementById("selectedDateLabel").textContent =
+    formatDate(selectedDate);
+
+  document.getElementById("selectedCount").textContent =
+    `${tasks.length} مهام`;
+
+  document.getElementById("calendarTasks").innerHTML =
+    tasks.length
+      ? tasks.map(taskHTML).join("")
+      : `<div class="empty">لا توجد مهام لهذا اليوم. أضف أول مهمة.</div>`;
+}
+
+/* =================================
+   13. مهام اليوم الحالي
+================================= */
+
+function renderTodayTasks() {
+
+  const today = localDate();
+
+  const tasks = plannedTasks.filter(task =>
+    task.date === today
+  );
+
+  const completed = tasks.filter(task =>
+    task.done
+  ).length;
+
+  const remaining = tasks.length - completed;
+
+  document.getElementById("todayDate").textContent =
+    formatDate(today);
+
+  document.getElementById("totalToday").textContent =
+    tasks.length;
+
+  document.getElementById("completedToday").textContent =
+    completed;
+
+  document.getElementById("remainingToday").textContent =
+    remaining;
+
+  document.getElementById("todayTaskCount").textContent =
+    `${tasks.length} مهام`;
+
+  document.getElementById("todayTasks").innerHTML =
+    tasks.length
+      ? tasks.map(taskHTML).join("")
+      : `
+        <div class="empty">
+          لا توجد مهام مخططة لهذا اليوم.
+          <br><br>
+          اذهب إلى التقويم وأضف مهامك.
+        </div>
+      `;
+}
+
+/* =================================
+   14. التنقل بين التبويبات
+================================= */
+
+function showView(viewId) {
+
+  document.querySelectorAll(".view").forEach(view => {
+    view.classList.toggle(
+      "active",
+      view.id === viewId
+    );
+  });
+
+  document.querySelectorAll("nav button").forEach(button => {
+    button.classList.toggle(
+      "active",
+      button.dataset.view === viewId
+    );
+  });
+
+  renderAll();
+}
+
+/* =================================
+   15. تحديث الواجهة
+================================= */
+
+function renderAll() {
+
+  renderCalendar();
+
+  renderCalendarTasks();
+
+  renderTodayTasks();
+}
+
+/* =================================
+   16. بدء التطبيق
+================================= */
+
+document.getElementById("headerDate").textContent =
+  new Date().toLocaleDateString("ar-EG", {
+    day: "numeric",
+    month: "short"
+  });
+
 renderAll();
-}
 
-/* المهام */
-function tasksOn(d){
-return state.tasks.filter(t=>t.date===d&&!t.cancelled);
-}
-function toggleTask(id,checked){
-let t=state.tasks.find(x=>x.id===id);
-if(!t)return;
-t.done=checked;
-t.completedAt=checked?today():null;
-save();
-renderAll();
-}
-function taskHTML(t){
-let g=state.goals.find(x=>x.id===t.goalId);
-return `<div class="task ${t.done?'done':''}">
-<input type="checkbox" ${t.done?'checked':''} onchange="toggleTask('${t.id}',this.checked)">
-<div class="task-name">
-<div>${esc(t.title)}</div>
-<div class="small">${g?'الهدف: '+esc(g.title):'مهمة شخصية'}${t.late?' • متأخرة':''}</div>
-</div>
-<button class="btn" onclick="editTask('${t.id}')">تعديل</button>
-</div>`;
-}
-function addTask(){
-openModal('إضافة مهمة',`
-<label>اسم المهمة</label>
-<input id="taskTitle">
-<label>التاريخ</label>
-<input id="taskDate" type="date" value="${today()}">
-<button class="btn primary" onclick="saveTask()">حفظ</button>
-`);
-}
-function saveTask(){
-let title=$('taskTitle').value.trim();
-let date=$('taskDate').value;
-if(!title||!date)return;
-state.tasks.push({id:uid(),title,date,done:false,goalId:null,cancelled:false});
-save();closeModal();renderAll();
-}
-function editTask(id){
-let t=state.tasks.find(x=>x.id===id);
-if(!t)return;
-openModal('تعديل المهمة',`
-<label>اسم المهمة</label>
-<input id="editTitle" value="${esc(t.title)}">
-<label>التاريخ</label>
-<input id="editDate" type="date" value="${t.date}">
-<div class="actions">
-<button class="btn primary" onclick="saveTaskEdit('${id}')">حفظ</button>
-<button class="btn danger" onclick="deleteTask('${id}')">حذف</button>
-</div>
-`);
-}
-function saveTaskEdit(id){
-let t=state.tasks.find(x=>x.id===id);
-let title=$('editTitle').value.trim();
-let date=$('editDate').value;
-if(!title||!date)return;
-t.title=title;t.date=date;
-save();closeModal();renderAll();
-}
-function deleteTask(id){
-if(!confirm('حذف المهمة؟'))return;
-state.tasks=state.tasks.filter(t=>t.id!==id);
-save();closeModal();renderAll();
-}
-
-/* الأهداف: يوم البداية والنهاية محسوبان */
-function duration(g){
-return diff(g.start,g.end)+1;
-}
-function goalTasks(id){
-return state.tasks.filter(t=>t.goalId===id&&!t.cancelled);
-}
-function goalPercent(g){
-let ts=goalTasks(g.id);
-return ts.length?Math.round(ts.filter(t=>t.done).length/ts.length*100):0;
-}
-function openGoal(g=null){
-openModal(g?'تعديل الهدف':'هدف جديد',`
-<label>اسم الهدف الكبير</label>
-<input id="goalTitle" value="${esc(g?.title||'')}" placeholder="اكتب اسم الهدف">
-<div class="formgrid">
-<div>
-<label>تاريخ البداية</label>
-<input id="goalStart" type="date" value="${g?.start||today()}">
-</div>
-<div>
-<label>تاريخ النهاية</label>
-<input id="goalEnd" type="date" value="${g?.end||today()}">
-</div>
-</div>
-<div class="small">مثال: من 13 إلى 16 = 4 أيام عمل، ويشمل يوم النهاية.</div>
-<br>
-<button class="btn primary" onclick="saveGoal('${g?.id||''}')">حفظ الهدف</button>
-`);
-}
-function saveGoal(id){
-let title=$('goalTitle').value.trim();
-let start=$('goalStart').value;
-let end=$('goalEnd').value;
-if(!title||!start||!end||end<start){
-alert('راجع اسم الهدف وتواريخ البداية والنهاية');
-return;
-}
-let g={id:id||uid(),title,start,end};
-if(id){
-let old=state.goals.find(x=>x.id===id);
-Object.assign(old,g);
-}else{
-state.goals.push(g);
-}
-save();closeModal();renderAll();
-}
-function openGoalDetail(id){
-let g=state.goals.find(x=>x.id===id);
-if(!g)return;
-let html=`
-<div class="small">${fmt(g.start)} — ${fmt(g.end)} • ${duration(g)} أيام</div>
-<div style="margin:9px 0">
-<div class="progress"><div style="width:${goalPercent(g)}%"></div></div>
-<div class="small" style="margin-top:4px">${goalPercent(g)}% إنجاز</div>
-</div>`;
-for(let i=0;i<duration(g);i++){
-let date=addDays(g.start,i);
-let ts=goalTasks(id).filter(t=>t.date===date);
-html+=`
-<div class="dayblock">
-<div class="dayhead">
-<strong>اليوم ${i+1} - ${fmt(date)}</strong>
-<button class="btn soft" onclick="addGoalTask('${id}','${date}')">＋ مهمة</button>
-</div>
-${ts.length?ts.map(t=>taskHTML(t)).join(''):'<div class="small">لا توجد مهام لهذا اليوم.</div>'}
-</div>`;
-}
-html+=`<br><button class="btn primary" onclick="addGoalTask('${id}','')">إضافة مهمة بتاريخ آخر</button>`;
-openModal(g.title,html);
-}
-function addGoalTask(id,date){
-let g=state.goals.find(x=>x.id===id);
-openModal('إضافة مهمة للهدف',`
-<label>اسم المهمة</label>
-<input id="goalTaskTitle" placeholder="اكتب المهمة">
-<label>تاريخ تنفيذ المهمة</label>
-<input id="goalTaskDate" type="date" min="${g.start}" max="${g.end}" value="${date||g.start}">
-<div class="small">ستظهر المهمة تلقائيًا في «يومي» في التاريخ المحدد.</div>
-<br>
-<button class="btn primary" onclick="saveGoalTask('${id}')">إضافة</button>
-`);
-}
-function saveGoalTask(id){
-let g=state.goals.find(x=>x.id===id);
-let title=$('goalTaskTitle').value.trim();
-let date=$('goalTaskDate').value;
-if(!title||!date)return;
-if(date<g.start||date>g.end){
-alert('تاريخ المهمة يجب أن يكون داخل مدة الهدف');
-return;
-}
-state.tasks.push({
-id:uid(),title,date,goalId:id,
-done:false,cancelled:false
+/* تحديث التاريخ تلقائيًا عند بقاء التطبيق مفتوحًا */
+document.addEventListener("visibilitychange", () => {
+  if (!document.hidden) {
+    renderAll();
+  }
 });
-save();
-openGoalDetail(id);
-renderAll();
-}
-function deleteGoal(id){
-if(!confirm('حذف الهدف؟ ستظل المهام الموجودة في يومي كمهمات شخصية.'))return;
-state.goals=state.goals.filter(g=>g.id!==id);
-state.tasks.forEach(t=>{if(t.goalId===id)t.goalId=null});
-save();renderAll();
-}
-function renderGoals(){
-$('goalList').innerHTML=state.goals.length?
-state.goals.map(g=>{
-let ts=goalTasks(g.id);
-let p=goalPercent(g);
-return `
-<div class="card">
-<div class="row">
-<div class="goal-title">${esc(g.title)}</div>
-<span class="pill">${p}%</span>
-</div>
-<div class="small" style="margin:5px 0 8px">
-${fmt(g.start)} — ${fmt(g.end)} • ${duration(g)} أيام
-</div>
-<div class="progress"><div style="width:${p}%"></div></div>
-<div class="row" style="margin-top:9px">
-<span class="small">${ts.filter(t=>t.done).length} / ${ts.length} مهمة مكتملة</span>
-<div class="actions">
-<button class="btn soft" onclick="openGoalDetail('${g.id}')">فتح</button>
-<button class="btn" onclick="openGoal(state.goals.find(x=>x.id==='${g.id}'))">تعديل</button>
-<button class="btn danger" onclick="deleteGoal('${g.id}')">حذف</button>
-</div>
-</div>
-</div>`;
-}).join(''):
-'<div class="empty">لا توجد أهداف. أضف هدفك الأول.</div>';
-}
 
-/* العادات */
-function toggleHabit(id,v){
-let d=state.days[today()]||{done:[],note:''};
-d.done=v?[...new Set([...d.done,id])]:(d.done||[]).filter(x=>x!==id);
-state.days[today()]=d;save();renderAll();
-}
-function manageHabits(){
-openModal('إدارة العادات',`
-${state.habits.map(h=>`
-<div class="item row">
-<span>${esc(h.name)}</span>
-<button class="btn danger" onclick="deleteHabit('${h.id}')">حذف</button>
-</div>`).join('')}
-<label>عادة جديدة</label>
-<input id="newHabit" placeholder="اسم العادة">
-<button class="btn primary" onclick="saveHabit()">إضافة</button>
-`);
-}
-function saveHabit(){
-let n=$('newHabit').value.trim();
-if(!n)return;
-state.habits.push({id:uid(),name:n});
-save();manageHabits();renderAll();
-}
-function deleteHabit(id){
-state.habits=state.habits.filter(h=>h.id!==id);
-save();manageHabits();renderAll();
-}
-function saveTodayNote(){
-let d=state.days[today()]||{done:[],note:''};
-d.note=$('todayNote').value;
-state.days[today()]=d;save();
-}
-
-/* الملاحظات */
-function openNote(){
-openModal('ملاحظة جديدة',`
-<label>العنوان</label>
-<input id="noteTitle">
-<label>التصنيف</label>
-<select id="noteCategory">
-<option>شغل</option><option>حياتي</option><option>أفكار</option>
-</select>
-<label>المحتوى</label>
-<textarea id="noteBody"></textarea>
-<button class="btn primary" onclick="saveNote()">حفظ</button>
-`);
-}
-function saveNote(){
-let title=$('noteTitle').value.trim();
-let body=$('noteBody').value;
-if(!title&&!body)return;
-state.notes.push({id:uid(),title,body,date:today()});
-save();closeModal();renderAll();
-}
-function renderNotes(){
-$('notesList').innerHTML=state.notes.length?
-state.notes.map(n=>`
-<div class="card">
-<strong>${esc(n.title)}</strong>
-<div class="small">${esc(n.date)}</div>
-<p>${esc(n.body)}</p>
-</div>`).join(''):
-'<div class="empty">لا توجد ملاحظات.</div>';
-}
-
-/* الميزانية */
-function setBudget(){
-openModal('الميزانية الأسبوعية',`
-<label>المبلغ بالجنيه</label>
-<input id="budgetInput" type="number" min="0" value="${state.budget||''}">
-<button class="btn primary" onclick="saveBudget()">حفظ</button>
-`);
-}
-function saveBudget(){
-let n=Number($('budgetInput').value);
-if(n<=0)return;
-state.budget=n;save();closeModal();renderAll();
-}
-function addExpense(){
-openModal('إضافة مصروف',`
-<label>وصف المصروف</label>
-<input id="expenseTitle">
-<label>المبلغ</label>
-<input id="expenseAmount" type="number" min="0">
-<button class="btn primary" onclick="saveExpense()">حفظ</button>
-`);
-}
-function saveExpense(){
-let title=$('expenseTitle').value.trim();
-let amount=Number($('expenseAmount').value);
-if(!title||amount<=0)return;
-state.expenses.push({id:uid(),title,amount,date:today()});
-save();closeModal();renderAll();
-}
-function renderBudget(){
-let spent=state.expenses.reduce((s,e)=>s+Number(e.amount),0);
-let p=state.budget?Math.round(spent/state.budget*100):0;
-$('budgetLimit').textContent=state.budget?state.budget+' ج.م':'غير محددة';
-$('spent').textContent=spent+' ج.م';
-$('budgetBar').style.width=Math.min(p,100)+'%';
-$('budgetInfo').textContent=state.budget?
-p+'% مستخدم - متبقي '+Math.max(0,state.budget-spent)+' ج.م':'حدد ميزانيتك أولًا.';
-$('expenseList').innerHTML=state.expenses.map(e=>`
-<div class="item row">
-<span>${esc(e.title)}</span>
-<strong>${e.amount} ج.م</strong>
-</div>`).join('')||'<div class="empty">لا توجد مصروفات.</div>';
-}
-
-/* النسخ الاحتياطي */
-function backup(){
-let blob=new Blob([JSON.stringify(state,null,2)],{type:'application/json'});
-let a=document.createElement('a');
-a.href=URL.createObjectURL(blob);
-a.download='albosla-backup.json';
-a.click();
-URL.revokeObjectURL(a.href);
-}
-function restore(e){
-let file=e.target.files[0];
-if(!file)return;
-let r=new FileReader();
-r.onload=()=>{
-try{
-let d=JSON.parse(r.result);
-if(!d||!Array.isArray(d.goals)||!Array.isArray(d.tasks))throw Error();
-if(!confirm('سيتم استبدال البيانات الحالية. هل تريد المتابعة؟'))return;
-state={...emptyState(),...d};
-save();renderAll();alert('تمت الاستعادة');
-}catch(err){alert('ملف النسخة غير صالح')}
-};
-r.readAsText(file);
-}
-
-/* عرض البيانات */
-function renderHome(){
-let g=state.goals[0];
-$('mainGoal').textContent=g?g.title:'لا يوجد هدف';
-$('mainPercent').textContent=g?goalPercent(g)+'%':'0%';
-$('mainBar').style.width=(g?goalPercent(g):0)+'%';
-$('remaining').textContent=g?Math.max(0,diff(today(),g.end)):'—';
-$('mainDates').textContent=g?fmt(g.start)+' — '+fmt(g.end):'أضف هدفك الأول';
-let ts=tasksOn(today());
-$('homeTasks').innerHTML=ts.length?
-ts.map(taskHTML).join(''):
-'<div class="empty">لا توجد مهام اليوم.</div>';
-let spent=state.expenses.reduce((s,e)=>s+Number(e.amount),0);
-$('homeBudget').textContent=state.budget?
-spent+' من '+state.budget+' ج.م':'لم تحدد ميزانية بعد.';
-}
-function renderToday(){
-let d=state.days[today()]||{done:[],note:''};
-$('habitList').innerHTML=state.habits.length?
-state.habits.map(h=>`
-<div class="task">
-<input type="checkbox" ${d.done.includes(h.id)?'checked':''} onchange="toggleHabit('${h.id}',this.checked)">
-<span>${esc(h.name)}</span>
-</div>`).join(''):
-'<div class="empty">لا توجد عادات بعد.</div>';
-$('todayTasks').innerHTML=tasksOn(today()).length?
-tasksOn(today()).map(taskHTML).join(''):
-'<div class="empty">لا توجد مهام اليوم.</div>';
-$('todayNote').value=d.note||'';
-}
-function renderAll(){
-$('dateLabel').textContent=new Date().toLocaleDateString('ar-EG',{weekday:'long',day:'numeric',month:'long'});
-renderHome();
-renderToday();
-renderGoals();
-renderNotes();
-renderBudget();
-}
-renderAll();
 </script>
+
 </body>
 </html>
