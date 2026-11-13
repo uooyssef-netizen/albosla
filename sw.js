@@ -1,4 +1,4 @@
-const CACHE_NAME = 'scaledive-v3'; // رقم جديد
+const CACHE_NAME = 'scaledive-v4'; // رقم جديد
 const ASSETS = [
   './',
   './index.html',
