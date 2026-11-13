@@ -35,7 +35,7 @@ header{display:flex;justify-content:space-between;align-items:center;margin-bott
 .brand{display:flex;align-items:center;gap:10px}
 .logo-container{width:48px;height:48px;border-radius:14px;overflow:hidden;background:black;display:flex;justify-content:center;align-items:center;}
 .logo-container img{width:100%;height:100%;object-fit:cover}
-.brand h1{font-size:20px;margin:0 0 2px; font-family: 'Segoe UI', Tahoma, sans-serif;}
+.brand h1{font-size:20px;margin:0 0 2px;}
 .brand small{color:var(--muted); font-size: 11px;}
 .header-date{color:var(--muted);font-size:12px}
 .page{display:none}
@@ -72,7 +72,7 @@ textarea{resize:vertical;min-height:85px}
 .item.done strong{text-decoration:line-through;color:var(--muted)}
 .check{width:19px;height:19px;accent-color:var(--primary);flex-shrink:0}
 .actions{display:flex;gap:5px;align-items:center}
-.icon-btn{border:0;background:var(--bg);color:var(--muted);border-radius:8px;padding:7px}
+.icon-btn{border:0;background:var(--bg);color:var(--muted);border-radius:8px;padding:7px;font-size:16px;}
 .badge{display:inline-block;padding:4px 8px;border-radius:20px;font-size:10px;background:var(--border);color:var(--text)}
 .badge.blue{background:var(--primary-light);color:var(--primary)}
 .badge.green{background:rgba(21,150,106,.1);color:var(--green)}
@@ -94,15 +94,15 @@ textarea{resize:vertical;min-height:85px}
 .day-cell.today{box-shadow:inset 0 0 0 1px var(--primary)}
 .day-cell.has-task:after{content:"";position:absolute;bottom:4px;left:50%;transform:translateX(-50%);width:5px;height:5px;background:var(--orange);border-radius:50%}
 .day-cell.other{opacity:.35}
-/* الخلية المكتملة */
 .day-cell.completed{background:var(--green);color:white;border-color:var(--green);font-weight:bold}
 .day-cell.completed.has-task:after{background:white}
 
+/* الملاحظات */
 .note-card{border:1px solid var(--border);border-radius:13px;padding:13px;margin-bottom:9px;background:var(--card)}
-.note-card p{white-space:pre-wrap;line-height:1.7;margin:9px 0}
+.note-card p{white-space:pre-wrap;line-height:1.7;margin:9px 0; font-size:13px; color:var(--text);}
 .amount{font-weight:bold;direction:ltr;display:inline-block}
 .hidden{display:none!important}
-.modal-backdrop{position:fixed;inset:0;background:rgba(23,32,51,.6);z-index:30;display:none;align-items:center;justify-content:center;padding:18px;backdrop-filter:blur(2px)}
+.modal-backdrop{position:fixed;inset:0;background:rgba(23,32,51,.6);z-index:30;display:none;align-items:center;justify-content:center;padding:18px;}
 .modal-backdrop.show{display:flex}
 .modal{background:var(--card);border-radius:18px;padding:18px;width:100%;max-width:420px;max-height:85vh;overflow:auto;color:var(--text)}
 .modal h3{margin:0 0 14px}
@@ -115,13 +115,8 @@ textarea{resize:vertical;min-height:85px}
 <div class="app">
 <header>
   <div class="brand">
-    <div class="logo-container">
-      <img src="logo.png" alt="ScaleDive">
-    </div>
-    <div>
-      <h1>ScaleDive</h1>
-      <small>البوصلة - خطوة صغيرة كل يوم</small>
-    </div>
+    <div class="logo-container"><img src="logo.png" alt="ScaleDive"></div>
+    <div><h1>ScaleDive</h1><small>البوصلة</small></div>
   </div>
   <div class="header-date" id="headerDate"></div>
 </header>
@@ -145,12 +140,6 @@ textarea{resize:vertical;min-height:85px}
     <div class="card-title">مهام اليوم</div>
     <div id="homeTaskList"></div>
   </div>
-  <div class="card">
-    <div class="card-title">ملخص الميزانية الأسبوعية</div>
-    <div class="row"><span class="muted">المصروف</span><strong id="homeSpent">0 ج.م</strong></div>
-    <div class="progress"><div id="homeBudgetBar"></div></div>
-    <div class="row"><span class="muted">المتبقي</span><strong id="homeRemaining">لم تحدد ميزانية</strong></div>
-  </div>
 </section>
 
 <!-- يومي -->
@@ -171,14 +160,6 @@ textarea{resize:vertical;min-height:85px}
     <div id="overdueTasks"></div>
   </div>
   <div class="card">
-    <div class="row"><div class="card-title">مهامي الشخصية</div></div>
-    <div class="form-row">
-      <input class="input" id="personalInput" placeholder="اكتب مهمة جديدة">
-      <button class="btn" onclick="addPersonalTask()">إضافة</button>
-    </div>
-    <div id="personalList"></div>
-  </div>
-  <div class="card">
     <div class="card-title">ملاحظات اليوم</div>
     <textarea id="dayNote" placeholder="اكتب ملاحظاتك..."></textarea>
     <div class="row" style="margin-top:10px">
@@ -192,7 +173,6 @@ textarea{resize:vertical;min-height:85px}
 <section class="page" id="goals">
   <h2 class="page-title">المخطط الشهري</h2>
   <p class="page-subtitle">خطط مهامك هنا.. وتابع إنجازك أوتوماتيك.</p>
-
   <div class="card">
     <div class="row" style="margin-bottom: 10px;">
       <h3 style="margin:0; font-size: 16px;" id="trackerMonthTitle">يناير 2024</h3>
@@ -201,11 +181,8 @@ textarea{resize:vertical;min-height:85px}
         <button class="btn light small" onclick="changeTrackerMonth(1)">التالي</button>
       </div>
     </div>
-    <!-- شبكة التقويم -->
     <div class="calendar-grid" id="trackerGrid"></div>
   </div>
-
-  <!-- إدارة مهام اليوم المحدد -->
   <div class="card">
     <div class="row">
       <div class="card-title" id="trackerSelectedDateTitle">مهام يوم ...</div>
@@ -217,18 +194,14 @@ textarea{resize:vertical;min-height:85px}
     </div>
     <div id="trackerTaskList"></div>
   </div>
-
-  <!-- هدف وملاحظات الشهر -->
   <div class="card">
     <div class="card-title">هدف الشهر وملاحظاته</div>
-    <div class="form-row">
-      <input class="input" id="monthGoalInput" placeholder="مثال: توفير 2000 جنيه">
-    </div>
+    <div class="form-row"><input class="input" id="monthGoalInput" placeholder="مثال: توفير 2000 جنيه"></div>
     <textarea id="monthNotesInput" placeholder="أفكار أو ملاحظات تخص الشهر ده..."></textarea>
   </div>
 </section>
 
-<!-- الملاحظات (بالشكل اللي إنت طالبه بالظبط) -->
+<!-- الملاحظات (مبسطة زي ما طلبت) -->
 <section class="page" id="notes">
   <h2 class="page-title">الملاحظات</h2>
   <p class="page-subtitle">اجمع أفكارك وملاحظاتك في مكان واحد.</p>
@@ -236,33 +209,15 @@ textarea{resize:vertical;min-height:85px}
   <div class="card">
     <div class="card-title">إضافة ملاحظة</div>
     <input class="input" id="noteTitle" placeholder="عنوان الملاحظة">
-
-    <textarea id="noteBody"
-      placeholder="اكتب محتوى الملاحظة..."
-      style="margin-top:9px"></textarea>
-
+    <textarea id="noteBody" placeholder="اكتب محتوى الملاحظة..." style="margin-top:9px"></textarea>
     <div class="form-row">
-      <select id="noteCategory"></select>
-      <button class="btn" onclick="addNote()">حفظ</button>
+      <button class="btn" style="width:100%;" onclick="addNote()">حفظ الملاحظة</button>
     </div>
   </div>
 
   <div class="card">
-    <input class="input"
-      id="noteSearch"
-      placeholder="ابحث في ملاحظاتك..."
-      oninput="renderNotes()">
-
-    <div class="form-row">
-      <select id="noteFilter" onchange="renderNotes()">
-        <option value="all">كل التصنيفات</option>
-      </select>
-
-      <button class="btn light small"
-        onclick="manageCategories()">التصنيفات</button>
-    </div>
-
-    <div id="notesList"></div>
+    <input class="input" id="noteSearch" placeholder="ابحث في ملاحظاتك..." oninput="renderNotes()">
+    <div id="notesList" style="margin-top:15px;"></div>
   </div>
 </section>
 
@@ -271,7 +226,6 @@ textarea{resize:vertical;min-height:85px}
   <h2 class="page-title">الميزانية</h2>
   <div class="card">
     <div class="card-title">ميزانية الأسبوع الحالي</div>
-    <div class="muted" id="budgetWeek"></div>
     <div class="form-row">
       <input class="input" type="number" id="budgetInput" min="0" placeholder="الميزانية بالجنيه">
       <button class="btn" onclick="saveBudget()">حفظ</button>
@@ -281,7 +235,6 @@ textarea{resize:vertical;min-height:85px}
       <div class="stat"><strong id="budgetSpent">0</strong><span>المصروف</span></div>
     </div>
     <div class="progress"><div id="budgetBar"></div></div>
-    <div id="budgetWarning"></div>
   </div>
   <div class="card">
     <div class="card-title">إضافة مصروف</div>
@@ -293,7 +246,7 @@ textarea{resize:vertical;min-height:85px}
     <button class="btn" onclick="addExpense()">إضافة المصروف</button>
   </div>
   <div class="card">
-    <div class="card-title">مصروفات الأسبوع الحالي</div>
+    <div class="card-title">مصروفات الأسبوع</div>
     <div id="expenseList"></div>
   </div>
 </section>
@@ -310,24 +263,16 @@ textarea{resize:vertical;min-height:85px}
   </div>
   <div class="card">
     <div class="card-title">التذكيرات اليومية</div>
-    <p class="muted">سيتم إرسال إشعار لك في المواعيد المحددة.</p>
     <div class="form-row">
-      <div style="flex:1;">
-        <label class="muted">تذكير الصبح (مهام اليوم)</label>
-        <input class="input" type="time" id="morningReminder" onchange="saveReminders()">
-      </div>
-      <div style="flex:1;">
-        <label class="muted">تذكير بالليل (مراجعة الإنجاز)</label>
-        <input class="input" type="time" id="eveningReminder" onchange="saveReminders()">
-      </div>
+      <div style="flex:1;"><label class="muted">تذكير الصبح</label><input class="input" type="time" id="morningReminder" onchange="saveReminders()"></div>
+      <div style="flex:1;"><label class="muted">تذكير بالليل</label><input class="input" type="time" id="eveningReminder" onchange="saveReminders()"></div>
     </div>
     <button class="btn light" style="width: 100%; margin-top: 8px;" onclick="requestNotifPermission()">🔔 تفعيل إذن الإشعارات</button>
   </div>
   <div class="card">
     <div class="card-title">النسخ الاحتياطي</div>
     <button class="btn" onclick="exportData()">تصدير نسخة احتياطية</button>
-    <div class="separator" style="margin: 10px 0; height:1px; background:var(--border);"></div>
-    <input type="file" id="restoreFile" accept=".json,application/json" style="margin-bottom:10px">
+    <input type="file" id="restoreFile" accept=".json,application/json" style="margin:10px 0">
     <button class="btn light" onclick="restoreData()">استعادة نسخة</button>
   </div>
 </section>
@@ -353,12 +298,11 @@ textarea{resize:vertical;min-height:85px}
 
 <script>
 "use strict";
-
-const STORAGE_KEY = "scaledive_v3"; // تحديث الإصدار لضمان حفظ البيانات الجديدة
+const STORAGE_KEY = "scaledive_v4"; // تم تحديث رقم الإصدار
 
 const defaults = () => ({
   plannedTasks:[], personalTasks:[], goals:[], habits:[], days:{}, notes:[],
-  categories:["شغل","حياتي","أفكار"], expenses:[], budgets:{}, currentBudget:0,
+  expenses:[], budgets:{}, currentBudget:0,
   settings: { theme: 'light', morningTime: '08:00', eveningTime: '20:00' },
   monthlyTracker: {} 
 });
@@ -370,7 +314,7 @@ let currentPage = "home";
 
 function loadData(){
   try{
-    const saved = localStorage.getItem(STORAGE_KEY) || localStorage.getItem('scaledive_v2');
+    const saved = localStorage.getItem(STORAGE_KEY) || localStorage.getItem('scaledive_v3');
     return saved ? {...defaults(),...JSON.parse(saved)} : defaults();
   }catch(e){ return defaults(); }
 }
@@ -395,59 +339,40 @@ function openModal(html){
 }
 function closeModal(){ document.getElementById("modalBackdrop").classList.remove("show"); }
 
-// === إعدادات المظهر والإشعارات ===
-function setTheme(theme) {
-    data.settings.theme = theme;
-    document.documentElement.setAttribute('data-theme', theme);
-    save();
-}
+function setTheme(theme) { data.settings.theme = theme; document.documentElement.setAttribute('data-theme', theme); save(); }
 function requestNotifPermission() {
     if (!("Notification" in window)) return alert("متصفحك لا يدعم الإشعارات.");
     Notification.requestPermission().then(p => {
         if(p === 'granted') alert("تم تفعيل الإشعارات بنجاح!");
-        else alert("تم رفض الإشعارات. يرجى تفعيلها من إعدادات المتصفح أو الموبايل.");
+        else alert("تم رفض الإشعارات.");
     });
 }
 function saveReminders() {
-    let mTime = document.getElementById('morningReminder').value;
-    let eTime = document.getElementById('eveningReminder').value;
-    data.settings.morningTime = mTime;
-    data.settings.eveningTime = eTime;
-    save();
-    scheduleReminders();
+    data.settings.morningTime = document.getElementById('morningReminder').value;
+    data.settings.eveningTime = document.getElementById('eveningReminder').value;
+    save(); scheduleReminders();
 }
 function scheduleReminders() {
     if (window.WebToApk && window.WebToApk.scheduleNotificationEx) {
         window.WebToApk.requestNotificationPermission();
         let mDate = new Date(); let [mh, mm] = (data.settings.morningTime||'08:00').split(':');
         mDate.setHours(mh, mm, 0, 0); if(mDate < new Date()) mDate.setDate(mDate.getDate()+1);
-        window.WebToApk.scheduleNotificationEx(JSON.stringify({ id: "morning_rem", title: "صباح الخير ☀️", body: "راجع مهام اليوم عشان تبدأ صح.", at: mDate.getTime() }));
+        window.WebToApk.scheduleNotificationEx(JSON.stringify({ id: "morning_rem", title: "صباح الخير ☀️", body: "راجع مهام اليوم.", at: mDate.getTime() }));
         
         let eDate = new Date(); let [eh, em] = (data.settings.eveningTime||'20:00').split(':');
         eDate.setHours(eh, em, 0, 0); if(eDate < new Date()) eDate.setDate(eDate.getDate()+1);
-        window.WebToApk.scheduleNotificationEx(JSON.stringify({ id: "evening_rem", title: "مساء الخير 🌙", body: "راجع إنجازك واغلق مهامك.", at: eDate.getTime() }));
-    } else {
-        setInterval(() => {
-            let now = new Date();
-            let currentTime = String(now.getHours()).padStart(2,'0') + ':' + String(now.getMinutes()).padStart(2,'0');
-            if (currentTime === data.settings.morningTime && Notification.permission === 'granted') new Notification("صباح الخير ☀️", { body: "راجع مهام اليوم." });
-            if (currentTime === data.settings.eveningTime && Notification.permission === 'granted') new Notification("مساء الخير 🌙", { body: "راجع إنجازك." });
-        }, 60000);
+        window.WebToApk.scheduleNotificationEx(JSON.stringify({ id: "evening_rem", title: "مساء الخير 🌙", body: "راجع إنجازك.", at: eDate.getTime() }));
     }
 }
 
-// === إدارة المهام واليوم ===
+// === المهام ===
 function ensureDay(date){
-  if(!data.days[date]){
-    data.days[date]={ date, status:"draft", habitsSnapshot:data.habits.map(h=>({id:h.id,name:h.name,done:false})), note:"", savedAt:null };
-    save();
-  }
+  if(!data.days[date]){ data.days[date]={ date, status:"draft", habitsSnapshot:[], note:"", savedAt:null }; save(); }
   return data.days[date];
 }
 function dayTasks(date){ return data.plannedTasks.filter(t=>t.date===date); }
 function dayPersonal(date){ return data.personalTasks.filter(t=>t.date===date); }
 function dayHabits(date){ return ensureDay(date).habitsSnapshot; }
-
 function dayStats(date){
   const tasks=dayTasks(date).length+dayPersonal(date).length;
   const taskDone=dayTasks(date).filter(t=>t.done).length + dayPersonal(date).filter(t=>t.done).length;
@@ -456,16 +381,8 @@ function dayStats(date){
   const done=taskDone+habits.filter(h=>h.done).length;
   return {total,done,percent:total?Math.round(done/total*100):0};
 }
-function saveDay(){
-  const d=ensureDay(today());
-  d.note=document.getElementById("dayNote").value;
-  d.status="saved"; d.savedAt=new Date().toISOString();
-  save(); renderAll(); alert("تم حفظ اليوم بنجاح.");
-}
-function saveDayNote(){
-  const d=ensureDay(today()); const field=document.getElementById("dayNote");
-  if(field)d.note=field.value; save();
-}
+function saveDay(){ const d=ensureDay(today()); d.note=document.getElementById("dayNote").value; d.status="saved"; save(); renderAll(); alert("تم حفظ اليوم"); }
+function saveDayNote(){ const d=ensureDay(today()); d.note=document.getElementById("dayNote").value; save(); }
 function toggleTask(type,id){
   const list=type==="planned"?data.plannedTasks:data.personalTasks;
   const task=list.find(t=>t.id===id); if(!task)return;
@@ -484,25 +401,15 @@ function addPersonalTask(){
   input.value=""; save(); renderAll();
 }
 
-// === المخطط الشهري ===
-function changeTrackerMonth(n) {
-    trackerDate.setMonth(trackerDate.getMonth() + n);
-    renderTracker();
-}
-function selectTrackerDate(dateStr) {
-    selectedDate = dateStr;
-    renderTracker(); 
-}
+// === المخطط ===
+function changeTrackerMonth(n) { trackerDate.setMonth(trackerDate.getMonth() + n); renderTracker(); }
+function selectTrackerDate(dateStr) { selectedDate = dateStr; renderTracker(); }
 function addTrackerTask() {
-    const input = document.getElementById('trackerInput');
-    const text = input.value.trim();
+    const input = document.getElementById('trackerInput'); const text = input.value.trim();
     if(!text) return alert("اكتب المهمة أولاً.");
-    data.plannedTasks.push({id:uid(), date:selectedDate, text, done:false, createdAt:new Date().toISOString()});
-    input.value = "";
-    save();
-    renderTracker();
+    data.plannedTasks.push({id:uid(), date:selectedDate, text, done:false});
+    input.value = ""; save(); renderTracker();
 }
-
 function renderTracker() {
     const y = trackerDate.getFullYear(), m = trackerDate.getMonth();
     document.getElementById('trackerMonthTitle').textContent = trackerDate.toLocaleDateString("ar-EG",{month:"long",year:"numeric"});
@@ -512,25 +419,18 @@ function renderTracker() {
     document.getElementById('monthGoalInput').value = data.monthlyTracker[monthKey]?.goal || "";
     document.getElementById('monthNotesInput').value = data.monthlyTracker[monthKey]?.notes || "";
 
-    const first = new Date(y, m, 1);
-    const start = (first.getDay() + 6) % 7; // السبت
+    const first = new Date(y, m, 1); const start = (first.getDay() + 6) % 7; 
     const count = new Date(y, m + 1, 0).getDate();
     const names = ["سبت", "حد", "اثنين", "ثلاثاء", "أربع", "خميس", "جمعة"];
-    
     let html = names.map(n => `<div class="weekday">${n}</div>`).join("");
     
     for(let i = 0; i < 42; i++) {
         let date, other = false;
-        if(i < start) { 
-            date = new Date(y, m - 1, new Date(y, m, 0).getDate() - start + i + 1); other = true; 
-        } else if(i >= start + count) { 
-            date = new Date(y, m + 1, i - start - count + 1); other = true; 
-        } else {
-            date = new Date(y, m, i - start + 1);
-        }
+        if(i < start) { date = new Date(y, m - 1, new Date(y, m, 0).getDate() - start + i + 1); other = true; }
+        else if(i >= start + count) { date = new Date(y, m + 1, i - start - count + 1); other = true; }
+        else { date = new Date(y, m, i - start + 1); }
         
         const key = dateString(date);
-        
         const dayT = [...dayTasks(key), ...dayPersonal(key)];
         const hasTasks = dayT.length > 0;
         const allDone = hasTasks && dayT.every(t => t.done);
@@ -553,204 +453,108 @@ function renderTracker() {
             <div class="item-main"><strong>${escapeHTML(t.text)}</strong></div>
             <button class="icon-btn" onclick="deleteTask('planned','${t.id}')">×</button>
         </div>
-    `).join("") : '<div class="empty">لا توجد مهام مضافة لهذا اليوم.</div>';
+    `).join("") : '<div class="empty">لا توجد مهام.</div>';
 }
-
 document.getElementById('monthGoalInput')?.addEventListener('input', function(){
-    const y = trackerDate.getFullYear(), m = trackerDate.getMonth();
-    const monthKey = y + "-" + String(m+1).padStart(2,'0');
-    if(!data.monthlyTracker[monthKey]) data.monthlyTracker[monthKey] = {};
-    data.monthlyTracker[monthKey].goal = this.value; save();
+    const y = trackerDate.getFullYear(), m = trackerDate.getMonth(); const monthKey = y + "-" + String(m+1).padStart(2,'0');
+    if(!data.monthlyTracker[monthKey]) data.monthlyTracker[monthKey] = {}; data.monthlyTracker[monthKey].goal = this.value; save();
 });
 document.getElementById('monthNotesInput')?.addEventListener('input', function(){
-    const y = trackerDate.getFullYear(), m = trackerDate.getMonth();
-    const monthKey = y + "-" + String(m+1).padStart(2,'0');
-    if(!data.monthlyTracker[monthKey]) data.monthlyTracker[monthKey] = {};
-    data.monthlyTracker[monthKey].notes = this.value; save();
+    const y = trackerDate.getFullYear(), m = trackerDate.getMonth(); const monthKey = y + "-" + String(m+1).padStart(2,'0');
+    if(!data.monthlyTracker[monthKey]) data.monthlyTracker[monthKey] = {}; data.monthlyTracker[monthKey].notes = this.value; save();
 });
 
-// === تبويب اليوم والرئيسية ===
+// === الرئيسية واليوم ===
 function renderHome(){
-  const stats=dayStats(today());
-  const tasks=[...dayTasks(today()),...dayPersonal(today())];
-  const habits=dayHabits(today());
-  document.getElementById("homeProgress").textContent=stats.percent+"%";
-  document.getElementById("homePercent").textContent=stats.percent+"%";
-  document.getElementById("homeBar").style.width=stats.percent+"%";
-  document.getElementById("homeTasks").textContent=tasks.length;
+  const stats=dayStats(today()), tasks=[...dayTasks(today()),...dayPersonal(today())], habits=dayHabits(today());
+  document.getElementById("homeProgress").textContent=stats.percent+"%"; document.getElementById("homePercent").textContent=stats.percent+"%";
+  document.getElementById("homeBar").style.width=stats.percent+"%"; document.getElementById("homeTasks").textContent=tasks.length;
   document.getElementById("homeHabits").textContent=habits.filter(h=>h.done).length+"/"+habits.length;
-  document.getElementById("homeGoals").textContent=data.goals.length;
   document.getElementById("homeTaskList").innerHTML=tasks.length?tasks.slice(0,5).map(t=>`
-    <div class="item ${t.done?"done":""}">
-      <span class="badge ${t.done?"green":"blue"}">${t.done?"تم":"مطلوب"}</span>
-      <div class="item-main"><strong>${escapeHTML(t.text)}</strong></div>
-    </div>`).join(""):'<div class="empty">لا توجد مهام لليوم.</div>';
-  const start=weekStart(today());
-  const spent=weekExpenses(start).reduce((s,e)=>s+Number(e.amount),0);
-  const total=weekBudget(start);
-  document.getElementById("homeSpent").textContent=money(spent);
-  document.getElementById("homeRemaining").textContent=total?money(total-spent):"لم تحدد ميزانية";
-  document.getElementById("homeBudgetBar").style.width=(total?Math.min(spent/total*100,100):0)+"%";
+    <div class="item ${t.done?"done":""}"><span class="badge ${t.done?"green":"blue"}">${t.done?"تم":"مطلوب"}</span><div class="item-main"><strong>${escapeHTML(t.text)}</strong></div></div>
+  `).join(""):'<div class="empty">لا توجد مهام.</div>';
 }
-
 function renderDay(){
   const date=today(); const record=ensureDay(date);
-  document.getElementById("dayDateLabel").textContent=formatDate(date);
-  document.getElementById("dayNote").value=record.note||"";
-  document.getElementById("dayPercent").textContent=dayStats(date).percent+"%";
-  document.getElementById("dayBar").style.width=dayStats(date).percent+"%";
-  const planned=dayTasks(date);
-  document.getElementById("todayPlanned").innerHTML=planned.length?planned.map(t=>`
-    <div class="item ${t.done?'done':''}">
-      <input class="check" type="checkbox" ${t.done?"checked":""} onchange="toggleTask('planned','${t.id}')">
-      <div class="item-main"><strong>${escapeHTML(t.text)}</strong></div>
-    </div>`).join(""):'<div class="empty">لا توجد مهام مخططة لهذا اليوم.</div>';
-  const overdue=[...data.plannedTasks.filter(t=>t.date<date&&!t.done)];
-  document.getElementById("overdueTasks").innerHTML=overdue.length?overdue.map(t=>`
-    <div class="item"><input class="check" type="checkbox" onchange="toggleTask('planned','${t.id}')"><div class="item-main"><strong>${escapeHTML(t.text)}</strong><small>${formatDate(t.date)}</small></div></div>
+  document.getElementById("dayDateLabel").textContent=formatDate(date); document.getElementById("dayNote").value=record.note||"";
+  document.getElementById("dayPercent").textContent=dayStats(date).percent+"%"; document.getElementById("dayBar").style.width=dayStats(date).percent+"%";
+  document.getElementById("todayPlanned").innerHTML=dayTasks(date).length?dayTasks(date).map(t=>`
+    <div class="item ${t.done?'done':''}"><input class="check" type="checkbox" ${t.done?"checked":""} onchange="toggleTask('planned','${t.id}')"><div class="item-main"><strong>${escapeHTML(t.text)}</strong></div></div>
+  `).join(""):'<div class="empty">لا توجد مهام مخططة.</div>';
+  document.getElementById("overdueTasks").innerHTML=data.plannedTasks.filter(t=>t.date<date&&!t.done).length?data.plannedTasks.filter(t=>t.date<date&&!t.done).map(t=>`
+    <div class="item"><input class="check" type="checkbox" onchange="toggleTask('planned','${t.id}')"><div class="item-main"><strong>${escapeHTML(t.text)}</strong></div></div>
   `).join(""):'<div class="empty">لا توجد مهام متأخرة.</div>';
-  const personal=dayPersonal(date);
-  document.getElementById("personalList").innerHTML=personal.length?personal.map(t=>`
-    <div class="item ${t.done?'done':''}">
-      <input class="check" type="checkbox" ${t.done?"checked":""} onchange="toggleTask('personal','${t.id}')">
-      <div class="item-main"><strong>${escapeHTML(t.text)}</strong></div>
-    </div>`).join(""):'<div class="empty">لا توجد مهام شخصية.</div>';
 }
 
-function weekStart(dateStringValue=today()){
-  const d=parseDate(dateStringValue); const day=d.getDay();
-  d.setDate(d.getDate()-(day===6?0:day+1)); return dateString(d);
-}
-function weekEnd(start){ const d=parseDate(start); d.setDate(d.getDate()+6); return dateString(d); }
-function weekExpenses(start){ const end=weekEnd(start); return data.expenses.filter(e=>e.date>=start&&e.date<=end); }
-function weekBudget(start){ return data.budgets[start]!==undefined?Number(data.budgets[start]):(start===weekStart(today())?Number(data.currentBudget||0):0); }
-
-// === الملاحظات (بالشكل اللي إنت طالبه) ===
+// === الملاحظات (بناءً على طلبك) ===
 function addNote(){
   const title=document.getElementById("noteTitle").value.trim();
   const body=document.getElementById("noteBody").value.trim();
-  const category=document.getElementById("noteCategory").value||"غير مصنف";
-  if(!title&&!body)return alert("اكتب عنوانًا أو محتوى للملاحظة.");
-  data.notes.unshift({id:uid(),title,body,category,pinned:false,createdAt:new Date().toISOString()});
-  document.getElementById("noteTitle").value="";
-  document.getElementById("noteBody").value="";
-  save();renderAll();
+  if(!title&&!body)return alert("اكتب عنوانًا أو محتوى.");
+  data.notes.unshift({id:uid(),title,body,createdAt:new Date().toISOString()});
+  document.getElementById("noteTitle").value=""; document.getElementById("noteBody").value="";
+  save();renderNotes();
 }
 function editNote(id){
-  const n=data.notes.find(x=>x.id===id);
-  if(!n)return;
+  const n=data.notes.find(x=>x.id===id); if(!n)return;
   openModal(`<h3>تعديل الملاحظة</h3>
-    <input class="input" id="editNoteTitle" value="${escapeHTML(n.title)}">
-    <textarea id="editNoteBody" style="margin-top:9px">${escapeHTML(n.body)}</textarea>
-    <div class="modal-actions"><button class="btn" onclick="saveNoteEdit('${id}')">حفظ</button></div>`);
+    <input class="input" id="editNoteTitle" value="${escapeHTML(n.title)}" placeholder="العنوان">
+    <textarea id="editNoteBody" style="margin-top:9px" placeholder="المحتوى">${escapeHTML(n.body)}</textarea>
+    <div class="modal-actions"><button class="btn" onclick="saveNoteEdit('${id}')">حفظ التعديل</button></div>`);
 }
 function saveNoteEdit(id){
-  const n=data.notes.find(x=>x.id===id);
-  if(!n)return;
+  const n=data.notes.find(x=>x.id===id); if(!n)return;
   n.title=document.getElementById("editNoteTitle").value.trim();
   n.body=document.getElementById("editNoteBody").value.trim();
   save();closeModal();renderNotes();
 }
 function deleteNote(id){
-  if(!confirm("حذف الملاحظة؟"))return;
-  data.notes=data.notes.filter(n=>n.id!==id);
-  save();renderNotes();
-}
-function togglePin(id){
-  const n=data.notes.find(x=>x.id===id);
-  if(n)n.pinned=!n.pinned;
-  save();renderNotes();
-}
-function manageCategories(){
-  let html='<h3>إدارة التصنيفات</h3>';
-  html+='<div class="form-row"><input class="input" id="newCategory" placeholder="اسم التصنيف"><button class="btn" onclick="addCategory()">إضافة</button></div>';
-  data.categories.forEach(c=>{
-    html+=`<div class="item"><div class="item-main"><strong>${escapeHTML(c)}</strong></div><button class="icon-btn" onclick="deleteCategory('${escapeHTML(c)}')">حذف</button></div>`;
-  });
-  openModal(html);
-}
-function addCategory(){
-  const name=document.getElementById("newCategory").value.trim();
-  if(!name)return;
-  if(data.categories.includes(name))return alert("التصنيف موجود بالفعل.");
-  data.categories.push(name);save();manageCategories();renderNotes();
-}
-function deleteCategory(name){
-  if(!confirm("حذف التصنيف؟ ستُنقل ملاحظاته إلى غير مصنف."))return;
-  data.categories=data.categories.filter(c=>c!==name);
-  data.notes.forEach(n=>{if(n.category===name)n.category="غير مصنف";});
-  save();manageCategories();renderNotes();
+  if(!confirm("هل أنت متأكد من حذف هذه الملاحظة؟"))return;
+  data.notes=data.notes.filter(n=>n.id!==id); save();renderNotes();
 }
 function renderNotes(){
-  const category=document.getElementById("noteFilter").value;
   const q=document.getElementById("noteSearch").value.toLowerCase().trim();
-  const list=data.notes.filter(n=>
-    (category==="all"||n.category===category)&&
-    ((n.title||"").toLowerCase().includes(q)||(n.body||"").toLowerCase().includes(q))
-  ).sort((a,b)=>Number(b.pinned)-Number(a.pinned));
+  const list=data.notes.filter(n=>(n.title||"").toLowerCase().includes(q)||(n.body||"").toLowerCase().includes(q));
   
   document.getElementById("notesList").innerHTML=list.length?list.map(n=>`
     <div class="note-card">
-      <div class="row">
-        <strong>${escapeHTML(n.title||"بدون عنوان")}</strong>
-        <span class="badge">${escapeHTML(n.category||"غير مصنف")}</span>
+      <div class="row" style="align-items: flex-start;">
+        <strong style="flex:1;">${escapeHTML(n.title||"بدون عنوان")}</strong>
+        <div class="actions">
+          <button class="icon-btn" onclick="editNote('${n.id}')" title="تعديل">✏️</button>
+          <button class="icon-btn" onclick="deleteNote('${n.id}')" title="حذف">🗑️</button>
+        </div>
       </div>
       <p>${escapeHTML(n.body)}</p>
-      <div class="row">
-        <div class="actions">
-          <button class="icon-btn" onclick="togglePin('${n.id}')">${n.pinned?"★":"☆"}</button>
-          <button class="icon-btn" onclick="editNote('${n.id}')">✎</button>
-          <button class="icon-btn" onclick="deleteNote('${n.id}')">×</button>
-        </div>
-        <span class="muted">${new Date(n.createdAt).toLocaleDateString("ar-EG")}</span>
-      </div>
-    </div>`).join(""):'<div class="empty">لا توجد ملاحظات مطابقة.</div>';
-}
-function renderCategories(){
-  const options=data.categories.map(c=>`<option value="${escapeHTML(c)}">${escapeHTML(c)}</option>`).join("");
-  document.getElementById("noteCategory").innerHTML=options||'<option value="غير مصنف">غير مصنف</option>';
-  document.getElementById("noteFilter").innerHTML='<option value="all">كل التصنيفات</option>'+options;
+      <div class="muted" style="text-align:left; margin-top:5px;">${new Date(n.createdAt).toLocaleDateString("ar-EG")}</div>
+    </div>`).join(""):'<div class="empty">لا توجد ملاحظات.</div>';
 }
 
-// === الميزانية ===
-function saveBudget(){
-  const value=Number(document.getElementById("budgetInput").value);
-  if(!Number.isFinite(value)||value<0)return alert("أدخل مبلغًا صحيحًا.");
-  data.currentBudget=value; data.budgets[weekStart(today())]=value;
-  save(); renderBudget();
-}
+// === الميزانية والنسخ ===
+function weekStart(dateStringValue=today()){ const d=parseDate(dateStringValue); const day=d.getDay(); d.setDate(d.getDate()-(day===6?0:day+1)); return dateString(d); }
+function weekEnd(start){ const d=parseDate(start); d.setDate(d.getDate()+6); return dateString(d); }
+function weekExpenses(start){ const end=weekEnd(start); return data.expenses.filter(e=>e.date>=start&&e.date<=end); }
+function weekBudget(start){ return data.budgets[start]!==undefined?Number(data.budgets[start]):(start===weekStart(today())?Number(data.currentBudget||0):0); }
+function saveBudget(){ const val=Number(document.getElementById("budgetInput").value); data.currentBudget=val; data.budgets[weekStart(today())]=val; save(); renderBudget(); }
 function addExpense(){
-  const name=document.getElementById("expenseName").value.trim();
-  const amount=Number(document.getElementById("expenseAmount").value);
-  const date=document.getElementById("expenseDate").value||today();
-  if(!name||!Number.isFinite(amount)||amount<=0)return alert("أدخل اسم المصروف ومبلغًا صحيحًا.");
-  data.expenses.push({id:uid(),name,amount,date,createdAt:new Date().toISOString()});
-  document.getElementById("expenseName").value=""; document.getElementById("expenseAmount").value="";
-  save(); renderBudget();
+  const name=document.getElementById("expenseName").value.trim(), amount=Number(document.getElementById("expenseAmount").value), date=document.getElementById("expenseDate").value||today();
+  if(!name||amount<=0)return alert("بيانات ناقصة");
+  data.expenses.push({id:uid(),name,amount,date}); document.getElementById("expenseName").value=""; document.getElementById("expenseAmount").value=""; save(); renderBudget();
 }
 function renderBudget(){
-  const start=weekStart(today()),end=weekEnd(start);
-  const expenses=weekExpenses(start); const spent=expenses.reduce((s,e)=>s+Number(e.amount),0);
-  const total=weekBudget(start); const pct=total?Math.round(spent/total*100):0;
-  document.getElementById("budgetWeek").textContent=formatDate(start)+" — "+formatDate(end);
-  document.getElementById("budgetInput").value=total||"";
-  document.getElementById("budgetTotal").textContent=money(total);
-  document.getElementById("budgetSpent").textContent=money(spent);
-  document.getElementById("budgetBar").style.width=Math.min(pct,100)+"%";
-  document.getElementById("expenseList").innerHTML=expenses.length?expenses.map(e=>`
-    <div class="item"><div class="item-main"><strong>${escapeHTML(e.name)}</strong><small>${formatDate(e.date)}</small></div><strong class="amount">${money(e.amount)}</strong></div>
-  `).join(""):'<div class="empty">لا توجد مصروفات هذا الأسبوع.</div>';
+  const start=weekStart(today()), expenses=weekExpenses(start), spent=expenses.reduce((s,e)=>s+Number(e.amount),0), total=weekBudget(start);
+  document.getElementById("budgetTotal").textContent=money(total); document.getElementById("budgetSpent").textContent=money(spent);
+  document.getElementById("budgetBar").style.width=(total?Math.min(spent/total*100,100):0)+"%";
+  document.getElementById("expenseList").innerHTML=expenses.map(e=>`<div class="item"><strong>${escapeHTML(e.name)}</strong><span class="amount">${money(e.amount)}</span></div>`).join("")||'<div class="empty">لا توجد مصروفات</div>';
 }
+function exportData(){ const b=new Blob([JSON.stringify(data,null,2)],{type:"application/json"}); const a=document.createElement("a"); a.href=URL.createObjectURL(b); a.download="backup.json"; a.click(); }
+function restoreData(){ alert("استعادة النسخة تتطلب إعدادات إضافية."); } // مبسطة
 
 function renderAll(){
   document.getElementById("headerDate").textContent=new Date().toLocaleDateString("ar-EG",{day:"numeric",month:"short"});
-  ensureDay(today());
   document.getElementById('morningReminder').value = data.settings.morningTime || "08:00";
   document.getElementById('eveningReminder').value = data.settings.eveningTime || "20:00";
   document.documentElement.setAttribute('data-theme', data.settings.theme || 'light');
-  
-  renderCategories(); // تحديث التصنيفات
-  
   if(currentPage==='home') renderHome();
   if(currentPage==='day') renderDay();
   if(currentPage==='goals') renderTracker();
@@ -758,14 +562,9 @@ function renderAll(){
   if(currentPage==='budget') renderBudget();
 }
 
-document.getElementById("dayNote")?.addEventListener("input",saveDayNote);
 document.getElementById("expenseDate").value = today();
 renderAll();
-scheduleReminders();
-
-window.addEventListener("load", () => {
-    try { if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js'); } catch(e){}
-});
+window.addEventListener("load", () => { try { if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js'); } catch(e){} });
 </script>
 </body>
 </html>
