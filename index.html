@@ -1,1990 +1,790 @@
+
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#2455D6">
-<title>البوصلة | نظام إدارة يومي</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#2455d6">
+<title>البوصلة</title>
 
 <style>
-:root {
-  --primary: #2455D6;
-  --primary-light: #EAF0FF;
-  --background: #F4F6FA;
-  --surface: #FFFFFF;
-  --text: #172033;
-  --muted: #737D90;
-  --border: #E5E9F0;
-  --success: #16865B;
-  --danger: #C43C4B;
-  --warning: #B7791F;
-  --radius: 16px;
+:root{
+--bg:#f4f6fa;
+--card:#fff;
+--text:#20283a;
+--muted:#7b8497;
+--line:#e7eaf0;
+--primary:#315bd6;
+--soft:#edf1ff;
+--green:#16865a;
+--red:#d64b58;
 }
-
-* {
-  box-sizing: border-box;
+*{box-sizing:border-box}
+body{
+margin:0;
+background:var(--bg);
+color:var(--text);
+font-family:Arial,Tahoma,sans-serif;
+font-size:13px;
+line-height:1.6;
+padding-bottom:75px;
 }
-
-body {
-  margin: 0;
-  font-family: Arial, Tahoma, sans-serif;
-  background: var(--background);
-  color: var(--text);
-  line-height: 1.6;
+button,input,textarea,select{font:inherit}
+button{cursor:pointer}
+.app{max-width:650px;margin:auto;padding:13px}
+header{
+display:flex;justify-content:space-between;
+align-items:center;margin-bottom:15px
 }
-
-button, input, textarea, select {
-  font: inherit;
+.brand{display:flex;align-items:center;gap:9px}
+.logo{
+width:36px;height:36px;border-radius:11px;
+background:var(--primary);color:white;
+display:grid;place-items:center;font-size:19px;
+font-weight:bold
 }
-
-button {
-  cursor: pointer;
-  border: none;
-  border-radius: 10px;
-  padding: 10px 16px;
-  background: var(--primary);
-  color: white;
+h1{font-size:17px;margin:0}
+h2{font-size:15px;margin:0}
+h3{font-size:13px;margin:0}
+.small{font-size:11px;color:var(--muted)}
+.card{
+background:var(--card);
+border:1px solid var(--line);
+border-radius:13px;padding:12px;
+margin-bottom:10px
 }
-
-input, textarea, select {
-  width: 100%;
-  padding: 11px;
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  background: white;
-  outline: none;
+.row{
+display:flex;align-items:center;
+justify-content:space-between;gap:8px
 }
-
-input:focus, textarea:focus, select:focus {
-  border-color: var(--primary);
+.btn{
+border:1px solid var(--line);
+background:white;color:var(--text);
+border-radius:9px;padding:7px 10px;
+font-size:12px
 }
-
-.app {
-  max-width: 1000px;
-  margin: auto;
-  padding: 16px;
+.btn.primary{
+background:var(--primary);
+color:white;border-color:var(--primary)
 }
-
-.header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
+.btn.soft{
+background:var(--soft);
+color:var(--primary);border:0
 }
-
-.logo {
-  font-size: 25px;
-  font-weight: bold;
+.btn.danger{color:var(--red)}
+input,textarea,select{
+width:100%;padding:9px;
+border:1px solid var(--line);
+background:#fafbfc;border-radius:8px;
+margin:4px 0 9px;color:var(--text)
 }
-
-.logo span {
-  color: var(--primary);
+label{font-size:11px;color:var(--muted)}
+.formgrid{
+display:grid;grid-template-columns:1fr 1fr;gap:8px
 }
-
-.card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 16px;
-  margin-bottom: 14px;
+.progress{
+height:6px;background:var(--line);
+border-radius:20px;overflow:hidden
 }
-
-.tabs {
-  display: flex;
-  gap: 8px;
-  overflow-x: auto;
-  padding-bottom: 14px;
-  position: sticky;
-  top: 0;
-  background: var(--background);
-  z-index: 10;
+.progress div{
+height:100%;background:var(--primary);
+border-radius:20px
 }
-
-.tab {
-  background: #E9EDF5;
-  color: var(--text);
-  white-space: nowrap;
+.pill{
+font-size:10px;background:var(--soft);
+color:var(--primary);padding:3px 7px;
+border-radius:20px
 }
-
-.tab.active {
-  background: var(--primary);
-  color: white;
+.view{display:none}
+.view.active{display:block}
+.sectionhead{
+display:flex;justify-content:space-between;
+align-items:center;margin-bottom:10px
 }
-
-.page {
-  display: none;
+.goal-title{font-size:14px;font-weight:bold}
+.dayblock{
+background:#fafbfe;
+border:1px solid var(--line);
+border-radius:10px;padding:10px;
+margin-top:9px
 }
-
-.page.active {
-  display: block;
+.dayhead{
+display:flex;align-items:center;
+justify-content:space-between;
+margin-bottom:7px
 }
-
-.section-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 14px;
+.task{
+display:flex;align-items:center;
+gap:8px;padding:8px 0;
+border-bottom:1px solid var(--line)
 }
-
-.section-header h2 {
-  margin: 0;
-  font-size: 19px;
+.task:last-child{border-bottom:0}
+.task input{width:17px;height:17px;margin:0}
+.task-name{flex:1;overflow-wrap:anywhere}
+.done .task-name{
+text-decoration:line-through;color:var(--muted)
 }
-
-.muted {
-  color: var(--muted);
-  font-size: 13px;
+.empty{
+text-align:center;color:var(--muted);
+padding:18px;font-size:12px
 }
-
-.item {
-  padding: 12px;
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  margin-bottom: 9px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
+nav{
+position:fixed;bottom:0;left:0;right:0;
+background:white;border-top:1px solid var(--line);
+display:flex;justify-content:space-around;
+padding:7px 2px;z-index:10
 }
-
-.item-content {
-  flex: 1;
+nav button{
+border:0;background:none;color:var(--muted);
+font-size:10px;display:flex;flex-direction:column;
+align-items:center;gap:2px
 }
-
-.item.done .item-content {
-  text-decoration: line-through;
-  color: var(--muted);
+nav button b{font-size:17px}
+nav button.active{color:var(--primary)}
+.modal{
+display:none;position:fixed;inset:0;
+background:#0008;z-index:20;
+align-items:flex-end;justify-content:center;
+padding:10px
 }
-
-.progress {
-  height: 9px;
-  background: #EDF0F5;
-  border-radius: 20px;
-  overflow: hidden;
-  margin: 12px 0;
+.modal.show{display:flex}
+.sheet{
+background:white;color:var(--text);
+width:100%;max-width:600px;
+max-height:90vh;overflow:auto;
+border-radius:16px;padding:15px
 }
-
-.progress-bar {
-  height: 100%;
-  background: var(--primary);
-  width: 0%;
+.sheethead{
+display:flex;justify-content:space-between;
+align-items:center;margin-bottom:12px
 }
-
-.stats {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 9px;
+.item{
+padding:9px 0;border-bottom:1px solid var(--line)
 }
-
-.stat {
-  padding: 12px;
-  background: #F7F9FC;
-  border-radius: 12px;
-}
-
-.stat strong {
-  display: block;
-  font-size: 21px;
-}
-
-.grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 12px;
-}
-
-.form-group {
-  margin-bottom: 12px;
-}
-
-.form-group label {
-  display: block;
-  margin-bottom: 5px;
-  font-size: 13px;
-  color: var(--muted);
-}
-
-.secondary {
-  background: #EEF1F7;
-  color: var(--text);
-}
-
-.danger {
-  background: #FFF0F1;
-  color: var(--danger);
-}
-
-.success {
-  background: #E8F7F0;
-  color: var(--success);
-}
-
-.badge {
-  display: inline-block;
-  padding: 3px 9px;
-  background: var(--primary-light);
-  color: var(--primary);
-  border-radius: 20px;
-  font-size: 12px;
-}
-
-.empty {
-  text-align: center;
-  padding: 22px;
-  color: var(--muted);
-}
-
-.modal {
-  display: none;
-  position: fixed;
-  inset: 0;
-  background: #0008;
-  z-index: 100;
-  align-items: center;
-  justify-content: center;
-  padding: 15px;
-}
-
-.modal.show {
-  display: flex;
-}
-
-.modal-content {
-  background: white;
-  width: 100%;
-  max-width: 550px;
-  max-height: 90vh;
-  overflow-y: auto;
-  border-radius: 18px;
-  padding: 20px;
-}
-
-.modal-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 15px;
-}
-
-.actions {
-  display: flex;
-  gap: 7px;
-  flex-wrap: wrap;
-}
-
-@media(max-width: 500px) {
-  .grid {
-    grid-template-columns: 1fr;
-  }
-
-  .app {
-    padding: 12px;
-  }
-
-  .header {
-    align-items: flex-start;
-  }
+.actions{display:flex;gap:5px;flex-wrap:wrap}
+@media(min-width:600px){
+.modal{align-items:center}
 }
 </style>
 </head>
 
 <body>
-
 <div class="app">
 
-  <header class="header">
-    <div>
-      <div class="logo">البوصلة <span>●</span></div>
-      <div class="muted" id="currentDate"></div>
-    </div>
+<header>
+<div class="brand">
+<div class="logo">ب</div>
+<div>
+<h1>البوصلة</h1>
+<div class="small" id="dateLabel"></div>
+</div>
+</div>
+<button class="btn" onclick="go('settings')">الإعدادات</button>
+</header>
 
-    <button class="secondary" onclick="openBackup()">
-      النسخ الاحتياطي
-    </button>
-  </header>
+<!-- الرئيسية -->
+<section id="home" class="view active">
 
-  <nav class="tabs">
-    <button class="tab active" onclick="showPage('today',this)">يومي</button>
-    <button class="tab" onclick="showPage('goals',this)">أهدافي</button>
-    <button class="tab" onclick="showPage('notes',this)">ملاحظاتي</button>
-    <button class="tab" onclick="showPage('budget',this)">الميزانية</button>
-    <button class="tab" onclick="showPage('history',this)">السجل</button>
-    <button class="tab" onclick="showPage('settings',this)">الإعدادات</button>
-  </nav>
+<div class="card" style="background:#315bd6;color:white">
+<div class="small" style="color:#dce5ff">الهدف الرئيسي</div>
+<h2 id="mainGoal" style="margin:5px 0">لا يوجد هدف</h2>
+<div class="row">
+<div>
+<strong id="mainPercent" style="font-size:23px">0%</strong>
+<div class="small" style="color:#dce5ff">نسبة الإنجاز</div>
+</div>
+<div>
+<strong id="remaining" style="font-size:23px">—</strong>
+<div class="small" style="color:#dce5ff">أيام متبقية</div>
+</div>
+</div>
+<div class="progress" style="margin:9px 0;background:#ffffff55">
+<div id="mainBar" style="background:white;width:0%"></div>
+</div>
+<div class="small" id="mainDates" style="color:#dce5ff"></div>
+</div>
 
-  <!-- يومي -->
-  <section class="page active" id="today">
+<div class="card">
+<div class="sectionhead">
+<h2>مهام اليوم</h2>
+<button class="btn soft" onclick="go('today')">عرض الكل</button>
+</div>
+<div id="homeTasks"></div>
+</div>
 
-    <div id="draftWarning"></div>
+<div class="card">
+<div class="sectionhead">
+<h2>ملخص الميزانية</h2>
+<button class="btn soft" onclick="go('budget')">التفاصيل</button>
+</div>
+<div id="homeBudget" class="small"></div>
+</div>
 
-    <div class="card">
-      <div class="section-header">
-        <h2>إنجاز اليوم</h2>
-        <span class="badge" id="completionPercent">0%</span>
-      </div>
+</section>
 
-      <div class="progress">
-        <div class="progress-bar" id="completionBar"></div>
-      </div>
+<!-- يومي -->
+<section id="today" class="view">
 
-      <div class="stats">
-        <div class="stat">
-          <strong id="completedCount">0</strong>
-          <span class="muted">مكتمل</span>
-        </div>
+<div class="sectionhead">
+<h2>يومي</h2>
+<button class="btn" onclick="manageHabits()">إدارة العادات</button>
+</div>
 
-        <div class="stat">
-          <strong id="remainingCount">0</strong>
-          <span class="muted">متبقي</span>
-        </div>
+<div class="card">
+<h2>عادات اليوم</h2>
+<div id="habitList"></div>
+</div>
 
-        <div class="stat">
-          <strong id="lateCount">0</strong>
-          <span class="muted">متأخر</span>
-        </div>
-      </div>
-    </div>
+<div class="card">
+<div class="sectionhead">
+<h2>المهام اليومية</h2>
+<button class="btn primary" onclick="addTask()">＋ مهمة</button>
+</div>
+<div id="todayTasks"></div>
+</div>
 
-    <div class="card">
-      <div class="section-header">
-        <h2>عاداتي اليومية</h2>
-        <button onclick="openHabit()">+ إضافة عادة</button>
-      </div>
+<div class="card">
+<h2>ملاحظات اليوم</h2>
+<textarea id="todayNote" placeholder="اكتب ملاحظاتك..." oninput="saveTodayNote()"></textarea>
+</div>
 
-      <div id="habitsContainer"></div>
-    </div>
+</section>
 
-    <div class="card">
-      <div class="section-header">
-        <h2>مهام الأهداف</h2>
-        <button onclick="openTask()">+ إضافة مهمة</button>
-      </div>
+<!-- الأهداف -->
+<section id="goals" class="view">
 
-      <div id="tasksContainer"></div>
-    </div>
+<div class="sectionhead">
+<div>
+<h2>الأهداف</h2>
+<div class="small">أهدافك ومهامك اليومية</div>
+</div>
+<button class="btn primary" onclick="openGoal()">＋ هدف جديد</button>
+</div>
 
-    <div class="card">
-      <h2>ملاحظات اليوم</h2>
+<div id="goalList"></div>
 
-      <textarea id="dailyNote"
-        placeholder="اكتب ملاحظاتك هنا..."></textarea>
+</section>
 
-      <button onclick="saveDay()" style="margin-top:12px">
-        حفظ اليوم
-      </button>
-    </div>
+<!-- الملاحظات -->
+<section id="notes" class="view">
 
-  </section>
+<div class="sectionhead">
+<h2>الملاحظات</h2>
+<button class="btn primary" onclick="openNote()">＋ ملاحظة</button>
+</div>
 
-  <!-- الأهداف -->
-  <section class="page" id="goals">
+<div id="notesList"></div>
 
-    <div class="card">
-      <div class="section-header">
-        <h2>أهدافي</h2>
-        <button onclick="openGoal()">+ هدف جديد</button>
-      </div>
+</section>
 
-      <p class="muted">
-        أنشئ أهدافك وحدد تواريخها، وقسّمها إلى أسابيع ومهام إذا أردت.
-      </p>
-    </div>
+<!-- الميزانية -->
+<section id="budget" class="view">
 
-    <div id="goalsContainer"></div>
+<div class="sectionhead">
+<h2>الميزانية</h2>
+<button class="btn primary" onclick="addExpense()">＋ مصروف</button>
+</div>
 
-  </section>
+<div class="card">
+<div class="row">
+<div>
+<div class="small">ميزانية الأسبوع</div>
+<strong id="budgetLimit">غير محددة</strong>
+</div>
+<button class="btn" onclick="setBudget()">تعديل</button>
+</div>
+<hr>
+<div class="row">
+<span class="small">المصروف</span>
+<strong id="spent">0 ج.م</strong>
+</div>
+<div class="progress" style="margin:8px 0">
+<div id="budgetBar"></div>
+</div>
+<div class="small" id="budgetInfo"></div>
+</div>
 
-  <!-- الملاحظات -->
-  <section class="page" id="notes">
+<div class="card">
+<h2>المصروفات</h2>
+<div id="expenseList"></div>
+</div>
 
-    <div class="card">
-      <div class="section-header">
-        <h2>ملاحظاتي</h2>
-        <button onclick="openNote()">+ ملاحظة</button>
-      </div>
+</section>
 
-      <input id="noteSearch"
-        placeholder="ابحث في ملاحظاتك..."
-        oninput="renderNotes()">
+<!-- الإعدادات -->
+<section id="settings" class="view">
 
-      <select id="noteCategoryFilter"
-        onchange="renderNotes()"
-        style="margin-top:10px">
-      </select>
-    </div>
+<h2 style="margin-bottom:10px">الإعدادات</h2>
 
-    <div id="notesContainer"></div>
+<div class="card">
+<h3>النسخ الاحتياطي</h3>
+<div class="actions" style="margin-top:10px">
+<button class="btn" onclick="backup()">تصدير نسخة</button>
+<button class="btn" onclick="$('restoreFile').click()">استعادة نسخة</button>
+<input id="restoreFile" type="file" accept=".json" hidden onchange="restore(event)">
+</div>
+</div>
 
-  </section>
+<div class="card">
+<h3>حول التطبيق</h3>
+<p class="small">البوصلة - نظام إدارة الأهداف والمهام الشخصية.</p>
+<p class="small">يتم تخزين بيانات هذا الإصدار محليًا على الجهاز.</p>
+</div>
 
-  <!-- الميزانية -->
-  <section class="page" id="budget">
-
-    <div class="card">
-      <h2>الميزانية الأسبوعية</h2>
-
-      <div class="form-group">
-        <label>قيمة الميزانية بالجنيه</label>
-        <input type="number" id="weeklyBudget">
-      </div>
-
-      <button onclick="saveBudget()">حفظ الميزانية</button>
-
-      <div id="budgetSummary" style="margin-top:15px"></div>
-    </div>
-
-    <div class="card">
-      <div class="section-header">
-        <h2>المصروفات</h2>
-        <button onclick="openExpense()">+ مصروف</button>
-      </div>
-
-      <div id="expensesContainer"></div>
-    </div>
-
-  </section>
-
-  <!-- السجل -->
-  <section class="page" id="history">
-
-    <div class="card">
-      <h2>سجل الأيام</h2>
-      <p class="muted">
-        هنا تجد الأيام التي حفظتها ونسب إنجازها وتفاصيلها.
-      </p>
-    </div>
-
-    <div id="historyContainer"></div>
-
-  </section>
-
-  <!-- الإعدادات -->
-  <section class="page" id="settings">
-
-    <div class="card">
-      <h2>الإعدادات والبيانات</h2>
-
-      <button onclick="exportBackup()">
-        تنزيل نسخة احتياطية
-      </button>
-
-      <button class="secondary" onclick="document.getElementById('restoreInput').click()">
-        استعادة نسخة احتياطية
-      </button>
-
-      <input type="file" id="restoreInput"
-        accept=".json,application/json"
-        hidden onchange="restoreBackup(event)">
-
-      <p class="muted">
-        احتفظ بنسخة احتياطية من بياناتك بانتظام.
-      </p>
-    </div>
-
-  </section>
+</section>
 
 </div>
 
-<!-- نافذة الإدخال -->
-<div class="modal" id="mainModal">
-  <div class="modal-content">
-    <div class="modal-header">
-      <h2 id="modalTitle"></h2>
-      <button class="secondary" onclick="closeModal()">إغلاق</button>
-    </div>
+<nav>
+<button class="active" data-view="home" onclick="go('home')"><b>⌂</b>الرئيسية</button>
+<button data-view="today" onclick="go('today')"><b>✓</b>يومي</button>
+<button data-view="goals" onclick="go('goals')"><b>◎</b>الأهداف</button>
+<button data-view="notes" onclick="go('notes')"><b>▤</b>ملاحظات</button>
+<button data-view="budget" onclick="go('budget')"><b>ج</b>الميزانية</button>
+</nav>
 
-    <div id="modalBody"></div>
-  </div>
+<div class="modal" id="modal" onclick="if(event.target===this)closeModal()">
+<div class="sheet">
+<div class="sheethead">
+<h2 id="modalTitle">إضافة</h2>
+<button class="btn" onclick="closeModal()">إغلاق</button>
 </div>
+<div id="modalBody"></div>
+</div>
+</div>
+
 <script>
-// ==========================================
-// 1. قاعدة البيانات والتخزين
-// ==========================================
+const KEY='albosla_v2';
+const $=id=>document.getElementById(id);
+const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,7);
 
-const STORAGE_KEY = "albosla_data_v1";
+const today=()=>{
+const d=new Date();
+return d.getFullYear()+'-'+
+String(d.getMonth()+1).padStart(2,'0')+'-'+
+String(d.getDate()).padStart(2,'0');
+};
 
-const createDatabase = () => ({
-  version: 1,
-  habits: [],
-  goals: [],
-  tasks: [],
-  notes: [],
-  categories: ["شغل", "حياتي", "أفكار"],
-  expenses: [],
-  budgets: {},
-  days: {},
-  draft: null
+const dateObj=s=>new Date(s+'T12:00:00');
+const addDays=(s,n)=>{
+let d=dateObj(s);
+d.setDate(d.getDate()+n);
+return d.getFullYear()+'-'+
+String(d.getMonth()+1).padStart(2,'0')+'-'+
+String(d.getDate()).padStart(2,'0');
+};
+const diff=(a,b)=>Math.round((dateObj(b)-dateObj(a))/86400000);
+const fmt=s=>s?dateObj(s).toLocaleDateString('ar-EG',{day:'numeric',month:'short',year:'numeric'}):'—';
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+function emptyState(){
+return {
+goals:[],tasks:[],habits:[],
+days:{},notes:[],expenses:[],
+budget:0
+};
+}
+
+let state;
+try{
+state=JSON.parse(localStorage.getItem(KEY)||'null');
+}catch(e){state=null}
+if(!state||typeof state!=='object')state=emptyState();
+for(const [k,v] of Object.entries(emptyState())){
+if(state[k]===undefined)state[k]=v;
+}
+function save(){
+localStorage.setItem(KEY,JSON.stringify(state));
+}
+function openModal(title,html){
+$('modalTitle').textContent=title;
+$('modalBody').innerHTML=html;
+$('modal').classList.add('show');
+}
+function closeModal(){
+$('modal').classList.remove('show');
+}
+function go(id){
+document.querySelectorAll('.view').forEach(v=>v.classList.toggle('active',v.id===id));
+document.querySelectorAll('nav button').forEach(b=>b.classList.toggle('active',b.dataset.view===id));
+renderAll();
+}
+
+/* المهام */
+function tasksOn(d){
+return state.tasks.filter(t=>t.date===d&&!t.cancelled);
+}
+function toggleTask(id,checked){
+let t=state.tasks.find(x=>x.id===id);
+if(!t)return;
+t.done=checked;
+t.completedAt=checked?today():null;
+save();
+renderAll();
+}
+function taskHTML(t){
+let g=state.goals.find(x=>x.id===t.goalId);
+return `<div class="task ${t.done?'done':''}">
+<input type="checkbox" ${t.done?'checked':''} onchange="toggleTask('${t.id}',this.checked)">
+<div class="task-name">
+<div>${esc(t.title)}</div>
+<div class="small">${g?'الهدف: '+esc(g.title):'مهمة شخصية'}${t.late?' • متأخرة':''}</div>
+</div>
+<button class="btn" onclick="editTask('${t.id}')">تعديل</button>
+</div>`;
+}
+function addTask(){
+openModal('إضافة مهمة',`
+<label>اسم المهمة</label>
+<input id="taskTitle">
+<label>التاريخ</label>
+<input id="taskDate" type="date" value="${today()}">
+<button class="btn primary" onclick="saveTask()">حفظ</button>
+`);
+}
+function saveTask(){
+let title=$('taskTitle').value.trim();
+let date=$('taskDate').value;
+if(!title||!date)return;
+state.tasks.push({id:uid(),title,date,done:false,goalId:null,cancelled:false});
+save();closeModal();renderAll();
+}
+function editTask(id){
+let t=state.tasks.find(x=>x.id===id);
+if(!t)return;
+openModal('تعديل المهمة',`
+<label>اسم المهمة</label>
+<input id="editTitle" value="${esc(t.title)}">
+<label>التاريخ</label>
+<input id="editDate" type="date" value="${t.date}">
+<div class="actions">
+<button class="btn primary" onclick="saveTaskEdit('${id}')">حفظ</button>
+<button class="btn danger" onclick="deleteTask('${id}')">حذف</button>
+</div>
+`);
+}
+function saveTaskEdit(id){
+let t=state.tasks.find(x=>x.id===id);
+let title=$('editTitle').value.trim();
+let date=$('editDate').value;
+if(!title||!date)return;
+t.title=title;t.date=date;
+save();closeModal();renderAll();
+}
+function deleteTask(id){
+if(!confirm('حذف المهمة؟'))return;
+state.tasks=state.tasks.filter(t=>t.id!==id);
+save();closeModal();renderAll();
+}
+
+/* الأهداف: يوم البداية والنهاية محسوبان */
+function duration(g){
+return diff(g.start,g.end)+1;
+}
+function goalTasks(id){
+return state.tasks.filter(t=>t.goalId===id&&!t.cancelled);
+}
+function goalPercent(g){
+let ts=goalTasks(g.id);
+return ts.length?Math.round(ts.filter(t=>t.done).length/ts.length*100):0;
+}
+function openGoal(g=null){
+openModal(g?'تعديل الهدف':'هدف جديد',`
+<label>اسم الهدف الكبير</label>
+<input id="goalTitle" value="${esc(g?.title||'')}" placeholder="اكتب اسم الهدف">
+<div class="formgrid">
+<div>
+<label>تاريخ البداية</label>
+<input id="goalStart" type="date" value="${g?.start||today()}">
+</div>
+<div>
+<label>تاريخ النهاية</label>
+<input id="goalEnd" type="date" value="${g?.end||today()}">
+</div>
+</div>
+<div class="small">مثال: من 13 إلى 16 = 4 أيام عمل، ويشمل يوم النهاية.</div>
+<br>
+<button class="btn primary" onclick="saveGoal('${g?.id||''}')">حفظ الهدف</button>
+`);
+}
+function saveGoal(id){
+let title=$('goalTitle').value.trim();
+let start=$('goalStart').value;
+let end=$('goalEnd').value;
+if(!title||!start||!end||end<start){
+alert('راجع اسم الهدف وتواريخ البداية والنهاية');
+return;
+}
+let g={id:id||uid(),title,start,end};
+if(id){
+let old=state.goals.find(x=>x.id===id);
+Object.assign(old,g);
+}else{
+state.goals.push(g);
+}
+save();closeModal();renderAll();
+}
+function openGoalDetail(id){
+let g=state.goals.find(x=>x.id===id);
+if(!g)return;
+let html=`
+<div class="small">${fmt(g.start)} — ${fmt(g.end)} • ${duration(g)} أيام</div>
+<div style="margin:9px 0">
+<div class="progress"><div style="width:${goalPercent(g)}%"></div></div>
+<div class="small" style="margin-top:4px">${goalPercent(g)}% إنجاز</div>
+</div>`;
+for(let i=0;i<duration(g);i++){
+let date=addDays(g.start,i);
+let ts=goalTasks(id).filter(t=>t.date===date);
+html+=`
+<div class="dayblock">
+<div class="dayhead">
+<strong>اليوم ${i+1} - ${fmt(date)}</strong>
+<button class="btn soft" onclick="addGoalTask('${id}','${date}')">＋ مهمة</button>
+</div>
+${ts.length?ts.map(t=>taskHTML(t)).join(''):'<div class="small">لا توجد مهام لهذا اليوم.</div>'}
+</div>`;
+}
+html+=`<br><button class="btn primary" onclick="addGoalTask('${id}','')">إضافة مهمة بتاريخ آخر</button>`;
+openModal(g.title,html);
+}
+function addGoalTask(id,date){
+let g=state.goals.find(x=>x.id===id);
+openModal('إضافة مهمة للهدف',`
+<label>اسم المهمة</label>
+<input id="goalTaskTitle" placeholder="اكتب المهمة">
+<label>تاريخ تنفيذ المهمة</label>
+<input id="goalTaskDate" type="date" min="${g.start}" max="${g.end}" value="${date||g.start}">
+<div class="small">ستظهر المهمة تلقائيًا في «يومي» في التاريخ المحدد.</div>
+<br>
+<button class="btn primary" onclick="saveGoalTask('${id}')">إضافة</button>
+`);
+}
+function saveGoalTask(id){
+let g=state.goals.find(x=>x.id===id);
+let title=$('goalTaskTitle').value.trim();
+let date=$('goalTaskDate').value;
+if(!title||!date)return;
+if(date<g.start||date>g.end){
+alert('تاريخ المهمة يجب أن يكون داخل مدة الهدف');
+return;
+}
+state.tasks.push({
+id:uid(),title,date,goalId:id,
+done:false,cancelled:false
 });
-
-let db;
-
-function loadDatabase() {
-  try {
-    const saved = localStorage.getItem(STORAGE_KEY);
-    if (!saved) return createDatabase();
-
-    const data = JSON.parse(saved);
-
-    if (!data || typeof data !== "object") {
-      throw new Error("Invalid database");
-    }
-
-    return {
-      ...createDatabase(),
-      ...data
-    };
-  } catch (error) {
-    alert("تعذر قراءة البيانات المحفوظة. لن يتم حذفها تلقائيًا.");
-    return createDatabase();
-  }
+save();
+openGoalDetail(id);
+renderAll();
+}
+function deleteGoal(id){
+if(!confirm('حذف الهدف؟ ستظل المهام الموجودة في يومي كمهمات شخصية.'))return;
+state.goals=state.goals.filter(g=>g.id!==id);
+state.tasks.forEach(t=>{if(t.goalId===id)t.goalId=null});
+save();renderAll();
+}
+function renderGoals(){
+$('goalList').innerHTML=state.goals.length?
+state.goals.map(g=>{
+let ts=goalTasks(g.id);
+let p=goalPercent(g);
+return `
+<div class="card">
+<div class="row">
+<div class="goal-title">${esc(g.title)}</div>
+<span class="pill">${p}%</span>
+</div>
+<div class="small" style="margin:5px 0 8px">
+${fmt(g.start)} — ${fmt(g.end)} • ${duration(g)} أيام
+</div>
+<div class="progress"><div style="width:${p}%"></div></div>
+<div class="row" style="margin-top:9px">
+<span class="small">${ts.filter(t=>t.done).length} / ${ts.length} مهمة مكتملة</span>
+<div class="actions">
+<button class="btn soft" onclick="openGoalDetail('${g.id}')">فتح</button>
+<button class="btn" onclick="openGoal(state.goals.find(x=>x.id==='${g.id}'))">تعديل</button>
+<button class="btn danger" onclick="deleteGoal('${g.id}')">حذف</button>
+</div>
+</div>
+</div>`;
+}).join(''):
+'<div class="empty">لا توجد أهداف. أضف هدفك الأول.</div>';
 }
 
-db = loadDatabase();
-
-function saveDatabase() {
-  try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(db));
-    return true;
-  } catch (error) {
-    alert("تعذر حفظ البيانات. قد تكون مساحة التخزين ممتلئة.");
-    return false;
-  }
+/* العادات */
+function toggleHabit(id,v){
+let d=state.days[today()]||{done:[],note:''};
+d.done=v?[...new Set([...d.done,id])]:(d.done||[]).filter(x=>x!==id);
+state.days[today()]=d;save();renderAll();
+}
+function manageHabits(){
+openModal('إدارة العادات',`
+${state.habits.map(h=>`
+<div class="item row">
+<span>${esc(h.name)}</span>
+<button class="btn danger" onclick="deleteHabit('${h.id}')">حذف</button>
+</div>`).join('')}
+<label>عادة جديدة</label>
+<input id="newHabit" placeholder="اسم العادة">
+<button class="btn primary" onclick="saveHabit()">إضافة</button>
+`);
+}
+function saveHabit(){
+let n=$('newHabit').value.trim();
+if(!n)return;
+state.habits.push({id:uid(),name:n});
+save();manageHabits();renderAll();
+}
+function deleteHabit(id){
+state.habits=state.habits.filter(h=>h.id!==id);
+save();manageHabits();renderAll();
+}
+function saveTodayNote(){
+let d=state.days[today()]||{done:[],note:''};
+d.note=$('todayNote').value;
+state.days[today()]=d;save();
 }
 
-function uid() {
-  return Date.now().toString(36) +
-    Math.random().toString(36).slice(2, 9);
+/* الملاحظات */
+function openNote(){
+openModal('ملاحظة جديدة',`
+<label>العنوان</label>
+<input id="noteTitle">
+<label>التصنيف</label>
+<select id="noteCategory">
+<option>شغل</option><option>حياتي</option><option>أفكار</option>
+</select>
+<label>المحتوى</label>
+<textarea id="noteBody"></textarea>
+<button class="btn primary" onclick="saveNote()">حفظ</button>
+`);
+}
+function saveNote(){
+let title=$('noteTitle').value.trim();
+let body=$('noteBody').value;
+if(!title&&!body)return;
+state.notes.push({id:uid(),title,body,date:today()});
+save();closeModal();renderAll();
+}
+function renderNotes(){
+$('notesList').innerHTML=state.notes.length?
+state.notes.map(n=>`
+<div class="card">
+<strong>${esc(n.title)}</strong>
+<div class="small">${esc(n.date)}</div>
+<p>${esc(n.body)}</p>
+</div>`).join(''):
+'<div class="empty">لا توجد ملاحظات.</div>';
 }
 
-function escapeHTML(value) {
-  return String(value ?? "").replace(/[&<>"']/g, char => ({
-    "&": "&amp;",
-    "<": "&lt;",
-    ">": "&gt;",
-    '"': "&quot;",
-    "'": "&#39;"
-  })[char]);
+/* الميزانية */
+function setBudget(){
+openModal('الميزانية الأسبوعية',`
+<label>المبلغ بالجنيه</label>
+<input id="budgetInput" type="number" min="0" value="${state.budget||''}">
+<button class="btn primary" onclick="saveBudget()">حفظ</button>
+`);
+}
+function saveBudget(){
+let n=Number($('budgetInput').value);
+if(n<=0)return;
+state.budget=n;save();closeModal();renderAll();
+}
+function addExpense(){
+openModal('إضافة مصروف',`
+<label>وصف المصروف</label>
+<input id="expenseTitle">
+<label>المبلغ</label>
+<input id="expenseAmount" type="number" min="0">
+<button class="btn primary" onclick="saveExpense()">حفظ</button>
+`);
+}
+function saveExpense(){
+let title=$('expenseTitle').value.trim();
+let amount=Number($('expenseAmount').value);
+if(!title||amount<=0)return;
+state.expenses.push({id:uid(),title,amount,date:today()});
+save();closeModal();renderAll();
+}
+function renderBudget(){
+let spent=state.expenses.reduce((s,e)=>s+Number(e.amount),0);
+let p=state.budget?Math.round(spent/state.budget*100):0;
+$('budgetLimit').textContent=state.budget?state.budget+' ج.م':'غير محددة';
+$('spent').textContent=spent+' ج.م';
+$('budgetBar').style.width=Math.min(p,100)+'%';
+$('budgetInfo').textContent=state.budget?
+p+'% مستخدم - متبقي '+Math.max(0,state.budget-spent)+' ج.م':'حدد ميزانيتك أولًا.';
+$('expenseList').innerHTML=state.expenses.map(e=>`
+<div class="item row">
+<span>${esc(e.title)}</span>
+<strong>${e.amount} ج.م</strong>
+</div>`).join('')||'<div class="empty">لا توجد مصروفات.</div>';
 }
 
-function today() {
-  const d = new Date();
-  return [
-    d.getFullYear(),
-    String(d.getMonth() + 1).padStart(2, "0"),
-    String(d.getDate()).padStart(2, "0")
-  ].join("-");
+/* النسخ الاحتياطي */
+function backup(){
+let blob=new Blob([JSON.stringify(state,null,2)],{type:'application/json'});
+let a=document.createElement('a');
+a.href=URL.createObjectURL(blob);
+a.download='albosla-backup.json';
+a.click();
+URL.revokeObjectURL(a.href);
+}
+function restore(e){
+let file=e.target.files[0];
+if(!file)return;
+let r=new FileReader();
+r.onload=()=>{
+try{
+let d=JSON.parse(r.result);
+if(!d||!Array.isArray(d.goals)||!Array.isArray(d.tasks))throw Error();
+if(!confirm('سيتم استبدال البيانات الحالية. هل تريد المتابعة؟'))return;
+state={...emptyState(),...d};
+save();renderAll();alert('تمت الاستعادة');
+}catch(err){alert('ملف النسخة غير صالح')}
+};
+r.readAsText(file);
 }
 
-function formatDate(date) {
-  if (!date) return "غير محدد";
-
-  return new Date(date + "T12:00:00")
-    .toLocaleDateString("ar-EG", {
-      year: "numeric",
-      month: "long",
-      day: "numeric"
-    });
+/* عرض البيانات */
+function renderHome(){
+let g=state.goals[0];
+$('mainGoal').textContent=g?g.title:'لا يوجد هدف';
+$('mainPercent').textContent=g?goalPercent(g)+'%':'0%';
+$('mainBar').style.width=(g?goalPercent(g):0)+'%';
+$('remaining').textContent=g?Math.max(0,diff(today(),g.end)):'—';
+$('mainDates').textContent=g?fmt(g.start)+' — '+fmt(g.end):'أضف هدفك الأول';
+let ts=tasksOn(today());
+$('homeTasks').innerHTML=ts.length?
+ts.map(taskHTML).join(''):
+'<div class="empty">لا توجد مهام اليوم.</div>';
+let spent=state.expenses.reduce((s,e)=>s+Number(e.amount),0);
+$('homeBudget').textContent=state.budget?
+spent+' من '+state.budget+' ج.م':'لم تحدد ميزانية بعد.';
 }
-
-function money(value) {
-  return Number(value || 0).toLocaleString("en-US") + " جنيه";
+function renderToday(){
+let d=state.days[today()]||{done:[],note:''};
+$('habitList').innerHTML=state.habits.length?
+state.habits.map(h=>`
+<div class="task">
+<input type="checkbox" ${d.done.includes(h.id)?'checked':''} onchange="toggleHabit('${h.id}',this.checked)">
+<span>${esc(h.name)}</span>
+</div>`).join(''):
+'<div class="empty">لا توجد عادات بعد.</div>';
+$('todayTasks').innerHTML=tasksOn(today()).length?
+tasksOn(today()).map(taskHTML).join(''):
+'<div class="empty">لا توجد مهام اليوم.</div>';
+$('todayNote').value=d.note||'';
 }
-
-function showPage(page, button) {
-  document.querySelectorAll(".page").forEach(element => {
-    element.classList.remove("active");
-  });
-
-  document.querySelectorAll(".tab").forEach(element => {
-    element.classList.remove("active");
-  });
-
-  document.getElementById(page).classList.add("active");
-
-  if (button) button.classList.add("active");
-
-  renderAll();
+function renderAll(){
+$('dateLabel').textContent=new Date().toLocaleDateString('ar-EG',{weekday:'long',day:'numeric',month:'long'});
+renderHome();
+renderToday();
+renderGoals();
+renderNotes();
+renderBudget();
 }
-
-function openModal(title, html) {
-  document.getElementById("modalTitle").textContent = title;
-  document.getElementById("modalBody").innerHTML = html;
-  document.getElementById("mainModal").classList.add("show");
-}
-
-function closeModal() {
-  document.getElementById("mainModal").classList.remove("show");
-}
-
-document.getElementById("mainModal").addEventListener("click", function(e) {
-  if (e.target === this) closeModal();
-});
-
-// ==========================================
-// 2. إدارة اليوم والمسودات
-// ==========================================
-
-function getDraft() {
-  if (!db.draft) {
-    db.draft = {
-      date: today(),
-      habits: db.habits.map(h => ({
-        id: h.id,
-        name: h.name,
-        done: false
-      })),
-      note: ""
-    };
-  }
-
-  return db.draft;
-}
-
-function getCurrentTasks() {
-  return db.tasks.filter(task =>
-    !task.cancelled &&
-    task.status !== "done" &&
-    task.status !== "cancelled" &&
-    (!task.due || task.due <= today())
-  );
-}
-
-function getWeekStart(date) {
-  const d = new Date(date + "T12:00:00");
-  const day = d.getDay();
-
-  d.setDate(d.getDate() - ((day + 1) % 7));
-
-  return [
-    d.getFullYear(),
-    String(d.getMonth() + 1).padStart(2, "0"),
-    String(d.getDate()).padStart(2, "0")
-  ].join("-");
-}
-
-function renderToday() {
-  const draft = getDraft();
-
-  const tasks = getCurrentTasks();
-
-  const completedHabits =
-    draft.habits.filter(h => h.done).length;
-
-  const completedTasks =
-    tasks.filter(t => t.status === "done").length;
-
-  const total = draft.habits.length + tasks.length;
-  const completed = completedHabits + completedTasks;
-
-  const percent = total
-    ? Math.round(completed / total * 100)
-    : 0;
-
-  document.getElementById("completionPercent").textContent =
-    percent + "%";
-
-  document.getElementById("completionBar").style.width =
-    percent + "%";
-
-  document.getElementById("completedCount").textContent =
-    completed;
-
-  document.getElementById("remainingCount").textContent =
-    total - completed;
-
-  document.getElementById("lateCount").textContent =
-    tasks.filter(t => t.due && t.due < today()).length;
-
-  document.getElementById("dailyNote").value =
-    draft.note || "";
-
-  // العادات
-  const habitsContainer =
-    document.getElementById("habitsContainer");
-
-  habitsContainer.innerHTML = draft.habits.length
-    ? draft.habits.map(h => `
-      <div class="item ${h.done ? "done" : ""}">
-        <input type="checkbox"
-          ${h.done ? "checked" : ""}
-          onchange="toggleHabit('${h.id}', this.checked)">
-
-        <div class="item-content">
-          ${escapeHTML(h.name)}
-        </div>
-
-        <button class="secondary"
-          onclick="editHabit('${h.id}')">تعديل</button>
-
-        <button class="danger"
-          onclick="deleteHabit('${h.id}')">حذف</button>
-      </div>
-    `).join("")
-    : '<div class="empty">لا توجد عادات. أضف أول عادة.</div>';
-
-  // المهام
-  const tasksContainer =
-    document.getElementById("tasksContainer");
-
-  tasksContainer.innerHTML = tasks.length
-    ? tasks.map(t => {
-        const goal = db.goals.find(g => g.id === t.goalId);
-        const week = goal?.weeks?.find(w => w.id === t.weekId);
-
-        return `
-          <div class="item">
-            <input type="checkbox"
-              onchange="completeTask('${t.id}', this.checked)">
-
-            <div class="item-content">
-              <strong>${escapeHTML(t.title)}</strong>
-
-              <div class="muted">
-                ${escapeHTML(goal?.name || "هدف غير موجود")}
-                ${week ? " · " + escapeHTML(week.name) : ""}
-              </div>
-
-              <div class="muted">
-                ${formatDate(t.due)}
-                ${t.due && t.due < today()
-                  ? '<span class="badge">متأخرة</span>'
-                  : ""}
-              </div>
-            </div>
-
-            <button class="secondary"
-              onclick="editTask('${t.id}')">تعديل</button>
-          </div>
-        `;
-      }).join("")
-    : '<div class="empty">لا توجد مهام مستحقة اليوم.</div>';
-
-  const warning = document.getElementById("draftWarning");
-
-  if (db.draft.date < today()) {
-    warning.innerHTML = `
-      <div class="card">
-        <strong>لديك يوم سابق غير محفوظ</strong>
-        <p class="muted">${formatDate(db.draft.date)}</p>
-        <button onclick="reviewOldDraft()">مراجعة وحفظ اليوم السابق</button>
-      </div>
-    `;
-  } else {
-    warning.innerHTML = "";
-  }
-}
-
-function toggleHabit(id, checked) {
-  const draft = getDraft();
-  const habit = draft.habits.find(h => h.id === id);
-
-  if (habit) habit.done = checked;
-
-  saveDatabase();
-  renderToday();
-}
-
-function saveDay() {
-  if (!db.draft) return;
-
-  if (db.draft.date < today()) {
-    alert("راجع المسودة السابقة أولًا.");
-    reviewOldDraft();
-    return;
-  }
-
-  db.draft.note =
-    document.getElementById("dailyNote").value;
-
-  const date = db.draft.date;
-
-  const tasks = db.tasks
-    .filter(t =>
-      !t.cancelled &&
-      (t.due === date || (!t.due && date === today()))
-    )
-    .map(t => ({
-      id: t.id,
-      title: t.title,
-      goalId: t.goalId,
-      weekId: t.weekId,
-      due: t.due,
-      status: t.status
-    }));
-
-  db.days[date] = {
-    date,
-    habits: JSON.parse(JSON.stringify(db.draft.habits)),
-    tasks,
-    note: db.draft.note,
-    savedAt: new Date().toISOString()
-  };
-
-  db.draft = null;
-
-  if (saveDatabase()) {
-    alert("تم حفظ اليوم بنجاح.");
-    renderAll();
-  }
-}
-
-function reviewOldDraft() {
-  const draft = db.draft;
-
-  if (!draft) return;
-
-  openModal("مراجعة اليوم السابق", `
-    <p>التاريخ: ${formatDate(draft.date)}</p>
-
-    <div class="muted">
-      ${draft.habits.map(h => `
-        <div class="item">
-          ${h.done ? "✓" : "○"}
-          ${escapeHTML(h.name)}
-        </div>
-      `).join("")}
-    </div>
-
-    <textarea id="oldDayNote">${escapeHTML(draft.note || "")}</textarea>
-
-    <button onclick="saveOldDay()" style="margin-top:12px">
-      حفظ اليوم السابق
-    </button>
-  `);
-}
-
-function saveOldDay() {
-  if (!db.draft) return;
-
-  const date = db.draft.date;
-
-  db.days[date] = {
-    date,
-    habits: JSON.parse(JSON.stringify(db.draft.habits)),
-    tasks: [],
-    note: document.getElementById("oldDayNote").value,
-    savedAt: new Date().toISOString()
-  };
-
-  db.draft = null;
-
-  saveDatabase();
-  closeModal();
-  renderAll();
-}
-
-// ==========================================
-// 3. العادات
-// ==========================================
-
-function openHabit() {
-  openModal("إضافة عادة", `
-    <form onsubmit="addHabit(event)">
-      <div class="form-group">
-        <label>اسم العادة</label>
-        <input name="name" required placeholder="مثال: قراءة 10 صفحات">
-      </div>
-
-      <button>حفظ العادة</button>
-    </form>
-  `);
-}
-
-function addHabit(event) {
-  event.preventDefault();
-
-  const name = event.target.name.value.trim();
-
-  if (!name) return;
-
-  const habit = {
-    id: uid(),
-    name
-  };
-
-  db.habits.push(habit);
-
-  if (db.draft && db.draft.date === today()) {
-    db.draft.habits.push({
-      id: habit.id,
-      name,
-      done: false
-    });
-  }
-
-  saveDatabase();
-  closeModal();
-  renderAll();
-}
-
-function editHabit(id) {
-  const habit = db.habits.find(h => h.id === id);
-
-  if (!habit) return;
-
-  openModal("تعديل العادة", `
-    <form onsubmit="updateHabit(event, '${id}')">
-      <div class="form-group">
-        <label>اسم العادة</label>
-        <input name="name" required value="${escapeHTML(habit.name)}">
-      </div>
-
-      <button>حفظ التعديل</button>
-    </form>
-  `);
-}
-
-function updateHabit(event, id) {
-  event.preventDefault();
-
-  const name = event.target.name.value.trim();
-
-  if (!name) return;
-
-  const habit = db.habits.find(h => h.id === id);
-
-  if (habit) habit.name = name;
-
-  if (db.draft) {
-    const draftHabit = db.draft.habits.find(h => h.id === id);
-    if (draftHabit) draftHabit.name = name;
-  }
-
-  saveDatabase();
-  closeModal();
-  renderAll();
-}
-
-function deleteHabit(id) {
-  if (!confirm("حذف العادة من الأيام القادمة؟")) return;
-
-  db.habits = db.habits.filter(h => h.id !== id);
-
-  // لا نحذف النسخ التاريخية للعادات.
-  saveDatabase();
-  renderAll();
-}
-
-// ==========================================
-// 4. الأهداف
-// ==========================================
-
-function openGoal() {
-  openModal("إنشاء هدف جديد", `
-    <form onsubmit="addGoal(event)">
-      <div class="form-group">
-        <label>اسم الهدف</label>
-        <input name="name" required>
-      </div>
-
-      <div class="form-group">
-        <label>وصف الهدف</label>
-        <textarea name="description"></textarea>
-      </div>
-
-      <div class="grid">
-        <div class="form-group">
-          <label>تاريخ البداية</label>
-          <input type="date" name="start">
-        </div>
-
-        <div class="form-group">
-          <label>تاريخ النهاية</label>
-          <input type="date" name="end">
-        </div>
-      </div>
-
-      <button>إنشاء الهدف</button>
-    </form>
-  `);
-}
-
-function addGoal(event) {
-  event.preventDefault();
-
-  const f = event.target;
-
-  db.goals.push({
-    id: uid(),
-    name: f.name.value.trim(),
-    description: f.description.value,
-    start: f.start.value,
-    end: f.end.value,
-    status: "active",
-    weeks: [],
-    notes: ""
-  });
-
-  saveDatabase();
-  closeModal();
-  renderAll();
-}
-
-function editGoal(id) {
-  const goal = db.goals.find(g => g.id === id);
-
-  if (!goal) return;
-
-  openModal("تعديل الهدف", `
-    <form onsubmit="updateGoal(event, '${id}')">
-      <div class="form-group">
-        <label>اسم الهدف</label>
-        <input name="name" required value="${escapeHTML(goal.name)}">
-      </div>
-
-      <div class="form-group">
-        <label>الوصف</label>
-        <textarea name="description">${escapeHTML(goal.description)}</textarea>
-      </div>
-
-      <div class="grid">
-        <div class="form-group">
-          <label>البداية</label>
-          <input type="date" name="start" value="${goal.start || ""}">
-        </div>
-
-        <div class="form-group">
-          <label>النهاية</label>
-          <input type="date" name="end" value="${goal.end || ""}">
-        </div>
-      </div>
-
-      <div class="form-group">
-        <label>الحالة</label>
-        <select name="status">
-          <option value="active" ${goal.status === "active" ? "selected" : ""}>نشط</option>
-          <option value="paused" ${goal.status === "paused" ? "selected" : ""}>متوقف مؤقتًا</option>
-          <option value="done" ${goal.status === "done" ? "selected" : ""}>مكتمل</option>
-        </select>
-      </div>
-
-      <button>حفظ التعديلات</button>
-    </form>
-  `);
-}
-
-function updateGoal(event, id) {
-  event.preventDefault();
-
-  const goal = db.goals.find(g => g.id === id);
-  if (!goal) return;
-
-  const f = event.target;
-
-  Object.assign(goal, {
-    name: f.name.value.trim(),
-    description: f.description.value,
-    start: f.start.value,
-    end: f.end.value,
-    status: f.status.value
-  });
-
-  saveDatabase();
-  closeModal();
-  renderAll();
-}
-
-function deleteGoal(id) {
-  if (!confirm("حذف الهدف وجميع مهامه؟")) return;
-
-  db.goals = db.goals.filter(g => g.id !== id);
-  db.tasks = db.tasks.filter(t => t.goalId !== id);
-
-  saveDatabase();
-  renderAll();
-}
-
-function goalProgress(goal) {
-  const tasks = db.tasks.filter(t =>
-    t.goalId === goal.id &&
-    !t.cancelled &&
-    t.status !== "cancelled"
-  );
-
-  const done = tasks.filter(t => t.status === "done").length;
-
-  return {
-    total: tasks.length,
-    done,
-    percent: tasks.length
-      ? Math.round(done / tasks.length * 100)
-      : 0
-  };
-}
-
-function renderGoals() {
-  const container = document.getElementById("goalsContainer");
-
-  container.innerHTML = db.goals.length
-    ? db.goals.map(goal => {
-        const progress = goalProgress(goal);
-
-        return `
-          <div class="card">
-            <div class="section-header">
-              <h2>${escapeHTML(goal.name)}</h2>
-              <span class="badge">${progress.percent}%</span>
-            </div>
-
-            <p class="muted">${escapeHTML(goal.description)}</p>
-
-            <div class="muted">
-              البداية: ${formatDate(goal.start)}
-              <br>
-              النهاية: ${formatDate(goal.end)}
-            </div>
-
-            <div class="progress">
-              <div class="progress-bar"
-                style="width:${progress.percent}%"></div>
-            </div>
-
-            <p class="muted">
-              ${progress.done} من ${progress.total} مهمة مكتملة
-            </p>
-
-            <div class="actions">
-              <button onclick="openTask('', '${goal.id}')">إضافة مهمة</button>
-              <button class="secondary" onclick="openWeek('${goal.id}')">إضافة أسبوع</button>
-              <button class="secondary" onclick="editGoal('${goal.id}')">تعديل</button>
-              <button class="secondary" onclick="goalNotes('${goal.id}')">ملاحظات الهدف</button>
-              <button class="danger" onclick="deleteGoal('${goal.id}')">حذف</button>
-            </div>
-
-            ${(goal.weeks || []).map(week => `
-              <div class="item">
-                <div class="item-content">
-                  <strong>${escapeHTML(week.name)}</strong>
-                  <div class="muted">${escapeHTML(week.description || "")}</div>
-                </div>
-                <button class="secondary"
-                  onclick="editWeek('${goal.id}', '${week.id}')">تعديل</button>
-              </div>
-            `).join("")}
-          </div>
-        `;
-      }).join("")
-    : '<div class="card empty">لم تضف أهدافًا حتى الآن.</div>';
-}
-
-// ==========================================
-// 5. الأسابيع والمراحل
-// ==========================================
-
-function openWeek(goalId) {
-  openModal("إضافة أسبوع", `
-    <form onsubmit="addWeek(event, '${goalId}')">
-      <div class="form-group">
-        <label>اسم الأسبوع أو المرحلة</label>
-        <input name="name" required>
-      </div>
-
-      <div class="form-group">
-        <label>الوصف</label>
-        <textarea name="description"></textarea>
-      </div>
-
-      <button>حفظ الأسبوع</button>
-    </form>
-  `);
-}
-
-function addWeek(event, goalId) {
-  event.preventDefault();
-
-  const goal = db.goals.find(g => g.id === goalId);
-  if (!goal) return;
-
-  goal.weeks.push({
-    id: uid(),
-    name: event.target.name.value.trim(),
-    description: event.target.description.value
-  });
-
-  saveDatabase();
-  closeModal();
-  renderAll();
-}
-
-function editWeek(goalId, weekId) {
-  const goal = db.goals.find(g => g.id === goalId);
-  const week = goal?.weeks.find(w => w.id === weekId);
-
-  if (!week) return;
-
-  openModal("تعديل الأسبوع", `
-    <form onsubmit="updateWeek(event, '${goalId}', '${weekId}')">
-      <div class="form-group">
-        <label>اسم الأسبوع</label>
-        <input name="name" required value="${escapeHTML(week.name)}">
-      </div>
-
-      <div class="form-group">
-        <label>الوصف</label>
-        <textarea name="description">${escapeHTML(week.description || "")}</textarea>
-      </div>
-
-      <button>حفظ</button>
-    </form>
-  `);
-}
-
-function updateWeek(event, goalId, weekId) {
-  event.preventDefault();
-
-  const goal = db.goals.find(g => g.id === goalId);
-  const week = goal?.weeks.find(w => w.id === weekId);
-
-  if (!week) return;
-
-  week.name = event.target.name.value.trim();
-  week.description = event.target.description.value;
-
-  saveDatabase();
-  closeModal();
-  renderAll();
-}
-
-// ==========================================
-// 6. المهام
-// ==========================================
-
-function openTask(id = "", goalId = "") {
-  const task = db.tasks.find(t => t.id === id);
-
-  const selectedGoal = task?.goalId || goalId;
-
-  if (!db.goals.length) {
-    alert("أنشئ هدفًا أولًا قبل إضافة مهمة.");
-    return;
-  }
-
-  const options = db.goals.map(g => `
-    <option value="${g.id}"
-      ${g.id === selectedGoal ? "selected" : ""}>
-      ${escapeHTML(g.name)}
-    </option>
-  `).join("");
-
-  openModal(task ? "تعديل المهمة" : "إضافة مهمة", `
-    <form onsubmit="saveTask(event, '${id}')">
-      <div class="form-group">
-        <label>اسم المهمة</label>
-        <input name="title" required value="${escapeHTML(task?.title || "")}">
-      </div>
-
-      <div class="form-group">
-        <label>الهدف</label>
-        <select name="goalId" id="taskGoal"
-          onchange="refreshTaskWeeks()">
-          ${options}
-        </select>
-      </div>
-
-      <div class="form-group">
-        <label>الأسبوع (اختياري)</label>
-        <select name="weekId" id="taskWeek">
-          <option value="">بدون أسبوع</option>
-        </select>
-      </div>
-
-      <div class="form-group">
-        <label>تاريخ التنفيذ</label>
-        <input type="date" name="due"
-          value="${task?.due || today()}">
-      </div>
-
-      <button>حفظ المهمة</button>
-    </form>
-  `);
-
-  refreshTaskWeeks(task?.weekId || "");
-}
-
-function refreshTaskWeeks(selectedId = "") {
-  const goalId = document.getElementById("taskGoal").value;
-  const goal = db.goals.find(g => g.id === goalId);
-
-  const select = document.getElementById("taskWeek");
-
-  select.innerHTML = '<option value="">بدون أسبوع</option>';
-
-  (goal?.weeks || []).forEach(week => {
-    const option = document.createElement("option");
-
-    option.value = week.id;
-    option.textContent = week.name;
-    option.selected = week.id === selectedId;
-
-    select.appendChild(option);
-  });
-}
-
-function saveTask(event, id) {
-  event.preventDefault();
-
-  const f = event.target;
-
-  const data = {
-    title: f.title.value.trim(),
-    goalId: f.goalId.value,
-    weekId: f.weekId.value,
-    due: f.due.value,
-    status: "open",
-    cancelled: false
-  };
-
-  if (id) {
-    const task = db.tasks.find(t => t.id === id);
-
-    if (task) {
-      Object.assign(task, data, {
-        status: task.status
-      });
-    }
-  } else {
-    db.tasks.push({
-      id: uid(),
-      ...data
-    });
-  }
-
-  saveDatabase();
-  closeModal();
-  renderAll();
-}
-
-function editTask(id) {
-  openTask(id);
-}
-
-function completeTask(id, checked) {
-  const task = db.tasks.find(t => t.id === id);
-
-  if (!task) return;
-
-  task.status = checked ? "done" : "open";
-
-  if (checked) {
-    task.completedAt = today();
-  } else {
-    delete task.completedAt;
-  }
-
-  saveDatabase();
-  renderAll();
-}
-
-// ==========================================
-// 7. ملاحظات الأهداف
-// ==========================================
-
-function goalNotes(id) {
-  const goal = db.goals.find(g => g.id === id);
-
-  if (!goal) return;
-
-  openModal("ملاحظات الهدف", `
-    <textarea id="goalNotesInput">${escapeHTML(goal.notes || "")}</textarea>
-
-    <button style="margin-top:12px"
-      onclick="saveGoalNotes('${id}')">
-      حفظ الملاحظات
-    </button>
-  `);
-}
-
-function saveGoalNotes(id) {
-  const goal = db.goals.find(g => g.id === id);
-
-  if (!goal) return;
-
-  goal.notes = document.getElementById("goalNotesInput").value;
-
-  saveDatabase();
-  closeModal();
-}
-
-// ==========================================
-// 8. الملاحظات العامة
-// ==========================================
-
-function openNote(id = "") {
-  const note = db.notes.find(n => n.id === id);
-
-  const categories = [
-    ...db.categories,
-    "غير مصنف"
-  ];
-
-  openModal(note ? "تعديل ملاحظة" : "إضافة ملاحظة", `
-    <form onsubmit="saveNote(event, '${id}')">
-      <div class="form-group">
-        <label>العنوان</label>
-        <input name="title" required value="${escapeHTML(note?.title || "")}">
-      </div>
-
-      <div class="form-group">
-        <label>التصنيف</label>
-        <select name="category">
-          ${categories.map(c => `
-            <option ${note?.category === c ? "selected" : ""}>
-              ${escapeHTML(c)}
-            </option>
-          `).join("")}
-        </select>
-      </div>
-
-      <div class="form-group">
-        <label>المحتوى</label>
-        <textarea name="body">${escapeHTML(note?.body || "")}</textarea>
-      </div>
-
-      <button>حفظ الملاحظة</button>
-    </form>
-  `);
-}
-
-function saveNote(event, id) {
-  event.preventDefault();
-
-  const f = event.target;
-
-  const data = {
-    title: f.title.value.trim(),
-    category: f.category.value,
-    body: f.body.value
-  };
-
-  if (id) {
-    const note = db.notes.find(n => n.id === id);
-    if (note) Object.assign(note, data);
-  } else {
-    db.notes.push({
-      id: uid(),
-      ...data,
-      pinned: false
-    });
-  }
-
-  saveDatabase();
-  closeModal();
-  renderAll();
-}
-
-function renderNotes() {
-  const search = (
-    document.getElementById("noteSearch").value || ""
-  ).toLowerCase();
-
-  const filter =
-    document.getElementById("noteCategoryFilter");
-
-  const selected = filter.value;
-
-  filter.innerHTML = `
-    <option value="">كل التصنيفات</option>
-    ${db.categories.map(c => `
-      <option value="${escapeHTML(c)}">${escapeHTML(c)}</option>
-    `).join("")}
-    <option value="غير مصنف">غير مصنف</option>
-  `;
-
-  filter.value = selected;
-
-  const notes = db.notes
-    .filter(n =>
-      (!filter.value || n.category === filter.value) &&
-      (
-        !search ||
-        (n.title + " " + n.body)
-          .toLowerCase()
-          .includes(search)
-      )
-    )
-    .sort((a, b) => Number(b.pinned) - Number(a.pinned));
-
-  document.getElementById("notesContainer").innerHTML =
-    notes.length
-      ? notes.map(n => `
-        <div class="card">
-          <div class="section-header">
-            <h2>${n.pinned ? "★ " : ""}${escapeHTML(n.title)}</h2>
-            <span class="badge">${escapeHTML(n.category)}</span>
-          </div>
-
-          <p>${escapeHTML(n.body)}</p>
-
-          <div class="actions">
-            <button class="secondary"
-              onclick="openNote('${n.id}')">تعديل</button>
-
-            <button class="secondary"
-              onclick="togglePin('${n.id}')">
-              ${n.pinned ? "إلغاء التثبيت" : "تثبيت"}
-            </button>
-
-            <button class="danger"
-              onclick="deleteNote('${n.id}')">حذف</button>
-          </div>
-        </div>
-      `).join("")
-      : '<div class="card empty">لا توجد ملاحظات.</div>';
-}
-
-function togglePin(id) {
-  const note = db.notes.find(n => n.id === id);
-
-  if (!note) return;
-
-  note.pinned = !note.pinned;
-
-  saveDatabase();
-  renderAll();
-}
-
-function deleteNote(id) {
-  if (!confirm("هل تريد حذف الملاحظة؟")) return;
-
-  db.notes = db.notes.filter(n => n.id !== id);
-
-  saveDatabase();
-  renderAll();
-}
-
-// ==========================================
-// 9. إدارة التصنيفات
-// ==========================================
-
-function manageCategories() {
-  openModal("إدارة التصنيفات", `
-    <div class="form-group">
-      <label>اسم التصنيف الجديد</label>
-      <input id="newCategory">
-      <button onclick="addCategory()">إضافة</button>
-    </div>
-
-    <div>
-      ${db.categories.map(c => `
-        <div class="item">
-          <div class="item-content">${escapeHTML(c)}</div>
-          <button class="danger"
-            onclick="deleteCategory('${escapeHTML(c)}')">حذف</button>
-        </div>
-      `).join("")}
-    </div>
-  `);
-}
-
-function addCategory() {
-  const input = document.getElementById("newCategory");
-  const name = input.value.trim();
-
-  if (!name) return;
-
-  if (db.categories.includes(name)) {
-    alert("هذا التصنيف موجود بالفعل.");
-    return;
-  }
-
-  db.categories.push(name);
-
-  saveDatabase();
-  manageCategories();
-}
-
-function deleteCategory(name) {
-  if (!confirm("سيتم نقل الملاحظات إلى غير مصنف. متابعة؟")) return;
-
-  db.notes.forEach(note => {
-    if (note.category === name) {
-      note.category = "غير مصنف";
-    }
-  });
-
-  db.categories = db.categories.filter(c => c !== name);
-
-  saveDatabase();
-  manageCategories();
-}
-
-// ==========================================
-// 10. الميزانية والمصروفات
-// ==========================================
-
-function saveBudget() {
-  const amount = Number(
-    document.getElementById("weeklyBudget").value
-  );
-
-  if (!Number.isFinite(amount) || amount < 0) {
-    alert("أدخل قيمة صحيحة للميزانية.");
-    return;
-  }
-
-  db.budgets[getWeekStart(today())] = amount;
-
-  saveDatabase();
-  renderBudget();
-}
-
-function getCurrentExpenses() {
-  const start = getWeekStart(today());
-
-  const endDate = new Date(start + "T12:00:00");
-  endDate.setDate(endDate.getDate() + 6);
-
-  const end = [
-    endDate.getFullYear(),
-    String(endDate.getMonth() + 1).padStart(2, "0"),
-    String(endDate.getDate()).padStart(2, "0")
-  ].join("-");
-
-  return db.expenses.filter(e =>
-    e.date >= start && e.date <= end
-  );
-}
-
-function renderBudget() {
-  const week = getWeekStart(today());
-
-  const budget = db.budgets[week] ?? 0;
-
-  const expenses = getCurrentExpenses();
-
-  const spent = expenses.reduce(
-    (sum, item) => sum + Number(item.amount || 0),
-    0
-  );
-
-  const remaining = budget - spent;
-
-  const percent = budget
-    ? Math.round(spent / budget * 100)
-    : 0;
-
-  document.getElementById("weeklyBudget").value = budget;
-
-  document.getElementById("budgetSummary").innerHTML = `
-    <div class="stats">
-      <div class="stat">
-        <strong>${money(budget)}</strong>
-        <span class="muted">الميزانية</span>
-      </div>
-
-      <div class="stat">
-        <strong>${money(spent)}</strong>
-        <span class="muted">المصروف</span>
-      </div>
-
-      <div class="stat">
-        <strong>${money(remaining)}</strong>
-        <span class="muted">المتبقي</span>
-      </div>
-    </div>
-
-    <div class="progress">
-      <div class="progress-bar"
-        style="width:${Math.min(percent, 100)}%;
-        background:${percent >= 100 ? '#C43C4B' : percent >= 80 ? '#B7791F' : '#2455D6'}">
-      </div>
-    </div>
-
-    <p>نسبة الاستهلاك: ${percent}%</p>
-
-    ${percent >= 100
-      ? '<div class="badge">تجاوزت الميزانية!</div>'
-      : percent >= 80
-        ? '<div class="badge">تنبيه: استهلاك 80% أو أكثر</div>'
-        : ""}
-  `;
-}
-
-function openExpense(id = "") {
-  const expense = db.expenses.find(e => e.id === id);
-
-  openModal(expense ? "تعديل مصروف" : "إضافة مصروف", `
-    <form onsubmit="saveExpense(event, '${id}')">
-      <div class="form-group">
-        <label>اسم المصروف</label>
-        <input name="title" required value="${escapeHTML(expense?.title || "")}">
-      </div>
-
-      <div class="form-group">
-        <label>المبلغ</label>
-        <input type="number" min="0" step="0.01"
-          name="amount" required value="${expense?.amount || ""}">
-      </div>
-
-      <div class="form-group">
-        <label>التاريخ</label>
-        <input type="date" name="date" required
-          value="${expense?.date || today()}">
-      </div>
-
-      <button>حفظ المصروف</button>
-    </form>
-  `);
-}
-
-function saveExpense(event, id) {
-  event.preventDefault();
-
-  const f = event.target;
-
-  const data = {
-    title: f.title.value.trim(),
-    amount: Number(f.amount.value),
-    date: f.date.value
-  };
-
-  if (data.amount < 0 || !Number.isFinite(data.amount)) {
-    alert("أدخل مبلغًا صحيحًا.");
-    return;
-  }
-
-  if (id) {
-    const expense = db.expenses.find(e => e.id === id);
-    if (expense) Object.assign(expense, data);
-  } else {
-    db.expenses.push({
-      id: uid(),
-      ...data
-    });
-  }
-
-  saveDatabase();
-  closeModal();
-  renderAll();
-}
-
-function renderExpenses() {
-  const container =
-    document.getElementById("expensesContainer");
-
-  const expenses = [...db.expenses].sort((a, b) =>
-    b.date.localeCompare(a.date)
-  );
-
-  container.innerHTML = expenses.length
-    ? expenses.map(e => `
-      <div class="item">
-        <div class="item-content">
-          <strong>${escapeHTML(e.title)}</strong>
-          <div class="muted">${formatDate(e.date)}</div>
-          <div>${money(e.amount)}</div>
-        </div>
-
-        <button class="secondary"
-          onclick="openExpense('${e.id}')">تعديل</button>
-
-        <button class="danger"
-          onclick="deleteExpense('${e.id}')">حذف</button>
-      </div>
-    `).join("")
-    : '<div class="empty">لا توجد مصروفات.</div>';
-}
-
-function deleteExpense(id) {
-  if (!confirm("حذف المصروف؟")) return;
-
-  db.expenses = db.expenses.filter(e => e.id !== id);
-
-  saveDatabase();
-  renderAll();
-}
-
-// ==========================================
-// 11. سجل الأيام
-// ==========================================
-
-function renderHistory() {
-  const days = Object.values(db.days)
-    .sort((a, b) => b.date.localeCompare(a.date));
-
-  document.getElementById("historyContainer").innerHTML =
-    days.length
-      ? days.map(day => {
-          const total =
-            day.habits.length + day.tasks.length;
-
-          const done =
-            day.habits.filter(h => h.done).length +
-            day.tasks.filter(t => t.status === "done").length;
-
-          const percent = total
-            ? Math.round(done / total * 100)
-            : 0;
-
-          return `
-            <div class="card">
-              <div class="section-header">
-                <h2>${formatDate(day.date)}</h2>
-                <span class="badge">${percent}%</span>
-              </div>
-
-              <div class="progress">
-                <div class="progress-bar"
-                  style="width:${percent}%"></div>
-              </div>
-
-              <p class="muted">
-                ${done} من ${total} عنصر مكتمل
-              </p>
-
-              ${day.note
-                ? `<p>${escapeHTML(day.note)}</p>`
-                : ""}
-
-              <details>
-                <summary>عرض التفاصيل</summary>
-
-                <h3>العادات</h3>
-
-                ${day.habits.map(h => `
-                  <div class="item">
-                    ${h.done ? "✓" : "○"}
-                    ${escapeHTML(h.name)}
-                  </div>
-                `).join("")}
-
-                <h3>المهام</h3>
-
-                ${day.tasks.map(t => `
-                  <div class="item">
-                    ${t.status === "done" ? "✓" : "○"}
-                    ${escapeHTML(t.title)}
-                  </div>
-                `).join("")}
-              </details>
-            </div>
-          `;
-        }).join("")
-      : '<div class="card empty">لم تحفظ أي أيام حتى الآن.</div>';
-}
-
-// ==========================================
-// 12. النسخ الاحتياطي والاستعادة
-// ==========================================
-
-function openBackup() {
-  showPage(
-    "settings",
-    document.querySelector('[onclick*="settings"]')
-  );
-}
-
-function exportBackup() {
-  const backup = {
-    ...db,
-    exportedAt: new Date().toISOString()
-  };
-
-  const blob = new Blob(
-    [JSON.stringify(backup, null, 2)],
-    { type: "application/json" }
-  );
-
-  const url = URL.createObjectURL(blob);
-
-  const link = document.createElement("a");
-
-  link.href = url;
-  link.download = "albosla-backup-" + today() + ".json";
-
-  link.click();
-
-  URL.revokeObjectURL(url);
-}
-
-function restoreBackup(event) {
-  const file = event.target.files[0];
-
-  if (!file) return;
-
-  const reader = new FileReader();
-
-  reader.onload = function() {
-    try {
-      const restored = JSON.parse(reader.result);
-
-      if (
-        !restored ||
-        !Array.isArray(restored.habits) ||
-        !Array.isArray(restored.goals) ||
-        !Array.isArray(restored.tasks) ||
-        !restored.days ||
-        typeof restored.days !== "object"
-      ) {
-        throw new Error("Invalid backup");
-      }
-
-      if (!confirm(
-        "سيتم استبدال البيانات الحالية بالنسخة الاحتياطية. هل أنت متأكد؟"
-      )) return;
-
-      db = {
-        ...createDatabase(),
-        ...restored
-      };
-
-      if (saveDatabase()) {
-        alert("تم استرجاع البيانات بنجاح.");
-        renderAll();
-      }
-
-    } catch (error) {
-      alert("الملف غير صالح أو لا يتوافق مع البوصلة.");
-    }
-
-    event.target.value = "";
-  };
-
-  reader.readAsText(file);
-}
-
-// ==========================================
-// 13. تحديث واجهة التطبيق
-// ==========================================
-
-function renderAll() {
-  document.getElementById("currentDate").textContent =
-    new Date().toLocaleDateString("ar-EG", {
-      weekday: "long",
-      year: "numeric",
-      month: "long",
-      day: "numeric"
-    });
-
-  renderToday();
-  renderGoals();
-  renderNotes();
-  renderBudget();
-  renderExpenses();
-  renderHistory();
-}
-
-function initializeApp() {
-  if (db.draft && db.draft.date < today()) {
-    // لا ننشئ مسودة جديدة قبل مراجعة المسودة القديمة.
-  } else if (!db.draft) {
-    db.draft = {
-      date: today(),
-      habits: db.habits.map(h => ({
-        id: h.id,
-        name: h.name,
-        done: false
-      })),
-      note: ""
-    };
-  }
-
-  saveDatabase();
-  renderAll();
-}
-
-initializeApp();
-
+renderAll();
 </script>
 </body>
 </html>
