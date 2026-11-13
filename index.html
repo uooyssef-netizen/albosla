@@ -116,7 +116,6 @@ textarea{resize:vertical;min-height:85px}
 <header>
   <div class="brand">
     <div class="logo-container">
-      <!-- بيقرأ اللوجو اللي هنحطه في الفولدر -->
       <img src="logo.png" alt="ScaleDive">
     </div>
     <div>
@@ -202,7 +201,6 @@ textarea{resize:vertical;min-height:85px}
         <button class="btn light small" onclick="changeTrackerMonth(1)">التالي</button>
       </div>
     </div>
-    
     <!-- شبكة التقويم -->
     <div class="calendar-grid" id="trackerGrid"></div>
   </div>
@@ -230,9 +228,11 @@ textarea{resize:vertical;min-height:85px}
   </div>
 </section>
 
-<!-- الملاحظات -->
+<!-- الملاحظات (تم استرجاع الكود القديم بالكامل) -->
 <section class="page" id="notes">
   <h2 class="page-title">الملاحظات</h2>
+  <p class="page-subtitle">اجمع أفكارك وملاحظاتك في مكان واحد.</p>
+
   <div class="card">
     <div class="card-title">إضافة ملاحظة</div>
     <input class="input" id="noteTitle" placeholder="عنوان الملاحظة">
@@ -242,6 +242,7 @@ textarea{resize:vertical;min-height:85px}
       <button class="btn" onclick="addNote()">حفظ</button>
     </div>
   </div>
+
   <div class="card">
     <input class="input" id="noteSearch" placeholder="ابحث في ملاحظاتك..." oninput="renderNotes()">
     <div class="form-row">
@@ -340,7 +341,7 @@ textarea{resize:vertical;min-height:85px}
 <script>
 "use strict";
 
-const STORAGE_KEY = "scaledive_v1"; // غيرنا الاسم عشان نبدأ نظيف
+const STORAGE_KEY = "scaledive_v2"; // تحديث الإصدار لتفادي أي تعارض
 
 const defaults = () => ({
   plannedTasks:[], personalTasks:[], goals:[], habits:[], days:{}, notes:[],
@@ -356,7 +357,7 @@ let currentPage = "home";
 
 function loadData(){
   try{
-    const saved = localStorage.getItem(STORAGE_KEY);
+    const saved = localStorage.getItem(STORAGE_KEY) || localStorage.getItem('scaledive_v1');
     return saved ? {...defaults(),...JSON.parse(saved)} : defaults();
   }catch(e){ return defaults(); }
 }
@@ -611,21 +612,94 @@ function weekEnd(start){ const d=parseDate(start); d.setDate(d.getDate()+6); ret
 function weekExpenses(start){ const end=weekEnd(start); return data.expenses.filter(e=>e.date>=start&&e.date<=end); }
 function weekBudget(start){ return data.budgets[start]!==undefined?Number(data.budgets[start]):(start===weekStart(today())?Number(data.currentBudget||0):0); }
 
+// === الملاحظات الكاملة (من الكود القديم) ===
 function addNote(){
   const title=document.getElementById("noteTitle").value.trim();
   const body=document.getElementById("noteBody").value.trim();
-  if(!title&&!body)return alert("اكتب عنوانًا أو محتوى.");
-  data.notes.unshift({id:uid(),title,body,category:"غير مصنف",createdAt:new Date().toISOString()});
-  document.getElementById("noteTitle").value=""; document.getElementById("noteBody").value="";
-  save(); renderNotes();
+  const category=document.getElementById("noteCategory").value||"غير مصنف";
+  if(!title&&!body)return alert("اكتب عنوانًا أو محتوى للملاحظة.");
+  data.notes.unshift({id:uid(),title,body,category,pinned:false,createdAt:new Date().toISOString()});
+  document.getElementById("noteTitle").value="";
+  document.getElementById("noteBody").value="";
+  save();renderAll();
+}
+function editNote(id){
+  const n=data.notes.find(x=>x.id===id);
+  if(!n)return;
+  openModal(`<h3>تعديل الملاحظة</h3>
+    <input class="input" id="editNoteTitle" value="${escapeHTML(n.title)}">
+    <textarea id="editNoteBody" style="margin-top:9px">${escapeHTML(n.body)}</textarea>
+    <div class="modal-actions"><button class="btn" onclick="saveNoteEdit('${id}')">حفظ</button></div>`);
+}
+function saveNoteEdit(id){
+  const n=data.notes.find(x=>x.id===id);
+  if(!n)return;
+  n.title=document.getElementById("editNoteTitle").value.trim();
+  n.body=document.getElementById("editNoteBody").value.trim();
+  save();closeModal();renderNotes();
+}
+function deleteNote(id){
+  if(!confirm("حذف الملاحظة؟"))return;
+  data.notes=data.notes.filter(n=>n.id!==id);
+  save();renderNotes();
+}
+function togglePin(id){
+  const n=data.notes.find(x=>x.id===id);
+  if(n)n.pinned=!n.pinned;
+  save();renderNotes();
+}
+function manageCategories(){
+  let html='<h3>إدارة التصنيفات</h3>';
+  html+='<div class="form-row"><input class="input" id="newCategory" placeholder="اسم التصنيف"><button class="btn" onclick="addCategory()">إضافة</button></div>';
+  data.categories.forEach(c=>{
+    html+=`<div class="item"><div class="item-main"><strong>${escapeHTML(c)}</strong></div><button class="icon-btn" onclick="deleteCategory('${escapeHTML(c)}')">حذف</button></div>`;
+  });
+  openModal(html);
+}
+function addCategory(){
+  const name=document.getElementById("newCategory").value.trim();
+  if(!name)return;
+  if(data.categories.includes(name))return alert("التصنيف موجود بالفعل.");
+  data.categories.push(name);save();manageCategories();renderNotes();
+}
+function deleteCategory(name){
+  if(!confirm("حذف التصنيف؟ ستُنقل ملاحظاته إلى غير مصنف."))return;
+  data.categories=data.categories.filter(c=>c!==name);
+  data.notes.forEach(n=>{if(n.category===name)n.category="غير مصنف";});
+  save();manageCategories();renderNotes();
 }
 function renderNotes(){
-  document.getElementById("notesList").innerHTML=data.notes.length?data.notes.map(n=>`
+  const category=document.getElementById("noteFilter").value;
+  const q=document.getElementById("noteSearch").value.toLowerCase().trim();
+  const list=data.notes.filter(n=>
+    (category==="all"||n.category===category)&&
+    ((n.title||"").toLowerCase().includes(q)||(n.body||"").toLowerCase().includes(q))
+  ).sort((a,b)=>Number(b.pinned)-Number(a.pinned));
+  
+  document.getElementById("notesList").innerHTML=list.length?list.map(n=>`
     <div class="note-card">
-      <strong>${escapeHTML(n.title||"بدون عنوان")}</strong>
+      <div class="row">
+        <strong>${escapeHTML(n.title||"بدون عنوان")}</strong>
+        <span class="badge">${escapeHTML(n.category||"غير مصنف")}</span>
+      </div>
       <p>${escapeHTML(n.body)}</p>
-    </div>`).join(""):'<div class="empty">لا توجد ملاحظات.</div>';
+      <div class="row">
+        <div class="actions">
+          <button class="icon-btn" onclick="togglePin('${n.id}')">${n.pinned?"★":"☆"}</button>
+          <button class="icon-btn" onclick="editNote('${n.id}')">✎</button>
+          <button class="icon-btn" onclick="deleteNote('${n.id}')">×</button>
+        </div>
+        <span class="muted">${new Date(n.createdAt).toLocaleDateString("ar-EG")}</span>
+      </div>
+    </div>`).join(""):'<div class="empty">لا توجد ملاحظات مطابقة.</div>';
 }
+function renderCategories(){
+  const options=data.categories.map(c=>`<option value="${escapeHTML(c)}">${escapeHTML(c)}</option>`).join("");
+  document.getElementById("noteCategory").innerHTML=options||'<option value="غير مصنف">غير مصنف</option>';
+  document.getElementById("noteFilter").innerHTML='<option value="all">كل التصنيفات</option>'+options;
+}
+
+// === الميزانية ===
 function saveBudget(){
   const value=Number(document.getElementById("budgetInput").value);
   if(!Number.isFinite(value)||value<0)return alert("أدخل مبلغًا صحيحًا.");
@@ -661,6 +735,8 @@ function renderAll(){
   document.getElementById('morningReminder').value = data.settings.morningTime || "08:00";
   document.getElementById('eveningReminder').value = data.settings.eveningTime || "20:00";
   document.documentElement.setAttribute('data-theme', data.settings.theme || 'light');
+  
+  renderCategories(); // تحديث قوائم التصنيفات
   
   if(currentPage==='home') renderHome();
   if(currentPage==='day') renderDay();
