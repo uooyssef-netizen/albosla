@@ -228,7 +228,7 @@ textarea{resize:vertical;min-height:85px}
   </div>
 </section>
 
-<!-- الملاحظات (تم استرجاع الكود القديم بالكامل) -->
+<!-- الملاحظات (بالشكل اللي إنت طالبه بالظبط) -->
 <section class="page" id="notes">
   <h2 class="page-title">الملاحظات</h2>
   <p class="page-subtitle">اجمع أفكارك وملاحظاتك في مكان واحد.</p>
@@ -236,7 +236,11 @@ textarea{resize:vertical;min-height:85px}
   <div class="card">
     <div class="card-title">إضافة ملاحظة</div>
     <input class="input" id="noteTitle" placeholder="عنوان الملاحظة">
-    <textarea id="noteBody" placeholder="اكتب محتوى الملاحظة..." style="margin-top:9px"></textarea>
+
+    <textarea id="noteBody"
+      placeholder="اكتب محتوى الملاحظة..."
+      style="margin-top:9px"></textarea>
+
     <div class="form-row">
       <select id="noteCategory"></select>
       <button class="btn" onclick="addNote()">حفظ</button>
@@ -244,11 +248,20 @@ textarea{resize:vertical;min-height:85px}
   </div>
 
   <div class="card">
-    <input class="input" id="noteSearch" placeholder="ابحث في ملاحظاتك..." oninput="renderNotes()">
+    <input class="input"
+      id="noteSearch"
+      placeholder="ابحث في ملاحظاتك..."
+      oninput="renderNotes()">
+
     <div class="form-row">
-      <select id="noteFilter" onchange="renderNotes()"><option value="all">كل التصنيفات</option></select>
-      <button class="btn light small" onclick="manageCategories()">التصنيفات</button>
+      <select id="noteFilter" onchange="renderNotes()">
+        <option value="all">كل التصنيفات</option>
+      </select>
+
+      <button class="btn light small"
+        onclick="manageCategories()">التصنيفات</button>
     </div>
+
     <div id="notesList"></div>
   </div>
 </section>
@@ -341,7 +354,7 @@ textarea{resize:vertical;min-height:85px}
 <script>
 "use strict";
 
-const STORAGE_KEY = "scaledive_v2"; // تحديث الإصدار لتفادي أي تعارض
+const STORAGE_KEY = "scaledive_v3"; // تحديث الإصدار لضمان حفظ البيانات الجديدة
 
 const defaults = () => ({
   plannedTasks:[], personalTasks:[], goals:[], habits:[], days:{}, notes:[],
@@ -357,7 +370,7 @@ let currentPage = "home";
 
 function loadData(){
   try{
-    const saved = localStorage.getItem(STORAGE_KEY) || localStorage.getItem('scaledive_v1');
+    const saved = localStorage.getItem(STORAGE_KEY) || localStorage.getItem('scaledive_v2');
     return saved ? {...defaults(),...JSON.parse(saved)} : defaults();
   }catch(e){ return defaults(); }
 }
@@ -612,7 +625,7 @@ function weekEnd(start){ const d=parseDate(start); d.setDate(d.getDate()+6); ret
 function weekExpenses(start){ const end=weekEnd(start); return data.expenses.filter(e=>e.date>=start&&e.date<=end); }
 function weekBudget(start){ return data.budgets[start]!==undefined?Number(data.budgets[start]):(start===weekStart(today())?Number(data.currentBudget||0):0); }
 
-// === الملاحظات الكاملة (من الكود القديم) ===
+// === الملاحظات (بالشكل اللي إنت طالبه) ===
 function addNote(){
   const title=document.getElementById("noteTitle").value.trim();
   const body=document.getElementById("noteBody").value.trim();
@@ -736,7 +749,7 @@ function renderAll(){
   document.getElementById('eveningReminder').value = data.settings.eveningTime || "20:00";
   document.documentElement.setAttribute('data-theme', data.settings.theme || 'light');
   
-  renderCategories(); // تحديث قوائم التصنيفات
+  renderCategories(); // تحديث التصنيفات
   
   if(currentPage==='home') renderHome();
   if(currentPage==='day') renderDay();
@@ -755,4 +768,4 @@ window.addEventListener("load", () => {
 });
 </script>
 </body>
-      </html>
+</html>
