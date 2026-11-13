@@ -1,0 +1,25 @@
+{
+  "name": "ScaleDive | البوصلة",
+  "short_name": "ScaleDive",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#F4F6FA",
+  "theme_color": "#2455D6",
+  "orientation": "portrait",
+  "lang": "ar",
+  "dir": "rtl",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
