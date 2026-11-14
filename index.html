@@ -201,7 +201,7 @@ textarea{resize:vertical;min-height:85px}
   </div>
 </section>
 
-<!-- الملاحظات (مبسطة زي ما طلبت) -->
+<!-- الملاحظات -->
 <section class="page" id="notes">
   <h2 class="page-title">الملاحظات</h2>
   <p class="page-subtitle">اجمع أفكارك وملاحظاتك في مكان واحد.</p>
@@ -298,7 +298,7 @@ textarea{resize:vertical;min-height:85px}
 
 <script>
 "use strict";
-const STORAGE_KEY = "scaledive_v4"; // تم تحديث رقم الإصدار
+const STORAGE_KEY = "scaledive_v4";
 
 const defaults = () => ({
   plannedTasks:[], personalTasks:[], goals:[], habits:[], days:{}, notes:[],
@@ -486,7 +486,7 @@ function renderDay(){
   `).join(""):'<div class="empty">لا توجد مهام متأخرة.</div>';
 }
 
-// === الملاحظات (بناءً على طلبك) ===
+// === الملاحظات ===
 function addNote(){
   const title=document.getElementById("noteTitle").value.trim();
   const body=document.getElementById("noteBody").value.trim();
@@ -548,7 +548,7 @@ function renderBudget(){
   document.getElementById("expenseList").innerHTML=expenses.map(e=>`<div class="item"><strong>${escapeHTML(e.name)}</strong><span class="amount">${money(e.amount)}</span></div>`).join("")||'<div class="empty">لا توجد مصروفات</div>';
 }
 function exportData(){ const b=new Blob([JSON.stringify(data,null,2)],{type:"application/json"}); const a=document.createElement("a"); a.href=URL.createObjectURL(b); a.download="backup.json"; a.click(); }
-function restoreData(){ alert("استعادة النسخة تتطلب إعدادات إضافية."); } // مبسطة
+function restoreData(){ alert("استعادة النسخة تتطلب إعدادات إضافية."); }
 
 function renderAll(){
   document.getElementById("headerDate").textContent=new Date().toLocaleDateString("ar-EG",{day:"numeric",month:"short"});
