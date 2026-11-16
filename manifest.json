@@ -2,6 +2,7 @@
   "name": "ScaleDive | البوصلة",
   "short_name": "ScaleDive",
   "start_url": "./index.html",
+  "scope": "./",
   "display": "standalone",
   "background_color": "#F4F6FA",
   "theme_color": "#2455D6",
