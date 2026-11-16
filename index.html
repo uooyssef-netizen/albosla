@@ -44,7 +44,7 @@ nav button.on{color:var(--p);font-weight:bold}
 .md>div{background:var(--c);border-radius:16px;padding:16px;width:100%;max-width:420px;max-height:88vh;overflow:auto}
 .toast{position:fixed;top:12px;left:50%;transform:translateX(-50%);background:var(--t);color:var(--bg);padding:8px 14px;border-radius:20px;z-index:20}
 
-/* تنسيقات المخطط الشهري */
+/* المخطط الشهري */
 .cal-head{display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;}
 .cal-grid{display:grid; grid-template-columns:repeat(7,1fr); gap:4px; text-align:center;}
 .cal-day-name{font-size:11px; color:var(--m); padding-bottom:4px;}
@@ -60,7 +60,6 @@ nav button.on{color:var(--p);font-weight:bold}
 <body>
 <div class="app">
 <header><b>ScaleDive</b><span class="m">البوصلة</span></header>
-<div class="row"><input id="q" class="in" placeholder="اكتب أي حاجة، أو مبلغ + كلمة (35 قهوة)"><button class="btn" onclick="cap()">+</button></div>
 <main id="v"></main>
 </div>
 <nav id="nv"></nav>
@@ -69,28 +68,39 @@ nav button.on{color:var(--p);font-weight:bold}
 <script>
 "use strict";
 function ds(d){return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")}
-const K="scaledive_v6",$=s=>document.querySelector(s),uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,6),
+const K="scaledive_v7",$=s=>document.querySelector(s),uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,6),
 esc=s=>String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c])),
 fm=n=>Number(n||0).toLocaleString("en-US"),DAYS=["الأحد","الاثنين","الثلاثاء","الأربعاء","الخميس","الجمعة","السبت"];
 
-// دمج البيانات الجديدة مع القديمة
 const D=()=>({
-  sav:[],jm:{d:"",a:0},inbox:[],exp:[],steps:[],logs:{},shifts:{},kp:{},
-  goal:{t:"أول دخل حقيقي من الميديا باينج",s:ds(new Date()),e:"",ok:"أول عميل يدفع أي مبلغ"},
+  sav:[],inbox:[],exp:[],steps:[],logs:{},shifts:{},kp:{},
+  goal:{t:"الهدف الأساسي",s:ds(new Date()),e:"",ok:"معنى النجاح"},
   st:{theme:"light",cats:["أكل برة","خروجات وهدايا","تجهيز الشقة","متفرقات"],pays:["كاش","محفظة","كارت"],
   fixed:[{n:"جمعية",a:5000},{n:"مواصلات",a:2000},{n:"نت",a:900}],inc:[{n:"مرتب",a:10000}],vb:2100,pd:1,prot:5,
-  h:["قراءة وتعلم","عبادة وأذكار"],nd:60,ft:"22:30",rd:4, morning:"08:00"},
-  
-  // البيانات القديمة المدمجة
+  nd:60,ft:"22:30",rd:4, morning:"08:00",
+  kpis:[{id:"k1",name:"ساعات مذاكرة"},{id:"k2",name:"رسائل عملاء"},{id:"k3",name:"عروض"}]},
+  habits:[{id:"h1",name:"قراءة وتعلم"},{id:"h2",name:"عبادة وأذكار"}],
   notes: [],
   plannedTasks: [],
   monthlyTracker: {}
 });
 
 let S=load(),tab=0,selectedDate=ds(new Date()),trackerDate=new Date();
-function load(){const s=D();try{const r=JSON.parse(localStorage.getItem(K)||"null");
-if(r){Object.assign(s,r);s.st=Object.assign(D().st,r.st)}else{const o=JSON.parse(localStorage.getItem("scaledive_v5")||"null");
-if(o){Object.assign(s,o);s.st=Object.assign(D().st,o.st)}}}catch(e){}return s}
+function load(){
+  const s=D();
+  try{
+    const r=JSON.parse(localStorage.getItem(K)||"null");
+    if(r){Object.assign(s,r);s.st=Object.assign(D().st,r.st);
+      // ترحيل العادات القديمة لو موجودة
+      if(r.st&&r.st.h&&!r.habits){s.habits=r.st.h.map(n=>({id:uid(),name:n}))}
+    }
+    else{
+      const o=JSON.parse(localStorage.getItem("scaledive_v6")||"null");
+      if(o){Object.assign(s,o);s.st=Object.assign(D().st,o.st)}
+    }
+  }catch(e){}
+  return s;
+}
 const sv=()=>{try{localStorage.setItem(K,JSON.stringify(S))}catch(e){}};
 const lg=t=>S.logs[t]||(S.logs[t]={});
 const toast=t=>{const e=document.createElement("div");e.className="toast";e.textContent=t;document.body.appendChild(e);setTimeout(()=>e.remove(),1600)};
@@ -98,29 +108,33 @@ function md(h){$("#mb").innerHTML=h;$("#md").classList.add("on")}
 function cm(){$("#md").classList.remove("on")}
 function wk(){const d=new Date();d.setDate(d.getDate()-d.getDay());return ds(d)}
 
-// البحث السريع
-function cap(){const i=$("#q"),v=i.value.trim();if(!v)return;const m=v.match(/^(\d+(?:\.\d+)?)\s+(.+)$/);
+// الشريط السريع (هنا بقى خاص بالفلوس بس)
+function capMoney(){const i=$("#q"),v=i.value.trim();if(!v)return;const m=v.match(/^(\d+(?:\.\d+)?)\s+(.+)$/);
 if(m){S.exp.push({id:uid(),a:+m[1],c:S.st.cats[S.st.cats.length-1],p:S.st.pays[0],d:ds(new Date()),n:m[2]});toast("اتسجل مصروف")}
-else{S.notes.unshift({id:uid(),t:v,b:"",cat:"عام",pinned:false,ts:Date.now()});toast("اتحفظ في الملاحظات")}
 i.value="";sv();R()}
-$("#q").addEventListener("keydown",e=>{if(e.key==="Enter")cap()});
 
-function del(k,id){S[k]=S[k].filter(x=>x.id!==id);sv();R()}
-function toStep(id){const x=S.inbox.find(y=>y.id===id);if(!x)return;S.steps.push({id:uid(),t:x.t,d:0,m:0});del("inbox",id)}
-function stp(id,k){const x=S.steps.find(y=>y.id===id);if(!x)return;if(k==="d"){x.d=x.d?0:1;x.m=0}else{x.m=x.m?0:1;x.d=0}sv();R()}
-function addStep(){const i=$("#ns"),v=i.value.trim();if(!v)return;S.steps.push({id:uid(),t:v,d:0,m:0});sv();R()}
-function hab(i,v){const L=lg(ds(new Date()));(L.h=L.h||[])[i]=v;sv();R()}
-function habPct(){let c=0;for(let i=0;i<7;i++){const d=new Date();d.setDate(d.getDate()-i);const h=(S.logs[ds(d)]||{}).h||[];c+=h.filter(Boolean).length}return Math.round(c/14*100)}
+// إدارة العادات
+function addHabit(){const i=$("#newHabit"),v=i.value.trim();if(!v)return;S.habits.push({id:uid(),name:v});i.value="";sv();R();toast("تمت الإضافة")}
+function delHabit(id){if(confirm("حذف العادة؟")){S.habits=S.habits.filter(h=>h.id!==id);sv();R()}}
+function hab(id,v){const L=lg(ds(new Date()));(L.h=L.h||{})[id]=v;sv();R()}
+function habPct(){let c=0,t=0;for(let i=0;i<7;i++){const d=new Date();d.setDate(d.getDate()-i);const h=(S.logs[ds(d)]||{}).h||{};S.habits.forEach(x=>{t++;if(h[x.id])c++})}return t?Math.round(c/t*100):0}
+
 function nrPct(){let c=0;for(let i=0;i<7;i++){const d=new Date();d.setDate(d.getDate()-i);if((S.logs[ds(d)]||{}).rt)c++}return Math.round(c/7*100)}
-function kpi(k,n){const w=wk(),o=S.kp[w]||(S.kp[w]={h:0,c:0,o:0});o[k]=Math.max(0,o[k]+n);sv();R()}
+
+// المؤشرات
+function kpi(id,n){const w=wk(),o=S.kp[w]||(S.kp[w]={});o[id]=Math.max(0,(o[id]||0)+n);sv();R()}
 function shf(i,v){const w=wk();(S.shifts[w]=S.shifts[w]||[])[i]=v;sv()}
 
-// المهام من المخطط
+// المهام
 function toggleTask(id){const task=S.plannedTasks.find(t=>t.id===id);if(task){task.done=!task.done;sv();R()}}
 function delTask(id){S.plannedTasks=S.plannedTasks.filter(t=>t.id!==id);sv();R()}
 function addTrackerTask(){const input=$("#trackerInput"),text=input.value.trim();if(!text)return;S.plannedTasks.push({id:uid(),date:selectedDate,text,done:false});input.value="";sv();R()}
 function selectTrackerDate(d){selectedDate=d;R()}
 function changeTrackerMonth(n){trackerDate.setMonth(trackerDate.getMonth()+n);R()}
+function del(k,id){S[k]=S[k].filter(x=>x.id!==id);sv();R()}
+function toStep(id){const x=S.inbox.find(y=>y.id===id);if(!x)return;S.steps.push({id:uid(),t:x.t,d:0,m:0});del("inbox",id)}
+function stp(id,k){const x=S.steps.find(y=>y.id===id);if(!x)return;if(k==="d"){x.d=x.d?0:1;x.m=0}else{x.m=x.m?0:1;x.d=0}sv();R()}
+function addStep(){const i=$("#ns"),v=i.value.trim();if(!v)return;S.steps.push({id:uid(),t:v,d:0,m:0});sv();R()}
 
 // الإشعارات
 function ntf(id,t,b,at){if(window.WebToApk&&window.WebToApk.scheduleNotificationEx)window.WebToApk.scheduleNotificationEx(JSON.stringify({id:id,title:t,body:b,at:at.getTime()}))}
@@ -169,25 +183,46 @@ $("#notesList").innerHTML=list.length?list.map(n=>`<div class="card" style="marg
 </div></div>
 <p class="m" style="margin-top:6px; white-space:pre-wrap;">${esc(n.b)}</p></div>`).join(""):'<p class="m">لا توجد ملاحظات مطابقة.</p>'}
 
-// --- الواجهات ---
+// ================= الواجهات =================
+
 function vToday(){const t=ds(new Date()),L=lg(t),isP=new Date().getDay()===+S.st.prot,nx=S.steps.find(x=>!x.d&&!x.m);
 const y=[1,2].every(i=>{const d=new Date();d.setDate(d.getDate()-i);return !(S.logs[ds(d)]||{}).rt});
-const planned=S.plannedTasks.filter(x=>x.date===t);
-const plannedHtml=planned.length?planned.map(x=>`<div class="it"><input type="checkbox" ${x.done?"checked":""} onchange="toggleTask('${x.id}')"><span class="gr" style="${x.done?"text-decoration:line-through;color:var(--m)":""}">${esc(x.text)}</span></div>`).join(""):'<p class="m">لا توجد مهام مخططة لليوم.</p>';
+const todayTasks=S.plannedTasks.filter(x=>x.date===t);
+const overdueTasks=S.plannedTasks.filter(x=>x.date<t&&!x.done);
+
+const renderTask=(x,isOverdue)=>`<div class="it"><input type="checkbox" ${x.done?"checked":""} onchange="toggleTask('${x.id}')"><span class="gr" style="${x.done?"text-decoration:line-through;color:var(--m)":""}">${esc(x.text)} ${isOverdue?`<span class="m">(${x.date})</span>`:""}</span></div>`;
 
 return `<h2>اليوم</h2>`+(y?`<div class="card bad">فاتتك مراجعتين. التزامك الفعلي آخر 7 أيام: <b>${nrPct()}%</b></div>`:"")+
 (isP?`<div class="card ok">🌿 يوم محمي: مفيش مهام أهداف النهاردة، ومش بيتحسب عليك.</div>`:
 `<div class="card"><b>الخطوة التالية</b><p>${nx?esc(nx.t):"ضيف خطوة صغيرة في تاب الخطة."}</p>${nx?`<div class="row"><button class="btn" onclick="stp('${nx.id}','d')">تمت ✓</button><button class="btn g" onclick="stp('${nx.id}','m')">فاتني</button></div>`:""}</div>`)+
-`<div class="card"><b>مهام اليوم المخططة</b>${plannedHtml}<button class="btn l w" style="margin-top:8px" onclick="tab=1;R()">تعديل المخطط</button></div>
+
+`<div class="card">
+  <div class="row" style="justify-content:space-between;"><b>مهام اليوم</b><button class="btn s l" onclick="tab=1;R()">تعديل المخطط</button></div>
+  ${todayTasks.length?todayTasks.map(x=>renderTask(x,false)).join(""):'<p class="m">لا توجد مهام مخططة لليوم.</p>'}
+</div>
+
+${overdueTasks.length?`<div class="card bad">
+  <b>مهام متأخرة (لازم تخلصها)</b>
+  ${overdueTasks.map(x=>renderTask(x,true)).join("")}
+</div>`:""}
+
 <div class="card"><b>الوردية</b><div class="row"><button class="btn l" onclick="shift(0)">بدأت</button><button class="btn l" onclick="shift(1)">خلصت</button></div><p class="m">${L.ss?"بدأت "+L.ss+" ":""}${L.se?"· خلصت "+L.se:""}</p></div>
-<div class="card"><b>العادات</b>`+S.st.h.map((h,i)=>`<label class="it" style="color:var(--t);font-size:14px"><input type="checkbox" ${L.h&&L.h[i]?"checked":""} onchange="hab(${i},this.checked)"> ${esc(h)}</label>`).join("")+
-`<p class="m">التزام آخر 7 أيام: ${habPct()}%</p></div><button class="btn w" onclick="night()">خلصت يومي ✓</button>`}
 
-function vPlan(){const g=S.goal,w=wk(),k=S.kp[w]||{h:0,c:0,o:0},sh=S.shifts[w]||[],
-left=g.e?Math.ceil((new Date(g.e)-new Date())/864e5):null,
-ctr=(n,key)=>`<div><div class="m">${n}</div><div class="row"><button class="btn s g" onclick="kpi('${key}',-1)">-</button><b class="big">${k[key]}</b><button class="btn s" onclick="kpi('${key}',1)">+</button></div></div>`;
+<div class="card">
+  <b>العادات</b>
+  ${S.habits.map(h=>`<div class="it"><input type="checkbox" ${L.h&&L.h[h.id]?"checked":""} onchange="hab('${h.id}',this.checked)"><span class="gr">${esc(h.name)}</span><button class="btn s g" onclick="delHabit('${h.id}')">×</button></div>`).join("")}
+  <div class="row" style="margin-top:10px;">
+    <input id="newHabit" class="in" placeholder="عادة جديدة...">
+    <button class="btn" onclick="addHabit()">+</button>
+  </div>
+  <p class="m">التزام آخر 7 أيام: ${habPct()}%</p>
+</div>
 
-// المخطط الشهري
+<button class="btn w" onclick="night()">خلصت يومي ✓</button>`}
+
+function vPlan(){const g=S.goal,w=wk(),sh=S.shifts[w]||[],
+left=g.e?Math.ceil((new Date(g.e)-new Date())/864e5):null;
+
 const ty=trackerDate.getFullYear(),tm=trackerDate.getMonth();
 const first=new Date(ty,tm,1);const start=(first.getDay()+6)%7;const count=new Date(ty,tm+1,0).getDate();
 const names=["سبت","حد","اثنين","ثلاثاء","أربع","خميس","جمعة"];
@@ -210,13 +245,18 @@ S.plannedTasks.filter(t=>t.date===selectedDate).forEach(t=>{
 });
 calHtml+=`<div class="row" style="margin-top:8px;"><input id="trackerInput" class="in" placeholder="مهمة جديدة..."><button class="btn" onclick="addTrackerTask()">+</button></div></div>`;
 
-return `<h2>المخطط</h2><div class="card"><b>هدف الـ 90 يوم</b>
-<input class="in" value="${esc(g.t)}" onchange="S.goal.t=this.value;sv()">
-<label>معنى النجاح</label><input class="in" value="${esc(g.ok)}" onchange="S.goal.ok=this.value;sv()">
-<div class="row"><div><label>البداية</label><input class="in" type="date" value="${g.s}" onchange="S.goal.s=this.value;sv()"></div><div><label>النهاية</label><input class="in" type="date" value="${g.e}" onchange="S.goal.e=this.value;sv();R()"></div></div>
-${left!=null?`<p class="m">باقي ${left} يوم</p>`:""}</div>
+return `<h2>المخطط</h2>
+<div class="card">
+  <label>الهدف الأساسي</label>
+  <input class="in" value="${esc(g.t)}" onchange="S.goal.t=this.value;sv()">
+  <label>معنى النجاح</label><input class="in" value="${esc(g.ok)}" onchange="S.goal.ok=this.value;sv()">
+  <div class="row">
+    <div><label>البداية</label><input class="in" type="date" value="${g.s}" onchange="S.goal.s=this.value;sv()"></div>
+    <div><label>النهاية</label><input class="in" type="date" value="${g.e}" onchange="S.goal.e=this.value;sv();R()"></div>
+  </div>
+  ${left!=null?`<p class="m">باقي ${left} يوم</p>`:""}
+</div>
 <div class="card">${calHtml}</div>
-<div class="card"><b>مؤشرات الأسبوع</b><div class="grid">${ctr("ساعات تعلم","h")}${ctr("محادثات بيع","c")}${ctr("عروض مبعوتة","o")}</div></div>
 <div class="card"><b>الخطوات (15–30 دقيقة)</b><div class="row"><input id="ns" class="in" placeholder="خطوة صغيرة وواضحة"><button class="btn" onclick="addStep()">+</button></div>`+
 S.steps.filter(x=>!x.m).map(x=>`<div class="it"><input type="checkbox" ${x.d?"checked":""} onchange="stp('${x.id}','d')"><span class="gr" style="${x.d?"text-decoration:line-through;color:var(--m)":""}">${esc(x.t)}</span><button class="btn s g" onclick="stp('${x.id}','m')">فاتني</button><button class="btn s g" onclick="del('steps','${x.id}')">×</button></div>`).join("")+`</div>`+
 (S.steps.some(x=>x.m)?`<div class="card"><b>فاتني</b>`+S.steps.filter(x=>x.m).map(x=>`<div class="it"><span class="gr">${esc(x.t)}</span><button class="btn s l" onclick="stp('${x.id}','m')">رجّعها</button><button class="btn s g" onclick="del('steps','${x.id}')">حذف</button></div>`).join("")+`</div>`:"")+
@@ -243,7 +283,9 @@ function addExp(){const a=+$("#ea").value;if(!(a>0))return toast("اكتب ال�
 function vMoney(){const c=cyc(),ex=S.exp.filter(x=>x.d>=c[0]&&x.d<c[1]),sp=sum(ex),inc=sum(S.st.inc),fx=sum(S.st.fixed),vb=+S.st.vb||0,rem=vb-sp,by={};
 ex.forEach(x=>by[x.c]=(by[x.c]||0)+x.a);const mx=Math.max(1,...Object.values(by));
 const opt=a=>a.map(x=>`<option>${esc(x)}</option>`).join("");
-return `<h2>الفلوس</h2><div class="card"><div class="grid"><div><div class="m">داخل</div><b class="big">${fm(inc)}</b></div><div><div class="m">ثابت</div><b class="big">${fm(fx)}</b></div>
+return `<h2>الفلوس</h2>
+<div class="row"><input id="q" class="in" placeholder="اكتب أي حاجة، أو مبلغ + كلمة (35 قهوة)"><button class="btn" onclick="capMoney()">+</button></div>
+<div class="card"><div class="grid"><div><div class="m">داخل</div><b class="big">${fm(inc)}</b></div><div><div class="m">ثابت</div><b class="big">${fm(fx)}</b></div>
 <div><div class="m">صُرف من المتغير</div><b class="big">${fm(sp)}</b></div><div><div class="m">المتبقي</div><b class="big" style="color:var(--${rem<0?"r":"g"})">${fm(rem)}</b></div></div>
 <div class="bar"><i style="width:${Math.min(100,vb?sp/vb*100:0)}%"></i></div>
 <p class="m">باقي ${c[2]} يوم لنزول المرتب · المسموح يوميًا ≈ <b>${fm(Math.max(0,Math.round(rem/c[2])))}</b> · غير موزّع: ${fm(inc-fx-vb)}</p></div>
@@ -253,21 +295,39 @@ return `<h2>الفلوس</h2><div class="card"><div class="grid"><div><div class
 <div class="card"><b>راحوا فين</b>`+(Object.keys(by).map(k=>`<div class="m">${esc(k)} · ${fm(by[k])}</div><div class="bar"><i style="width:${by[k]/mx*100}%"></i></div>`).join("")||'<p class="m">سجّل أول مصروف.</p>')+`</div>
 <div class="card"><b>آخر المصروفات</b>`+ex.slice().reverse().slice(0,15).map(x=>`<div class="it"><span class="gr">${fm(x.a)} · ${esc(x.n)}<br><span class="m">${x.d} · ${esc(x.p)}</span></span><select class="in n" onchange="S.exp.find(y=>y.id==='${x.id}').c=this.value;sv();R()">${S.st.cats.map(k=>`<option ${k===x.c?"selected":""}>${esc(k)}</option>`).join("")}</select><button class="btn s g" onclick="del('exp','${x.id}')">×</button></div>`).join("")+`</div>
 <div class="card">${lst("inc","الدخل")}<hr style="border:0;border-top:1px solid var(--b);margin:12px 0">${lst("fixed","الثابت")}
-<label>ميزانية المتغير للشهر</label><input class="in" type="number" value="${vb}" onchange="S.st.vb=+this.value;sv();R()"></div>`+vSav()}
-
-function vSav(){const j=S.jm,l=j.d?Math.ceil((new Date(j.d)-new Date())/864e5):null;
-return `<div class="card"><b>الجمعية</b><label>تاريخ دورك</label><input class="in" type="date" value="${j.d}" onchange="S.jm.d=this.value;sv();R()"><label>المبلغ المتوقع</label><input class="in" type="number" value="${j.a}" onchange="S.jm.a=+this.value;sv()">${l!=null?`<p class="m">باقي ${l} يوم على قبضها</p>`:'<p class="m">اسأل المنظم وسجّل التاريخ.</p>'}</div>
-<div class="card"><b>الادخار</b>`+S.sav.map((x,i)=>`<div class="row"><input class="in" value="${esc(x.n)}" onchange="S.sav[${i}].n=this.value;sv()"><input class="in n" type="number" value="${x.a}" onchange="S.sav[${i}].a=+this.value;sv();R()"><button class="btn s g" onclick="S.sav.splice(${i},1);sv();R()">×</button></div>`).join("")+`<p class="m">الإجمالي: ${fm(sum(S.sav))}</p><button class="btn s l" onclick="S.sav.push({n:'',a:0});sv();R()">+ هدف ادخار</button></div>`}
+<label>ميزانية المتغير للشهر</label><input class="in" type="number" value="${vb}" onchange="S.st.vb=+this.value;sv();R()"></div>
+<div class="card"><b>الادخار (كل مبلغ له اسم)</b>`+S.sav.map((x,i)=>`<div class="row"><input class="in" value="${esc(x.n)}" onchange="S.sav[${i}].n=this.value;sv()"><input class="in n" type="number" value="${x.a}" onchange="S.sav[${i}].a=+this.value;sv();R()"><button class="btn s g" onclick="S.sav.splice(${i},1);sv();R()">×</button></div>`).join("")+`<p class="m">الإجمالي: ${fm(sum(S.sav))}</p><button class="btn s l" onclick="S.sav.push({n:'',a:0});sv();R()">+ هدف ادخار</button></div>`}
 
 const mn=t=>t?(+t.split(":")[0])*60+(+t.split(":")[1]):null,
 av=a=>{a=a.filter(x=>x!=null);return a.length?a.reduce((s,x)=>s+x,0)/a.length:null},
 hm=m=>m==null?"—":String(Math.floor((Math.round(m)%1440)/60)).padStart(2,"0")+":"+String(Math.round(m)%60).padStart(2,"0");
 
-function vAn(){const L=[];for(let i=0;i<14;i++){const d=new Date();d.setDate(d.getDate()-i);L.push([ds(d),S.logs[ds(d)]||{}])}
+function vAn(){
+const L=[];for(let i=0;i<14;i++){const d=new Date();d.setDate(d.getDate()-i);L.push([ds(d),S.logs[ds(d)]||{}])}
 const f=k=>L.map(x=>mn(x[1][k])),sl=f("sl").map(m=>m!=null&&m<720?m+1440:m),from=L[13][0],
 ex=S.exp.filter(x=>x.d>=from),tot=sum(ex.map(x=>({a:x.a}))),by={},days=new Set(ex.map(x=>x.d)).size,fr=L.filter(x=>x[1].fr).slice(0,10);
 ex.forEach(x=>by[x.c]=(by[x.c]||0)+x.a);
-return `<h2>تحليل آخر 14 يوم</h2><div class="card"><b>الالتزام</b><p class="m">المراجعة الليلية: ${nrPct()}% (آخر 7) · العادات: ${habPct()}% · أيام سجّلت فيها مصروف: ${days}/14</p></div>
+
+// حساب مؤشرات الأداء للأسابيع
+let weeksData = [];
+for(let i=0; i<4; i++){
+    let d = new Date(); d.setDate(d.getDate() - (i*7));
+    let w = wk(); // Start of week
+    let o = S.kp[w] || {};
+    weeksData.push({w, o});
+}
+
+let kpiHtml = `<div class="card"><b>مؤشرات الأداء (آخر 4 أسابيع)</b>
+<table style="width:100%; border-collapse:collapse; text-align:right; font-size:12px; margin-top:10px;">
+  <tr style="border-bottom:1px solid var(--b);"><th>المؤشر</th>${weeksData.map((_,i)=>`<th>أسبوع ${i+1}</th>`).join('')}</tr>
+  ${S.st.kpis.map(k=>`<tr style="border-bottom:1px solid var(--b);">
+    <td>${esc(k.name)}</td>
+    ${weeksData.map(wd=>`<td>${wd.o[k.id]||0}</td>`).join('')}
+  </tr>`).join('')}
+</table></div>`;
+
+return `<h2>تحليل</h2><div class="card"><b>الالتزام</b><p class="m">المراجعة الليلية: ${nrPct()}% (آخر 7) · العادات: ${habPct()}% · أيام سجّلت فيها مصروف: ${days}/14</p></div>
+${kpiHtml}
 <div class="card"><b>الوقت والنوم</b><div class="grid"><div><div class="m">متوسط نهاية الشغل</div><b class="big">${hm(av(f("se")))}</b></div><div><div class="m">متوسط النوم</div><b class="big">${hm(av(sl))}</b></div>
 <div><div class="m">متوسط الصحيان</div><b class="big">${hm(av(f("wk")))}</b></div><div><div class="m">متوسط التقييم</div><b class="big">${av(L.map(x=>x[1].rt||null))?av(L.map(x=>x[1].rt||null)).toFixed(1):"—"}</b></div></div>
 <p class="m">الوقت الحر راح فين:</p>`+(fr.map(x=>`<div class="it"><span class="gr">${esc(x[1].fr)}</span><span class="m">${x[0]}</span></div>`).join("")||'<p class="m">لسه مفيش بيانات.</p>')+`</div>
@@ -281,9 +341,7 @@ function vSet(){const s=S.st,dopt=(v)=>DAYS.map((d,i)=>`<option value="${i}" ${i
 return `<h2>الإعدادات</h2><div class="card"><label>المظهر</label><select class="in" onchange="S.st.theme=this.value;sv();R()"><option value="light">فاتح</option><option value="dark" ${s.theme==="dark"?"selected":""}>داكن</option></select>
 <label>فئات المصروف</label><input class="in" value="${esc(s.cats.join("، "))}" onchange="S.st.cats=this.value.split(/[,،]/).map(x=>x.trim()).filter(Boolean);sv()">
 <label>اليوم المحمي</label><select class="in" onchange="S.st.prot=+this.value;sv()">${dopt(s.prot)}</select>
-<label>يوم نزول المرتب</label><input class="in" type="number" min="1" max="28" value="${s.pd}" onchange="S.st.pd=+this.value;sv();R()">
-<label>عادة 1</label><input class="in" value="${esc(s.h[0])}" onchange="S.st.h[0]=this.value;sv()">
-<label>عادة 2</label><input class="in" value="${esc(s.h[1])}" onchange="S.st.h[1]=this.value;sv()"></div>
+<label>يوم نزول المرتب</label><input class="in" type="number" min="1" max="28" value="${s.pd}" onchange="S.st.pd=+this.value;sv();R()"></div>
 <div class="card"><label>تذكير الصبح (مهام اليوم)</label><input class="in" type="time" value="${s.morning}" onchange="S.st.morning=this.value;sv();sched()">
 <label>تذكير الليل (مراجعة اليوم)</label><input class="in" type="time" value="${s.ft}" onchange="S.st.ft=this.value;sv();sched()">
 <label>تذكير المراجعة بعد "خلصت الوردية" بـ (دقيقة)</label><input class="in" type="number" value="${s.nd}" onchange="S.st.nd=+this.value;sv()">
@@ -291,9 +349,15 @@ return `<h2>الإعدادات</h2><div class="card"><label>المظهر</label>
 <div class="card"><b>النسخ الاحتياطي</b><div class="row"><button class="btn" onclick="ex()">تصدير</button><input type="file" accept=".json,application/json" onchange="im(this.files[0])"></div>
 <button class="btn g w" style="margin-top:10px" onclick="if(confirm('مسح كل البيانات؟')){localStorage.removeItem(K);S=D();R()}">مسح كل البيانات</button></div>`}
 
-function R(){document.documentElement.setAttribute("data-theme",S.st.theme);
+function R(){
+document.documentElement.setAttribute("data-theme",S.st.theme);
 $("#v").innerHTML=[vToday,vPlan,vNotes,vMoney,vAn,vSet][tab]();
-$("#nv").innerHTML=["اليوم","المخطط","الملاحظات","الفلوس","تحليل","الإعدادات"].map((n,i)=>`<button class="${i===tab?"on":""}" onclick="tab=${i};R()">${n}</button>`).join("")}
+$("#nv").innerHTML=["اليوم","المخطط","الملاحظات","الفلوس","تحليل","الإعدادات"].map((n,i)=>`<button class="${i===tab?"on":""}" onclick="tab=${i};R()">${n}</button>`).join("");
+// تفعيل شريط الإضافة السريعة لو إحنا في تاب الفلوس
+if(tab===3){
+   setTimeout(()=>{const q=$("#q");if(q){q.addEventListener("keydown",e=>{if(e.key==="Enter")capMoney()})}},50);
+}
+}
 
 R();sched();
 </script>
