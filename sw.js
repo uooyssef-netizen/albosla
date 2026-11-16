@@ -1,5 +1,12 @@
-const CACHE_NAME = 'scaledive-v5'; // رقم جديد لمسح الكاش
-const ASSETS = ['./', './index.html', './manifest.json', './logo.png'];
+const CACHE_NAME = 'scaledive-v10'; // غيرنا الرقم عشان نمسح الكاش القديم
+const ASSETS = [
+  './',
+  './index.html',
+  './manifest.json',
+  './launchericon-192x192.png',
+  './launchericon-512x512.png',
+  './logo.png'
+];
 
 self.addEventListener('install', (e) => {
   self.skipWaiting();
